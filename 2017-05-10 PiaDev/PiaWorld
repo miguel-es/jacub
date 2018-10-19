@@ -1,0 +1,15 @@
+#!/bin/bash
+if [ $# -eq 1 ]; then rm -rf bin doc *.jar *.jpg *.json *.log img; fi
+reset
+export LD_LIBRARY_PATH=lib
+libs=.:src:lib/libj3dcore-ogl.so:lib/j3dcore.jar:lib/j3dutils.jar:lib/vecmath.jar:lib/SweetHome3D.jar
+mkdir -p bin doc
+javac -cp $libs -Xlint:unchecked -d bin/ src/PiaWorld.java
+javadoc -classpath $libs -d doc -quiet src/*.java
+cd bin
+jar cfe PiaWorld.jar PiaWorld * ../src/* ../doc/*
+mv PiaWorld.jar ../
+cd ..
+mkdir img
+java -cp $libs:PiaWorld.jar PiaWorld files/data.json
+rm -rf bin doc *.jar

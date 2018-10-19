@@ -1,0 +1,87 @@
+{
+	"sh3d":"files/Room.sh3d",
+	"latency":0,
+	"photos":false,
+	"lCamera":[
+		{"x":450.0,"y":450.0,"z":150.0,"yaw":2.5,"pitch":0.3,"fieldOfView":0.0}
+	],
+	"lBall":{
+		"Ball.red":[
+			[249,268,36.5]
+		]
+	},
+	"Agent":{
+		"head":{
+			"name":"Agent.head",
+			"vision":{"field":1.3,"factor":0.045,"vertical":3,"horizontal":3},
+			"step":{"y":13,"yn":3,"a":0.47,"an":3}
+		},
+		"hand":{
+			"name":"Agent.rightHand",
+			"step":{"x":0.47,"xn":3,"y":13,"yn":3,"z":3,"zn":0,"o":0.15,"on":1}
+		},
+		"cognition":{
+			"equilibrium":{"actual":0,"stabilization":15000},
+			"attention":{"visual":true,"visualMinimumSize":0.01,"tactile":true,"scalar":0.7,"bored":10},
+			"schemes":{"used":10,"success":90,"deep":3},
+			"partialMatching":{"probability":0.1,"minimum":20}
+		},
+		"lColor":[
+			["c1",[0,0,255],0],
+			["c2",[0,255,0],0],
+			["c3",[255,0,0],0]
+		],
+		"lSize":[
+			["s0.1",0.1,0],
+			["s1",1.0,0]
+		],
+		"lTexture":[
+			["t1",[0,0,255],0],
+			["t2",[0,255,0],0],
+			["t3",[255,0,0],2]
+		],
+		"lScheme":[
+			{
+				"id":"1","equilibrated":-1,
+				"context":[[,-1]],
+				"lAction":["random"]
+			},
+			{
+				"id":"2",
+				"equilibrated":-1,
+				"context":[["T",1,,"handOpen"]],
+				"lAction":["handClose"]
+			},
+			{
+				"id":"3",
+				"equilibrated":-1,
+				"context":[["V",1,,,,]],
+				"lAction":["showInterestIn V"]
+			},
+			{
+				"id":"4",
+				"equilibrated":-1,
+				"context":[["T",1,,]],
+				"lAction":["showInterestIn T"]
+			},
+			{
+				"id":"5",
+				"equilibrated":-1,
+				"context":[["V",2,,,,]],
+				"lAction":["changeAttention V"]
+			},
+			{
+				"id":"6",
+				"equilibrated":-1,
+				"context":[["T",2,,]],
+				"lAction":["changeAttention T"]
+			},
+			{
+				"id":"7",
+				"equilibrated":-1,
+				"context":[["V",2,,,,]],
+				"lAction":["showInterestIn V"]
+			}
+		]
+	}
+}

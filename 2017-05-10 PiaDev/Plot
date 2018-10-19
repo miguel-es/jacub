@@ -1,0 +1,7 @@
+#!/bin/bash
+file=`ls -t *.log | head -n 1`
+grep 'Stable' "$file" | cut -d ' ' -f3 | cut -d '/' -f1 | awk '{s+=$1}NR%100==0{a=s/15000;print a;s=0}' > ce.csv
+grep -A 1 'Attended context' "$file" | grep '~' | sed '/-1/c\1' | sed '/~/c\0' | awk '{s+=$1}NR%100==0{print s;s=0}' > lost.csv
+grep -A 1 'Perception -> Scheme succeed:' "$file" | grep '~' | sed '/Yes/c\1' | sed '/No/c\0' | awk '{s+=$1}NR%100==0{print s;s=0}' > succeed.csv
+gnuplot -e "set term png; set output 'Plot.png'; set yrange [0:100]; plot 'succeed.csv' with lines lw 1 title 'Scheme Succeeded', 'lost.csv' with lines lw 1 title 'Object Lost', 'ce.csv' with lines lw 1 title 'Cognitive Equilibrium'"
+rm ce.csv lost.csv succeed.csv
