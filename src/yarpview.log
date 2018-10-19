@@ -1,0 +1,4 @@
+/viewer1
+yarp: Port /viewer1 failed to activate at tcp://10.0.2.15:10026/ (address conflict)
+Error: port failed to open, quitting.
+Error open ports

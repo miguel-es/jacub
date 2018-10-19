@@ -1,0 +1,24 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/usr/local/src/robot/jacub/src/igrabber.cpp
+stdio.h
+-
+stdlib.h
+-
+yarp/os/all.h
+-
+yarp/sig/all.h
+-
+yarp/dev/FrameGrabberInterfaces.h
+-
+yarp/dev/PolyDriver.h
+-
+yarp/dev/Drivers.h
+-
+

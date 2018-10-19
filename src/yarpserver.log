@@ -1,0 +1,14 @@
+yarp: Port /root failed to activate at tcp://10.0.2.15:10000/ (address conflict)
+Name server failed to open
+    __  __ ___  ____   ____
+    \ \/ //   ||  _ \ |  _ \
+     \  // /| || |/ / | |/ /
+     / // ___ ||  _ \ |  _/
+    /_//_/  |_||_| \_\|_|
+    ========================
+
+Call with --help for information on available options
+Using port database: :memory:
+Using subscription database: :memory:
+IP address: default
+Port number: 10000

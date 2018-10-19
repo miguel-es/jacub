@@ -1,0 +1,604 @@
+[[01;32mDEBUG[00m]
+ODE configuration: ODE ODE_EXT_trimesh ODE_EXT_opcode ODE_OPC_new_collider ODE_EXT_threading ODE_double_precision
+
+[[01;32mDEBUG[00m]SimConfig::configure
+||| clearing context
+||| adding context [simConfig]
+||| configuring
+||| default config file specified as simulator.ini
+||| checking [/usr/local/src/robot/jacub/src/simulator.ini] (pwd)
+||| checking [/home/vagrant/.config/yarp/robots/] (robot YARP_CONFIG_HOME)
+||| checking [/home/vagrant/.local/share/yarp/robots/] (robot YARP_DATA_HOME)
+||| checking [/etc/yarp/robots/] (robot YARP_CONFIG_DIRS)
+||| checking [/usr/local/src/robot/yarp/build/share/yarp/robots/] (robot YARP_DATA_DIRS)
+||| checking [/usr/local/src/robot/icub-main/build/share/iCub/robots/] (robot YARP_DATA_DIRS)
+||| checking [/usr/local/src/robot/iCubContrib/share/ICUBcontrib/robots/] (robot YARP_DATA_DIRS)
+||| checking [/usr/local/src/robot/icub-tests/suits/robots/] (robot YARP_DATA_DIRS)
+||| checking [/usr/local/src/robot/yarp/build/share/yarp/config/path.d] (robot path.d YARP_DATA_DIRS)
+||| checking [/usr/local/src/robot/icub-main/build/share/iCub/config/path.d] (robot path.d YARP_DATA_DIRS)
+||| checking [/usr/local/src/robot/iCubContrib/share/ICUBcontrib/config/path.d] (robot path.d YARP_DATA_DIRS)
+||| checking [/usr/local/src/robot/icub-tests/suits/config/path.d] (robot path.d YARP_DATA_DIRS)
+||| checking [/home/vagrant/.config/yarp/contexts/simConfig] (context YARP_CONFIG_HOME)
+||| checking [/home/vagrant/.local/share/yarp/contexts/simConfig] (context YARP_DATA_HOME)
+||| checking [/etc/yarp/contexts/simConfig] (context YARP_CONFIG_DIRS)
+||| checking [/usr/local/src/robot/yarp/build/share/yarp/contexts/simConfig] (context YARP_DATA_DIRS)
+||| checking [/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig] (context YARP_DATA_DIRS)
+||| found /usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig
+||| checking [/usr/local/src/robot/iCubContrib/share/ICUBcontrib/contexts/simConfig] (context YARP_DATA_DIRS)
+||| checking [/usr/local/src/robot/icub-tests/suits/contexts/simConfig] (context YARP_DATA_DIRS)
+||| checking [/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/simulator.ini] (context)
+||| found /usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/simulator.ini
+[[01;34mINFO[00m]default module name:  /icubSim 
+[[01;34mINFO[00m]default verbosity level:  0 
+||| finding file [ode_params.ini]
+||| checking [/usr/local/src/robot/jacub/src/ode_params.ini] (pwd)
+||| checking [/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/ode_params.ini] (context)
+||| found /usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/ode_params.ini
+||| finding file [parts]
+||| checking [/usr/local/src/robot/jacub/src/iCub_parts_activation.ini] (pwd)
+||| checking [/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/iCub_parts_activation.ini] (context)
+||| found /usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/iCub_parts_activation.ini
+||| finding file [parts]
+[[01;34mINFO[00m]The iCub simulator will start with the following configuration: 
+
+ Elevation :  off 
+ startHomePos :  on 
+ Legs :  on 
+ Torso :  on 
+ Left arm :  on 
+ Left hand :  on 
+ Right arm :  on 
+ Right hand :  on 
+ Head :  on 
+ Fixed Hip :  on 
+ 
+ Self-collisions :  off 
+ Collisions for covers :  off 
+ 
+ Pressure sensors:  off 
+ Whole body skin emulation:  off 
+ Cameras : on 
+ Objects :  off 
+ Head Cover :  on 
+ Legs Cover :  on 
+ Left arm Covers :  on 
+ Right arm Covers :  on 
+ Torso Cover :  on 
+ Screen :  off 
+ 
+ 
+||| finding file [Sim_joints.ini]
+||| checking [/usr/local/src/robot/jacub/src/Sim_joints.ini] (pwd)
+||| checking [/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/Sim_joints.ini] (context)
+||| found /usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/Sim_joints.ini
+||| finding file [data/model/iCub_Head.ms3d]
+||| checking [/usr/local/src/robot/jacub/src/data/model/iCub_Head.ms3d] (pwd)
+||| checking [/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/data/model/iCub_Head.ms3d] (context)
+||| found /usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/data/model/iCub_Head.ms3d
+||| finding file [data/model/topEyeLid.ms3d]
+||| checking [/usr/local/src/robot/jacub/src/data/model/topEyeLid.ms3d] (pwd)
+||| checking [/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/data/model/topEyeLid.ms3d] (context)
+||| found /usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/data/model/topEyeLid.ms3d
+||| finding file [data/model/bottomEyeLid.ms3d]
+||| checking [/usr/local/src/robot/jacub/src/data/model/bottomEyeLid.ms3d] (pwd)
+||| checking [/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/data/model/bottomEyeLid.ms3d] (context)
+||| found /usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/data/model/bottomEyeLid.ms3d
+||| finding file [lowerLegCover]
+||| checking [/usr/local/src/robot/jacub/src/models/lowerLeg.x] (pwd)
+||| checking [/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/lowerLeg.x] (context)
+||| found /usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/lowerLeg.x
+||| finding file [lowerLegCover]
+||| finding file [upperRightLegCover]
+||| checking [/usr/local/src/robot/jacub/src/models/rightUpperLeg.x] (pwd)
+||| checking [/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/rightUpperLeg.x] (context)
+||| found /usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/rightUpperLeg.x
+||| finding file [upperLeftLegCover]
+||| checking [/usr/local/src/robot/jacub/src/models/leftUpperLeg.x] (pwd)
+||| checking [/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/leftUpperLeg.x] (context)
+||| found /usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/leftUpperLeg.x
+||| finding file [rightFootCover]
+||| checking [/usr/local/src/robot/jacub/src/models/rightFoot.x] (pwd)
+||| checking [/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/rightFoot.x] (context)
+||| found /usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/rightFoot.x
+||| finding file [leftFootCover]
+||| checking [/usr/local/src/robot/jacub/src/models/leftFoot.x] (pwd)
+||| checking [/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/leftFoot.x] (context)
+||| found /usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/leftFoot.x
+||| finding file [lowerArmCover]
+||| checking [/usr/local/src/robot/jacub/src/models/lowerArm.x] (pwd)
+||| checking [/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/lowerArm.x] (context)
+||| found /usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/lowerArm.x
+||| finding file [lowerArmCover]
+||| finding file [leftUpperArmCover]
+||| checking [/usr/local/src/robot/jacub/src/models/leftUpperArm.x] (pwd)
+||| checking [/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/leftUpperArm.x] (context)
+||| found /usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/leftUpperArm.x
+||| finding file [leftPalm]
+||| checking [/usr/local/src/robot/jacub/src/models/leftPalm.x] (pwd)
+||| checking [/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/leftPalm.x] (context)
+||| found /usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/leftPalm.x
+||| finding file [rightUpperArmCover]
+||| checking [/usr/local/src/robot/jacub/src/models/rightUpperArm.x] (pwd)
+||| checking [/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/rightUpperArm.x] (context)
+||| found /usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/rightUpperArm.x
+||| finding file [rightPalm]
+||| checking [/usr/local/src/robot/jacub/src/models/rightPalm.x] (pwd)
+||| checking [/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/rightPalm.x] (context)
+||| found /usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/rightPalm.x
+||| finding file [torsoCover]
+||| checking [/usr/local/src/robot/jacub/src/models/torso.x] (pwd)
+||| checking [/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/torso.x] (context)
+||| found /usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/torso.x
+||| finding file [waistCover]
+||| checking [/usr/local/src/robot/jacub/src/models/hip.x] (pwd)
+||| checking [/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/hip.x] (context)
+||| found /usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/hip.x
+||| finding file [lowerArmTexture]
+||| checking [/usr/local/src/robot/jacub/src/models/blueTexture.bmp] (pwd)
+||| checking [/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/blueTexture.bmp] (context)
+||| found /usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/blueTexture.bmp
+[[01;34mINFO[00m]Creating 3D Model of the icub.......
+ 
+[[01;32mDEBUG[00m]Loading mesh data from '/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/leftFoot.x' 
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]... OK!
+[[01;32mDEBUG[00m]Loading texture coordinate from '/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/leftFoot.x' 
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]... OK!
+[[01;32mDEBUG[00m]Loading normals from '/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/leftFoot.x' 
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]... OK!
+[[01;32mDEBUG[00m]Loading mesh data from '/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/leftPalm.x' 
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]... OK!
+[[01;32mDEBUG[00m]Loading texture coordinate from '/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/leftPalm.x' 
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]... OK!
+[[01;32mDEBUG[00m]Loading normals from '/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/leftPalm.x' 
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]... OK!
+[[01;32mDEBUG[00m]Loading mesh data from '/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/lowerArm.x' 
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]... OK!
+[[01;32mDEBUG[00m]Loading texture coordinate from '/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/lowerArm.x' 
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]... OK!
+[[01;32mDEBUG[00m]Loading normals from '/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/lowerArm.x' 
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]... OK!
+[[01;32mDEBUG[00m]Loading mesh data from '/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/lowerLeg.x' 
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]... OK!
+[[01;32mDEBUG[00m]Loading texture coordinate from '/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/lowerLeg.x' 
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]... OK!
+[[01;32mDEBUG[00m]Loading normals from '/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/lowerLeg.x' 
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]... OK!
+[[01;32mDEBUG[00m]Loading mesh data from '/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/lowerArm.x' 
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]... OK!
+[[01;32mDEBUG[00m]Loading texture coordinate from '/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/lowerArm.x' 
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]... OK!
+[[01;32mDEBUG[00m]Loading normals from '/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/lowerArm.x' 
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]... OK!
+[[01;32mDEBUG[00m]Loading mesh data from '/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/lowerLeg.x' 
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]... OK!
+[[01;32mDEBUG[00m]Loading texture coordinate from '/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/lowerLeg.x' 
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]... OK!
+[[01;32mDEBUG[00m]Loading normals from '/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/lowerLeg.x' 
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]... OK!
+[[01;32mDEBUG[00m]Loading mesh data from '/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/rightFoot.x' 
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]... OK!
+[[01;32mDEBUG[00m]Loading texture coordinate from '/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/rightFoot.x' 
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]... OK!
+[[01;32mDEBUG[00m]Loading normals from '/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/rightFoot.x' 
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]... OK!
+[[01;32mDEBUG[00m]Loading mesh data from '/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/rightPalm.x' 
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]... OK!
+[[01;32mDEBUG[00m]Loading texture coordinate from '/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/rightPalm.x' 
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]... OK!
+[[01;32mDEBUG[00m]Loading normals from '/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/rightPalm.x' 
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]... OK!
+[[01;32mDEBUG[00m]Loading mesh data from '/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/torso.x' 
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]... OK!
+[[01;32mDEBUG[00m]Loading texture coordinate from '/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/torso.x' 
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]... OK!
+[[01;32mDEBUG[00m]Loading normals from '/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/torso.x' 
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]... OK!
+[[01;32mDEBUG[00m]Loading mesh data from '/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/leftUpperArm.x' 
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]... OK!
+[[01;32mDEBUG[00m]Loading texture coordinate from '/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/leftUpperArm.x' 
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]... OK!
+[[01;32mDEBUG[00m]Loading normals from '/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/leftUpperArm.x' 
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]... OK!
+[[01;32mDEBUG[00m]Loading mesh data from '/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/leftUpperLeg.x' 
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]... OK!
+[[01;32mDEBUG[00m]Loading texture coordinate from '/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/leftUpperLeg.x' 
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]... OK!
+[[01;32mDEBUG[00m]Loading normals from '/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/leftUpperLeg.x' 
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]... OK!
+[[01;32mDEBUG[00m]Loading mesh data from '/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/rightUpperArm.x' 
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]... OK!
+[[01;32mDEBUG[00m]Loading texture coordinate from '/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/rightUpperArm.x' 
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]... OK!
+[[01;32mDEBUG[00m]Loading normals from '/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/rightUpperArm.x' 
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]... OK!
+[[01;32mDEBUG[00m]Loading mesh data from '/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/rightUpperLeg.x' 
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]... OK!
+[[01;32mDEBUG[00m]Loading texture coordinate from '/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/rightUpperLeg.x' 
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]... OK!
+[[01;32mDEBUG[00m]Loading normals from '/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/rightUpperLeg.x' 
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]... OK!
+[[01;32mDEBUG[00m]Loading mesh data from '/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/hip.x' 
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]... OK!
+[[01;32mDEBUG[00m]Loading texture coordinate from '/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/hip.x' 
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]... OK!
+[[01;32mDEBUG[00m]Loading normals from '/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/hip.x' 
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]... OK!
+||| finding path [model_path_default]
+||| checking [/usr/local/src/robot/jacub/src/models] (pwd)
+||| checking [/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models] (context)
+||| found /usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models
+||| finding file [parts]
+[[01;32mDEBUG[00m]Motor head hinge 0 1
+[[01;32mDEBUG[00m]Motor head hinge 1 -1
+[[01;32mDEBUG[00m]Motor head hinge 2 -1
+[[01;32mDEBUG[00m]Motor head hinge 3 1
+[[01;32mDEBUG[00m]Motor head hinge 4 -1
+[[01;32mDEBUG[00m]Motor head hinge 5 1
+[[01;32mDEBUG[00m]Vergence motor remap 1
+[[01;32mDEBUG[00m]Vergence motor remap -1
+[[01;32mDEBUG[00m]Motor leftarm hinge 0 -1
+[[01;32mDEBUG[00m]Motor leftarm hinge 1 -1
+[[01;32mDEBUG[00m]Motor leftarm hinge 2 1
+[[01;32mDEBUG[00m]Motor leftarm hinge 3 1
+[[01;32mDEBUG[00m]Motor leftarm hinge 4 1
+[[01;32mDEBUG[00m]Motor leftarm universalAngle1 5 1
+[[01;32mDEBUG[00m]Motor leftarm universalAngle2 5 -1
+[[01;32mDEBUG[00m]Motor leftarm hinge 6 1
+[[01;32mDEBUG[00m]Motor leftarm hinge 8 -1
+[[01;32mDEBUG[00m]Motor leftarm universalAngle1 22 1
+[[01;32mDEBUG[00m]Motor leftarm universalAngle2 22 -1
+[[01;32mDEBUG[00m]Motor leftarm hinge 23 1
+[[01;32mDEBUG[00m]Motor leftarm hinge 24 1
+[[01;32mDEBUG[00m]Motor leftarm hinge 10 1
+[[01;32mDEBUG[00m]Motor leftarm hinge 14 1
+[[01;32mDEBUG[00m]Motor leftarm hinge 18 1
+[[01;32mDEBUG[00m]Motor leftarm hinge 11 1
+[[01;32mDEBUG[00m]Motor leftarm hinge 15 1
+[[01;32mDEBUG[00m]Motor leftarm hinge 19 1
+[[01;32mDEBUG[00m]Motor leftarm hinge 12 1
+[[01;32mDEBUG[00m]Motor leftarm hinge 16 1
+[[01;32mDEBUG[00m]Motor leftarm hinge 20 1
+[[01;32mDEBUG[00m]Motor rightarm hinge 0 -1
+[[01;32mDEBUG[00m]Motor rightarm hinge 1 1
+[[01;32mDEBUG[00m]Motor rightarm hinge 2 -1
+[[01;32mDEBUG[00m]Motor rightarm hinge 3 1
+[[01;32mDEBUG[00m]Motor rightarm hinge 4 -1
+[[01;32mDEBUG[00m]Motor rightarm universalAngle1 5 -1
+[[01;32mDEBUG[00m]Motor rightarm universalAngle2 5 -1
+[[01;32mDEBUG[00m]Motor rightarm hinge 6 1
+[[01;32mDEBUG[00m]Motor rightarm hinge 8 -1
+[[01;32mDEBUG[00m]Motor rightarm universalAngle1 22 -1
+[[01;32mDEBUG[00m]Motor rightarm universalAngle2 22 -1
+[[01;32mDEBUG[00m]Motor rightarm hinge 23 -1
+[[01;32mDEBUG[00m]Motor rightarm hinge 24 -1
+[[01;32mDEBUG[00m]Motor rightarm hinge 10 -1
+[[01;32mDEBUG[00m]Motor rightarm hinge 14 -1
+[[01;32mDEBUG[00m]Motor rightarm hinge 18 -1
+[[01;32mDEBUG[00m]Motor rightarm hinge 11 -1
+[[01;32mDEBUG[00m]Motor rightarm hinge 15 -1
+[[01;32mDEBUG[00m]Motor rightarm hinge 19 -1
+[[01;32mDEBUG[00m]Motor rightarm hinge 12 -1
+[[01;32mDEBUG[00m]Motor rightarm hinge 16 -1
+[[01;32mDEBUG[00m]Motor rightarm hinge 20 -1
+[[01;32mDEBUG[00m]Motor leftleg hinge 5 -1
+[[01;32mDEBUG[00m]Motor leftleg hinge 4 1
+[[01;32mDEBUG[00m]Motor leftleg hinge 3 1
+[[01;32mDEBUG[00m]Motor leftleg hinge 2 -1
+[[01;32mDEBUG[00m]Motor leftleg hinge 1 1
+[[01;32mDEBUG[00m]Motor leftleg hinge 0 1
+[[01;32mDEBUG[00m]Motor rightleg hinge 5 -1
+[[01;32mDEBUG[00m]Motor rightleg hinge 4 -1
+[[01;32mDEBUG[00m]Motor rightleg hinge 3 -1
+[[01;32mDEBUG[00m]Motor rightleg hinge 2 -1
+[[01;32mDEBUG[00m]Motor rightleg hinge 1 1
+[[01;32mDEBUG[00m]Motor rightleg hinge 0 -1
+[[01;32mDEBUG[00m]Motor torso hinge 2 1
+[[01;32mDEBUG[00m]Motor torso hinge 1 1
+[[01;32mDEBUG[00m]Motor torso hinge 0 -1
+yarp: Port /icubSim/world failed to activate at tcp://10.0.2.15:10002/ (address conflict)
+yarp: Port /icubSim/skin/left_hand_comp failed to activate at tcp://10.0.2.15:10003/ (address conflict)
+yarp: Port /icubSim/skin/left_hand_comp/rpc:i failed to activate at tcp://10.0.2.15:10004/ (address conflict)
+yarp: Port /icubSim/skin/right_hand_comp failed to activate at tcp://10.0.2.15:10005/ (address conflict)
+yarp: Port /icubSim/skin/right_hand_comp/rpc:i failed to activate at tcp://10.0.2.15:10006/ (address conflict)
+yarp: Port /icubSim/inertial failed to activate at tcp://10.0.2.15:10007/ (address conflict)
+yarp: Port /icubSim/joint_vsens/left_leg:i failed to activate at tcp://10.0.2.15:10008/ (address conflict)
+yarp: Port /icubSim/joint_vsens/right_leg:i failed to activate at tcp://10.0.2.15:10009/ (address conflict)
+yarp: Port /icubSim/joint_vsens/torso:i failed to activate at tcp://10.0.2.15:10010/ (address conflict)
+yarp: Port /icubSim/joint_vsens/right_arm:i failed to activate at tcp://10.0.2.15:10011/ (address conflict)
+yarp: Port /icubSim/joint_vsens/left_arm:i failed to activate at tcp://10.0.2.15:10012/ (address conflict)
+yarp: Port /icubSim/skinManager/skin_events:o failed to activate at tcp://10.0.2.15:10013/ (address conflict)
+yarp: Port /icubSim/skin/left_arm_comp failed to activate at tcp://10.0.2.15:10014/ (address conflict)
+yarp: Port /icubSim/skin/right_arm_comp failed to activate at tcp://10.0.2.15:10015/ (address conflict)
+yarp: Port /icubSim/skin/left_forearm_comp failed to activate at tcp://10.0.2.15:10016/ (address conflict)
+yarp: Port /icubSim/skin/right_forearm_comp failed to activate at tcp://10.0.2.15:10017/ (address conflict)
+yarp: Port /icubSim/skin/torso_comp failed to activate at tcp://10.0.2.15:10018/ (address conflict)
+||| finding file [cameras]
+||| checking [/usr/local/src/robot/jacub/src/Sim_camera.ini] (pwd)
+||| checking [/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/Sim_camera.ini] (context)
+||| found /usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/Sim_camera.ini
+yarp: Port /icubSim/cam/left failed to activate at tcp://10.0.2.15:10019/ (address conflict)
+yarp: Port /icubSim/cam/right failed to activate at tcp://10.0.2.15:10020/ (address conflict)
+yarp: Port /icubSim/cam failed to activate at tcp://10.0.2.15:10021/ (address conflict)
+yarp: Port /icubSim/robotDescriptionClient/rpc active at tcp://10.0.2.15:10030/
+yarp: Sending output from /icubSim/robotDescriptionClient/rpc to /robotDescription/rpc using tcp
+[[01;34mINFO[00m]created device <robotDescriptionClient>. See C++ class RobotDescriptionClient for documentation.
+[[01;34mINFO[00m]External robotDescriptionServer was found. Connection succesful. 
+[[01;32mDEBUG[00m]Creating interface for body part left_arm
+||| finding file [left_arm]
+||| checking [/usr/local/src/robot/jacub/src/Sim_left_arm.ini] (pwd)
+||| checking [/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/Sim_left_arm.ini] (context)
+||| found /usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/Sim_left_arm.ini
+[[01;32mDEBUG[00m]ControlBoardWrapper2: 'period' parameter missing, using default thread period = 20ms 
+[[01;32mDEBUG[00m]opening controlBoardWrapper2 subdevice
+[[01;34mINFO[00m]created device <simulationcontrol>. See C++ class iCubSimulationControl for documentation.
+[[01;32mDEBUG[00m]joints parameter is 16
+[[01;34mINFO[00m]/icubSim/left_arm : no ROS initialization required 
+[[01;34mINFO[00m]/icubSim/left_arm  initting YARP initialization 
+yarp: Port /icubSim/left_arm/rpc:i failed to activate at tcp://10.0.2.15:10031/ (address conflict)
+[[01;31mERROR[00m]Error opening port  /icubSim/left_arm/rpc:i
+ 
+[[01;31mERROR[00m]/icubSim/left_arm Something wrong when initting yarp ports 
+yarpdev: ***ERROR*** driver <controlboardwrapper2> was found but could not open
+[[01;31mERROR[00m]Device not available. Here are the known devices:
+[[01;31mERROR[00m]Device "test_motor", C++ class yarp::dev::TestMotor, wrapped by "controlboard"
+Device "remote_grabber", C++ class yarp::dev::RemoteFrameGrabber, wrapped by "grabber"
+Device "grabber", C++ class yarp::dev::ServerFrameGrabber, is a network wrapper.
+Device "sound_grabber", C++ class yarp::dev::ServerSoundGrabber, is a network wrapper.
+Device "pipe", C++ class yarp::dev::DevicePipe, has no network wrapper
+Device "group", C++ class yarp::dev::DeviceGroup, has no network wrapper
+Device "remote_controlboard", C++ class yarp::dev::RemoteControlBoard, wrapped by "controlboardwrapper2"
+Device "inertial", C++ class yarp::dev::ServerInertial, is a network wrapper.
+Device "controlboardwrapper2", C++ class yarp::dev::ControlBoardWrapper2, is a network wrapper.
+Device "batteryClient", C++ class batteryClient, has no network wrapper
+Device "analogsensorclient", C++ class AnalogSensorClient, has no network wrapper
+Device "analogServer", C++ class yarp::dev::AnalogWrapper, is a network wrapper.
+Device "virtualAnalogServer", C
+[[01;33mWARNING[00m]Previous error message was truncated
+[[01;31mERROR[00m]RobotDescriptionClient::registerDevice() received error from server 
+[[01;32mDEBUG[00m]Creating interface for body part right_arm
+||| finding file [right_arm]
+||| checking [/usr/local/src/robot/jacub/src/Sim_right_arm.ini] (pwd)
+||| checking [/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/Sim_right_arm.ini] (context)
+||| found /usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/Sim_right_arm.ini
+[[01;32mDEBUG[00m]ControlBoardWrapper2: 'period' parameter missing, using default thread period = 20ms 
+[[01;32mDEBUG[00m]opening controlBoardWrapper2 subdevice
+[[01;34mINFO[00m]created device <simulationcontrol>. See C++ class iCubSimulationControl for documentation.
+[[01;32mDEBUG[00m]joints parameter is 16
+[[01;34mINFO[00m]/icubSim/right_arm : no ROS initialization required 
+[[01;34mINFO[00m]/icubSim/right_arm  initting YARP initialization 
+yarp: Port /icubSim/right_arm/rpc:i failed to activate at tcp://10.0.2.15:10035/ (address conflict)
+[[01;31mERROR[00m]Error opening port  /icubSim/right_arm/rpc:i
+ 
+[[01;31mERROR[00m]/icubSim/right_arm Something wrong when initting yarp ports 
+yarpdev: ***ERROR*** driver <controlboardwrapper2> was found but could not open
+[[01;31mERROR[00m]Device not available. Here are the known devices:
+[[01;31mERROR[00m]Device "test_motor", C++ class yarp::dev::TestMotor, wrapped by "controlboard"
+Device "remote_grabber", C++ class yarp::dev::RemoteFrameGrabber, wrapped by "grabber"
+Device "grabber", C++ class yarp::dev::ServerFrameGrabber, is a network wrapper.
+Device "sound_grabber", C++ class yarp::dev::ServerSoundGrabber, is a network wrapper.
+Device "pipe", C++ class yarp::dev::DevicePipe, has no network wrapper
+Device "group", C++ class yarp::dev::DeviceGroup, has no network wrapper
+Device "remote_controlboard", C++ class yarp::dev::RemoteControlBoard, wrapped by "controlboardwrapper2"
+Device "inertial", C++ class yarp::dev::ServerInertial, is a network wrapper.
+Device "controlboardwrapper2", C++ class yarp::dev::ControlBoardWrapper2, is a network wrapper.
+Device "batteryClient", C++ class batteryClient, has no network wrapper
+Device "analogsensorclient", C++ class AnalogSensorClient, has no network wrapper
+Device "analogServer", C++ class yarp::dev::AnalogWrapper, is a network wrapper.
+Device "virtualAnalogServer", C
+[[01;33mWARNING[00m]Previous error message was truncated
+[[01;31mERROR[00m]RobotDescriptionClient::registerDevice() received error from server 
+[[01;32mDEBUG[00m]Creating interface for body part head
+||| finding file [head]
+||| checking [/usr/local/src/robot/jacub/src/Sim_head.ini] (pwd)
+||| checking [/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/Sim_head.ini] (context)
+||| found /usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/Sim_head.ini
+[[01;32mDEBUG[00m]ControlBoardWrapper2: 'period' parameter missing, using default thread period = 20ms 
+[[01;32mDEBUG[00m]opening controlBoardWrapper2 subdevice
+[[01;34mINFO[00m]created device <simulationcontrol>. See C++ class iCubSimulationControl for documentation.
+[[01;32mDEBUG[00m]joints parameter is 6
+[[01;34mINFO[00m]/icubSim/head : no ROS initialization required 
+[[01;34mINFO[00m]/icubSim/head  initting YARP initialization 
+yarp: Port /icubSim/head/rpc:i failed to activate at tcp://10.0.2.15:10039/ (address conflict)
+[[01;31mERROR[00m]Error opening port  /icubSim/head/rpc:i
+ 
+[[01;31mERROR[00m]/icubSim/head Something wrong when initting yarp ports 
+yarpdev: ***ERROR*** driver <controlboardwrapper2> was found but could not open
+[[01;31mERROR[00m]Device not available. Here are the known devices:
+[[01;31mERROR[00m]Device "test_motor", C++ class yarp::dev::TestMotor, wrapped by "controlboard"
+Device "remote_grabber", C++ class yarp::dev::RemoteFrameGrabber, wrapped by "grabber"
+Device "grabber", C++ class yarp::dev::ServerFrameGrabber, is a network wrapper.
+Device "sound_grabber", C++ class yarp::dev::ServerSoundGrabber, is a network wrapper.
+Device "pipe", C++ class yarp::dev::DevicePipe, has no network wrapper
+Device "group", C++ class yarp::dev::DeviceGroup, has no network wrapper
+Device "remote_controlboard", C++ class yarp::dev::RemoteControlBoard, wrapped by "controlboardwrapper2"
+Device "inertial", C++ class yarp::dev::ServerInertial, is a network wrapper.
+Device "controlboardwrapper2", C++ class yarp::dev::ControlBoardWrapper2, is a network wrapper.
+Device "batteryClient", C++ class batteryClient, has no network wrapper
+Device "analogsensorclient", C++ class AnalogSensorClient, has no network wrapper
+Device "analogServer", C++ class yarp::dev::AnalogWrapper, is a network wrapper.
+Device "virtualAnalogServer", C
+[[01;33mWARNING[00m]Previous error message was truncated
+[[01;31mERROR[00m]RobotDescriptionClient::registerDevice() received error from server 
+[[01;32mDEBUG[00m]Creating interface for body part left_leg
+||| finding file [left_leg]
+||| checking [/usr/local/src/robot/jacub/src/Sim_left_leg.ini] (pwd)
+||| checking [/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/Sim_left_leg.ini] (context)
+||| found /usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/Sim_left_leg.ini
+[[01;32mDEBUG[00m]ControlBoardWrapper2: 'period' parameter missing, using default thread period = 20ms 
+[[01;32mDEBUG[00m]opening controlBoardWrapper2 subdevice
+[[01;34mINFO[00m]created device <simulationcontrol>. See C++ class iCubSimulationControl for documentation.
+[[01;32mDEBUG[00m]joints parameter is 6
+[[01;34mINFO[00m]/icubSim/left_leg : no ROS initialization required 
+[[01;34mINFO[00m]/icubSim/left_leg  initting YARP initialization 
+yarp: Port /icubSim/left_leg/rpc:i failed to activate at tcp://10.0.2.15:10043/ (address conflict)
+[[01;31mERROR[00m]Error opening port  /icubSim/left_leg/rpc:i
+ 
+[[01;31mERROR[00m]/icubSim/left_leg Something wrong when initting yarp ports 
+yarpdev: ***ERROR*** driver <controlboardwrapper2> was found but could not open
+[[01;31mERROR[00m]Device not available. Here are the known devices:
+[[01;31mERROR[00m]Device "test_motor", C++ class yarp::dev::TestMotor, wrapped by "controlboard"
+Device "remote_grabber", C++ class yarp::dev::RemoteFrameGrabber, wrapped by "grabber"
+Device "grabber", C++ class yarp::dev::ServerFrameGrabber, is a network wrapper.
+Device "sound_grabber", C++ class yarp::dev::ServerSoundGrabber, is a network wrapper.
+Device "pipe", C++ class yarp::dev::DevicePipe, has no network wrapper
+Device "group", C++ class yarp::dev::DeviceGroup, has no network wrapper
+Device "remote_controlboard", C++ class yarp::dev::RemoteControlBoard, wrapped by "controlboardwrapper2"
+Device "inertial", C++ class yarp::dev::ServerInertial, is a network wrapper.
+Device "controlboardwrapper2", C++ class yarp::dev::ControlBoardWrapper2, is a network wrapper.
+Device "batteryClient", C++ class batteryClient, has no network wrapper
+Device "analogsensorclient", C++ class AnalogSensorClient, has no network wrapper
+Device "analogServer", C++ class yarp::dev::AnalogWrapper, is a network wrapper.
+Device "virtualAnalogServer", C
+[[01;33mWARNING[00m]Previous error message was truncated
+[[01;31mERROR[00m]RobotDescriptionClient::registerDevice() received error from server 
+[[01;32mDEBUG[00m]Creating interface for body part right_leg
+||| finding file [right_leg]
+||| checking [/usr/local/src/robot/jacub/src/Sim_right_leg.ini] (pwd)
+||| checking [/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/Sim_right_leg.ini] (context)
+||| found /usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/Sim_right_leg.ini
+[[01;32mDEBUG[00m]ControlBoardWrapper2: 'period' parameter missing, using default thread period = 20ms 
+[[01;32mDEBUG[00m]opening controlBoardWrapper2 subdevice
+[[01;34mINFO[00m]created device <simulationcontrol>. See C++ class iCubSimulationControl for documentation.
+[[01;32mDEBUG[00m]joints parameter is 6
+[[01;34mINFO[00m]/icubSim/right_leg : no ROS initialization required 
+[[01;34mINFO[00m]/icubSim/right_leg  initting YARP initialization 
+yarp: Port /icubSim/right_leg/rpc:i failed to activate at tcp://10.0.2.15:10047/ (address conflict)
+[[01;31mERROR[00m]Error opening port  /icubSim/right_leg/rpc:i
+ 
+[[01;31mERROR[00m]/icubSim/right_leg Something wrong when initting yarp ports 
+yarpdev: ***ERROR*** driver <controlboardwrapper2> was found but could not open
+[[01;31mERROR[00m]Device not available. Here are the known devices:
+[[01;31mERROR[00m]Device "test_motor", C++ class yarp::dev::TestMotor, wrapped by "controlboard"
+Device "remote_grabber", C++ class yarp::dev::RemoteFrameGrabber, wrapped by "grabber"
+Device "grabber", C++ class yarp::dev::ServerFrameGrabber, is a network wrapper.
+Device "sound_grabber", C++ class yarp::dev::ServerSoundGrabber, is a network wrapper.
+Device "pipe", C++ class yarp::dev::DevicePipe, has no network wrapper
+Device "group", C++ class yarp::dev::DeviceGroup, has no network wrapper
+Device "remote_controlboard", C++ class yarp::dev::RemoteControlBoard, wrapped by "controlboardwrapper2"
+Device "inertial", C++ class yarp::dev::ServerInertial, is a network wrapper.
+Device "controlboardwrapper2", C++ class yarp::dev::ControlBoardWrapper2, is a network wrapper.
+Device "batteryClient", C++ class batteryClient, has no network wrapper
+Device "analogsensorclient", C++ class AnalogSensorClient, has no network wrapper
+Device "analogServer", C++ class yarp::dev::AnalogWrapper, is a network wrapper.
+Device "virtualAnalogServer", C
+[[01;33mWARNING[00m]Previous error message was truncated
+[[01;31mERROR[00m]RobotDescriptionClient::registerDevice() received error from server 
+[[01;32mDEBUG[00m]Creating interface for body part torso
+||| finding file [torso]
+||| checking [/usr/local/src/robot/jacub/src/Sim_torso.ini] (pwd)
+||| checking [/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/Sim_torso.ini] (context)
+||| found /usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/Sim_torso.ini
+[[01;32mDEBUG[00m]ControlBoardWrapper2: 'period' parameter missing, using default thread period = 20ms 
+[[01;32mDEBUG[00m]opening controlBoardWrapper2 subdevice
+[[01;34mINFO[00m]created device <simulationcontrol>. See C++ class iCubSimulationControl for documentation.
+[[01;32mDEBUG[00m]joints parameter is 3
+[[01;34mINFO[00m]/icubSim/torso : no ROS initialization required 
+[[01;34mINFO[00m]/icubSim/torso  initting YARP initialization 
+yarp: Port /icubSim/torso/rpc:i failed to activate at tcp://10.0.2.15:10051/ (address conflict)
+[[01;31mERROR[00m]Error opening port  /icubSim/torso/rpc:i
+ 
+[[01;31mERROR[00m]/icubSim/torso Something wrong when initting yarp ports 
+yarpdev: ***ERROR*** driver <controlboardwrapper2> was found but could not open
+[[01;31mERROR[00m]Device not available. Here are the known devices:
+[[01;31mERROR[00m]Device "test_motor", C++ class yarp::dev::TestMotor, wrapped by "controlboard"
+Device "remote_grabber", C++ class yarp::dev::RemoteFrameGrabber, wrapped by "grabber"
+Device "grabber", C++ class yarp::dev::ServerFrameGrabber, is a network wrapper.
+Device "sound_grabber", C++ class yarp::dev::ServerSoundGrabber, is a network wrapper.
+Device "pipe", C++ class yarp::dev::DevicePipe, has no network wrapper
+Device "group", C++ class yarp::dev::DeviceGroup, has no network wrapper
+Device "remote_controlboard", C++ class yarp::dev::RemoteControlBoard, wrapped by "controlboardwrapper2"
+Device "inertial", C++ class yarp::dev::ServerInertial, is a network wrapper.
+Device "controlboardwrapper2", C++ class yarp::dev::ControlBoardWrapper2, is a network wrapper.
+Device "batteryClient", C++ class batteryClient, has no network wrapper
+Device "analogsensorclient", C++ class AnalogSensorClient, has no network wrapper
+Device "analogServer", C++ class yarp::dev::AnalogWrapper, is a network wrapper.
+Device "virtualAnalogServer", C
+[[01;33mWARNING[00m]Previous error message was truncated
+[[01;31mERROR[00m]RobotDescriptionClient::registerDevice() received error from server 
+yarp: Removing output from /icubSim/robotDescriptionClient/rpc to /robotDescription/rpc
+[[01;34mINFO[00m]Closing module...
+[[01;34mINFO[00m]Successfully terminated...bye...

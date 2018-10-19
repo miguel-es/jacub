@@ -1,0 +1,4 @@
+/usr/local/src/robot/jacub/ejemplos/imageProcessing/CMakeFiles/rebuild_cache.dir
+/usr/local/src/robot/jacub/ejemplos/imageProcessing/CMakeFiles/edit_cache.dir
+/usr/local/src/robot/jacub/ejemplos/imageProcessing/CMakeFiles/lookAtLocation.dir
+/usr/local/src/robot/jacub/ejemplos/imageProcessing/CMakeFiles/findLocation.dir

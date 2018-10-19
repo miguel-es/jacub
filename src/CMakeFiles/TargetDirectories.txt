@@ -1,0 +1,3 @@
+/usr/local/src/robot/jacub/src/CMakeFiles/rebuild_cache.dir
+/usr/local/src/robot/jacub/src/CMakeFiles/edit_cache.dir
+/usr/local/src/robot/jacub/src/CMakeFiles/visualPerception.dir

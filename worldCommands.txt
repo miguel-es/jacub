@@ -1,0 +1,22 @@
+world mk smodel cuarto1.x wall.bmp 0.158886638525472 0.601547136303311 0.232498144169671
+
+
+Ruta modelos
+
+/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig
+
+coordenadas enfrente de robot
+
+0 0 2
+
+x y z
+der izq frente
+
+world mk smodel mesa2.x woodred.bmp 0 0 2
+
+world mk smodel pia/mesaes.x woodred.bmp 0 0 -0.2
+
+world mk box (three params for size) (three params for pos) (three params for colour)
+world mk box 0.1 0.1 0.1 0 2 0.1 1 0 0
+
+world mk box 0.1 0.1 0.1 0 0.7 0.3 1 0 0
