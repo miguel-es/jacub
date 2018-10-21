@@ -1,0 +1,36 @@
+Comandos iCubSim:
+
+yarpmotorgui (consola de controles)
+iCub_SIM (simulador)
+yarpmanager (consola de modulos)
+yarp server (servidor de yarp)
+
+1
+Directorio de código:
+/usr/local/src/robot/
+
+Directorio de código de Jacub:
+/usr/local/src/robot/jacub
+
+Comandos de cámara del observador:
+a=left, s=back, d=right, f=up, v=down, z=up-pan
+
+Para el visualizador (viewer) se necesita instalar la libreria qtbase-dev
+
+Script de inicialización de jacub: ./JacubSim.init
+
+Para inicializar el visualizador: yarpview --name /viewer1
+
+Para conectar la camara al visualizador: yarp connect /icubSim/cam/left /viewer1 mcast
+
+Para conectar la salida del proceso de percepción visual al visualizador: yarp connect /imageProc/image/out /viewer1 mcast
+
+Para connectarse a la cabeza: yarp rpc /icubSim/head/rpc:i
+
+Para doblar la cabeza viendo hacia la mesa: set pos 0 -60
+
+coordenadas de cabeza:
+
+2: + izquierda - derecha (ziquierda-derecha)
+1: + derecha - izquierda (ladear la cabeza)
+0: + arriba - abajo (arroba abajo)

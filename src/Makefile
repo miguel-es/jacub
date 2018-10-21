@@ -123,6 +123,86 @@ visualPerception/fast:
 	$(MAKE) -f CMakeFiles/visualPerception.dir/build.make CMakeFiles/visualPerception.dir/build
 .PHONY : visualPerception/fast
 
+#=============================================================================
+# Target rules for targets named iDevER
+
+# Build rule for target.
+iDevER: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 iDevER
+.PHONY : iDevER
+
+# fast build rule for target.
+iDevER/fast:
+	$(MAKE) -f CMakeFiles/iDevER.dir/build.make CMakeFiles/iDevER.dir/build
+.PHONY : iDevER/fast
+
+#=============================================================================
+# Target rules for targets named propioception
+
+# Build rule for target.
+propioception: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 propioception
+.PHONY : propioception
+
+# fast build rule for target.
+propioception/fast:
+	$(MAKE) -f CMakeFiles/propioception.dir/build.make CMakeFiles/propioception.dir/build
+.PHONY : propioception/fast
+
+Propioception.o: Propioception.cpp.o
+
+.PHONY : Propioception.o
+
+# target to build an object file
+Propioception.cpp.o:
+	$(MAKE) -f CMakeFiles/propioception.dir/build.make CMakeFiles/propioception.dir/Propioception.cpp.o
+.PHONY : Propioception.cpp.o
+
+Propioception.i: Propioception.cpp.i
+
+.PHONY : Propioception.i
+
+# target to preprocess a source file
+Propioception.cpp.i:
+	$(MAKE) -f CMakeFiles/propioception.dir/build.make CMakeFiles/propioception.dir/Propioception.cpp.i
+.PHONY : Propioception.cpp.i
+
+Propioception.s: Propioception.cpp.s
+
+.PHONY : Propioception.s
+
+# target to generate assembly for a file
+Propioception.cpp.s:
+	$(MAKE) -f CMakeFiles/propioception.dir/build.make CMakeFiles/propioception.dir/Propioception.cpp.s
+.PHONY : Propioception.cpp.s
+
+iDevER.o: iDevER.cpp.o
+
+.PHONY : iDevER.o
+
+# target to build an object file
+iDevER.cpp.o:
+	$(MAKE) -f CMakeFiles/iDevER.dir/build.make CMakeFiles/iDevER.dir/iDevER.cpp.o
+.PHONY : iDevER.cpp.o
+
+iDevER.i: iDevER.cpp.i
+
+.PHONY : iDevER.i
+
+# target to preprocess a source file
+iDevER.cpp.i:
+	$(MAKE) -f CMakeFiles/iDevER.dir/build.make CMakeFiles/iDevER.dir/iDevER.cpp.i
+.PHONY : iDevER.cpp.i
+
+iDevER.s: iDevER.cpp.s
+
+.PHONY : iDevER.s
+
+# target to generate assembly for a file
+iDevER.cpp.s:
+	$(MAKE) -f CMakeFiles/iDevER.dir/build.make CMakeFiles/iDevER.dir/iDevER.cpp.s
+.PHONY : iDevER.cpp.s
+
 visualPerception.o: visualPerception.cpp.o
 
 .PHONY : visualPerception.o
@@ -157,8 +237,16 @@ help:
 	@echo "... clean"
 	@echo "... depend"
 	@echo "... rebuild_cache"
-	@echo "... edit_cache"
 	@echo "... visualPerception"
+	@echo "... iDevER"
+	@echo "... propioception"
+	@echo "... edit_cache"
+	@echo "... Propioception.o"
+	@echo "... Propioception.i"
+	@echo "... Propioception.s"
+	@echo "... iDevER.o"
+	@echo "... iDevER.i"
+	@echo "... iDevER.s"
 	@echo "... visualPerception.o"
 	@echo "... visualPerception.i"
 	@echo "... visualPerception.s"

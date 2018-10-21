@@ -16,4 +16,9 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${YARP_MODULE_PATH})
 add_executable(visualPerception visualPerception.cpp)
 target_link_libraries(visualPerception ${YARP_LIBRARIES})
 
+add_executable(iDevER iDevER.cpp)
+target_link_libraries(iDevER ${YARP_LIBRARIES})
+
+add_executable(propioception Propioception.cpp)
+target_link_libraries(propioception ${YARP_LIBRARIES})
 

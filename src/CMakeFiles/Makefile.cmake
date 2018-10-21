@@ -52,4 +52,6 @@ set(CMAKE_MAKEFILE_PRODUCTS
 # Dependency information for all targets:
 set(CMAKE_DEPEND_INFO_FILES
   "CMakeFiles/visualPerception.dir/DependInfo.cmake"
+  "CMakeFiles/iDevER.dir/DependInfo.cmake"
+  "CMakeFiles/propioception.dir/DependInfo.cmake"
   )

@@ -66,7 +66,7 @@ CMAKE_BINARY_DIR = /usr/local/src/robot/jacub/src
 CMakeFiles/visualPerception.dir/all:
 	$(MAKE) -f CMakeFiles/visualPerception.dir/build.make CMakeFiles/visualPerception.dir/depend
 	$(MAKE) -f CMakeFiles/visualPerception.dir/build.make CMakeFiles/visualPerception.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/usr/local/src/robot/jacub/src/CMakeFiles --progress-num=1,2 "Built target visualPerception"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/usr/local/src/robot/jacub/src/CMakeFiles --progress-num=5,6 "Built target visualPerception"
 .PHONY : CMakeFiles/visualPerception.dir/all
 
 # Include target in all.
@@ -93,6 +93,80 @@ CMakeFiles/visualPerception.dir/clean:
 
 # clean rule for target.
 clean: CMakeFiles/visualPerception.dir/clean
+
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/iDevER.dir
+
+# All Build rule for target.
+CMakeFiles/iDevER.dir/all:
+	$(MAKE) -f CMakeFiles/iDevER.dir/build.make CMakeFiles/iDevER.dir/depend
+	$(MAKE) -f CMakeFiles/iDevER.dir/build.make CMakeFiles/iDevER.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/usr/local/src/robot/jacub/src/CMakeFiles --progress-num=1,2 "Built target iDevER"
+.PHONY : CMakeFiles/iDevER.dir/all
+
+# Include target in all.
+all: CMakeFiles/iDevER.dir/all
+
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/iDevER.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /usr/local/src/robot/jacub/src/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/iDevER.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /usr/local/src/robot/jacub/src/CMakeFiles 0
+.PHONY : CMakeFiles/iDevER.dir/rule
+
+# Convenience name for target.
+iDevER: CMakeFiles/iDevER.dir/rule
+
+.PHONY : iDevER
+
+# clean rule for target.
+CMakeFiles/iDevER.dir/clean:
+	$(MAKE) -f CMakeFiles/iDevER.dir/build.make CMakeFiles/iDevER.dir/clean
+.PHONY : CMakeFiles/iDevER.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/iDevER.dir/clean
+
+.PHONY : clean
+
+#=============================================================================
+# Target rules for target CMakeFiles/propioception.dir
+
+# All Build rule for target.
+CMakeFiles/propioception.dir/all:
+	$(MAKE) -f CMakeFiles/propioception.dir/build.make CMakeFiles/propioception.dir/depend
+	$(MAKE) -f CMakeFiles/propioception.dir/build.make CMakeFiles/propioception.dir/build
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/usr/local/src/robot/jacub/src/CMakeFiles --progress-num=3,4 "Built target propioception"
+.PHONY : CMakeFiles/propioception.dir/all
+
+# Include target in all.
+all: CMakeFiles/propioception.dir/all
+
+.PHONY : all
+
+# Build rule for subdir invocation for target.
+CMakeFiles/propioception.dir/rule: cmake_check_build_system
+	$(CMAKE_COMMAND) -E cmake_progress_start /usr/local/src/robot/jacub/src/CMakeFiles 2
+	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/propioception.dir/all
+	$(CMAKE_COMMAND) -E cmake_progress_start /usr/local/src/robot/jacub/src/CMakeFiles 0
+.PHONY : CMakeFiles/propioception.dir/rule
+
+# Convenience name for target.
+propioception: CMakeFiles/propioception.dir/rule
+
+.PHONY : propioception
+
+# clean rule for target.
+CMakeFiles/propioception.dir/clean:
+	$(MAKE) -f CMakeFiles/propioception.dir/build.make CMakeFiles/propioception.dir/clean
+.PHONY : CMakeFiles/propioception.dir/clean
+
+# clean rule for target.
+clean: CMakeFiles/propioception.dir/clean
 
 .PHONY : clean
 
