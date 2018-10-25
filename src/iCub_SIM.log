@@ -379,34 +379,276 @@ ODE configuration: ODE ODE_EXT_trimesh ODE_EXT_opcode ODE_OPC_new_collider ODE_E
 [[01;32mDEBUG[00m]Motor torso hinge 2 1
 [[01;32mDEBUG[00m]Motor torso hinge 1 1
 [[01;32mDEBUG[00m]Motor torso hinge 0 -1
-yarp: Port /icubSim/world failed to activate at tcp://10.0.2.15:10002/ (address conflict)
-yarp: Port /icubSim/skin/left_hand_comp failed to activate at tcp://10.0.2.15:10003/ (address conflict)
-yarp: Port /icubSim/skin/left_hand_comp/rpc:i failed to activate at tcp://10.0.2.15:10004/ (address conflict)
-yarp: Port /icubSim/skin/right_hand_comp failed to activate at tcp://10.0.2.15:10005/ (address conflict)
-yarp: Port /icubSim/skin/right_hand_comp/rpc:i failed to activate at tcp://10.0.2.15:10006/ (address conflict)
-yarp: Port /icubSim/inertial failed to activate at tcp://10.0.2.15:10007/ (address conflict)
-yarp: Port /icubSim/joint_vsens/left_leg:i failed to activate at tcp://10.0.2.15:10008/ (address conflict)
-yarp: Port /icubSim/joint_vsens/right_leg:i failed to activate at tcp://10.0.2.15:10009/ (address conflict)
-yarp: Port /icubSim/joint_vsens/torso:i failed to activate at tcp://10.0.2.15:10010/ (address conflict)
-yarp: Port /icubSim/joint_vsens/right_arm:i failed to activate at tcp://10.0.2.15:10011/ (address conflict)
-yarp: Port /icubSim/joint_vsens/left_arm:i failed to activate at tcp://10.0.2.15:10012/ (address conflict)
-yarp: Port /icubSim/skinManager/skin_events:o failed to activate at tcp://10.0.2.15:10013/ (address conflict)
-yarp: Port /icubSim/skin/left_arm_comp failed to activate at tcp://10.0.2.15:10014/ (address conflict)
-yarp: Port /icubSim/skin/right_arm_comp failed to activate at tcp://10.0.2.15:10015/ (address conflict)
-yarp: Port /icubSim/skin/left_forearm_comp failed to activate at tcp://10.0.2.15:10016/ (address conflict)
-yarp: Port /icubSim/skin/right_forearm_comp failed to activate at tcp://10.0.2.15:10017/ (address conflict)
-yarp: Port /icubSim/skin/torso_comp failed to activate at tcp://10.0.2.15:10018/ (address conflict)
+yarp: Port /icubSim/world active at tcp://10.0.2.15:10002/
+yarp: Port /icubSim/skin/left_hand_comp active at tcp://10.0.2.15:10003/
+[[01;32mDEBUG[00m]ODE world
+[[01;32mDEBUG[00m]Operation:
+[[01;32mDEBUG[00m]  cmd?: mk
+[[01;32mDEBUG[00m]  kind: 
+[[01;32mDEBUG[00m]box
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  name: 
+[[01;32mDEBUG[00m]not set
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  dynamic: 
+[[01;32mDEBUG[00m]True
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  location: 
+[[01;32mDEBUG[00m]0 0.6 0.4
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  size: 
+[[01;32mDEBUG[00m]0.05 0.05 0.05
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  color: 
+[[01;32mDEBUG[00m]0 0 1
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  rotation: 
+[[01;32mDEBUG[00m]not set
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  radius: 
+[[01;32mDEBUG[00m]not set
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  length: 
+[[01;32mDEBUG[00m]not set
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  active: 
+[[01;32mDEBUG[00m]not set
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  index: 
+[[01;32mDEBUG[00m]not set
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  collide: 
+[[01;32mDEBUG[00m]True
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  parameter: 
+[[01;32mDEBUG[00m]not set
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  rightHanded?: 
+[[01;32mDEBUG[00m]not set
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  modelName: 
+[[01;32mDEBUG[00m]not set
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  modelTexture: 
+[[01;32mDEBUG[00m]not set
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]Operation:
+[[01;32mDEBUG[00m]  cmd?: mk
+[[01;32mDEBUG[00m]  kind: 
+[[01;32mDEBUG[00m]box
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  name: 
+[[01;32mDEBUG[00m]not set
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  dynamic: 
+[[01;32mDEBUG[00m]True
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  location: 
+[[01;32mDEBUG[00m]0 0.6 0.4
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  size: 
+[[01;32mDEBUG[00m]0.05 0.05 0.05
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  color: 
+[[01;32mDEBUG[00m]0 0 1
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  rotation: 
+[[01;32mDEBUG[00m]not set
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  radius: 
+[[01;32mDEBUG[00m]not set
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  length: 
+[[01;32mDEBUG[00m]not set
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  active: 
+[[01;32mDEBUG[00m]not set
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  index: 
+[[01;32mDEBUG[00m]not set
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  collide: 
+[[01;32mDEBUG[00m]True
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  parameter: 
+[[01;32mDEBUG[00m]not set
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  rightHanded?: 
+[[01;32mDEBUG[00m]not set
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  modelName: 
+[[01;32mDEBUG[00m]not set
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  modelTexture: 
+[[01;32mDEBUG[00m]not set
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]Result:
+[[01;32mDEBUG[00m]  success: true
+[[01;32mDEBUG[00m]  msg: 
+[[01;32mDEBUG[00m]  location: 
+[[01;32mDEBUG[00m]not set
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  color: 
+[[01;32mDEBUG[00m]not set
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  path: 
+[[01;32mDEBUG[00m]not set
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]ODE world
+[[01;32mDEBUG[00m]Operation:
+yarp: Port /icubSim/skin/left_hand_comp/rpc:i active at tcp://10.0.2.15:10004/
+[[01;32mDEBUG[00m]  cmd?: mk
+[[01;32mDEBUG[00m]  kind: 
+[[01;32mDEBUG[00m]model
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  name: 
+[[01;32mDEBUG[00m]not set
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  dynamic: 
+[[01;32mDEBUG[00m]False
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  location: 
+[[01;32mDEBUG[00m]0 0 -0.2
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  size: 
+[[01;32mDEBUG[00m]not set
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  color: 
+[[01;32mDEBUG[00m]not set
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  rotation: 
+[[01;32mDEBUG[00m]not set
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  radius: 
+[[01;32mDEBUG[00m]not set
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  length: 
+[[01;32mDEBUG[00m]not set
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  active: 
+[[01;32mDEBUG[00m]not set
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  index: 
+[[01;32mDEBUG[00m]not set
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  collide: 
+[[01;32mDEBUG[00m]True
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  parameter: 
+[[01;32mDEBUG[00m]not set
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  rightHanded?: 
+[[01;32mDEBUG[00m]not set
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  modelName: 
+[[01;32mDEBUG[00m]pia/mesaes.x
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  modelTexture: 
+[[01;32mDEBUG[00m]woodred.bmp
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]Operation:
+[[01;32mDEBUG[00m]  cmd?: mk
+[[01;32mDEBUG[00m]  kind: 
+[[01;32mDEBUG[00m]model
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  name: 
+[[01;32mDEBUG[00m]not set
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  dynamic: 
+[[01;32mDEBUG[00m]False
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  location: 
+[[01;32mDEBUG[00m]0 0 -0.2
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  size: 
+[[01;32mDEBUG[00m]not set
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  color: 
+[[01;32mDEBUG[00m]not set
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  rotation: 
+[[01;32mDEBUG[00m]not set
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  radius: 
+[[01;32mDEBUG[00m]not set
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  length: 
+[[01;32mDEBUG[00m]not set
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  active: 
+[[01;32mDEBUG[00m]not set
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  index: 
+[[01;32mDEBUG[00m]not set
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  collide: 
+[[01;32mDEBUG[00m]True
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  parameter: 
+[[01;32mDEBUG[00m]not set
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  rightHanded?: 
+[[01;32mDEBUG[00m]not set
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  modelName: 
+[[01;32mDEBUG[00m]pia/mesaes.x
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  modelTexture: 
+[[01;32mDEBUG[00m]woodred.bmp
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]Making a model
+[[01;32mDEBUG[00m]Loading mesh data from '/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/pia/mesaes.x' 
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]... OK!
+[[01;32mDEBUG[00m]Loading texture coordinate from '/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/pia/mesaes.x' 
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]... OK!
+[[01;32mDEBUG[00m]Loading normals from '/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/pia/mesaes.x' 
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]...
+[[01;32mDEBUG[00m]... OK!
+[[01;32mDEBUG[00m]Result:
+[[01;32mDEBUG[00m]  success: true
+[[01;32mDEBUG[00m]  msg: 
+[[01;32mDEBUG[00m]  location: 
+[[01;32mDEBUG[00m]not set
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  color: 
+[[01;32mDEBUG[00m]not set
+[[01;32mDEBUG[00m]
+[[01;32mDEBUG[00m]  path: 
+[[01;32mDEBUG[00m]not set
+[[01;32mDEBUG[00m]
+yarp: Port /icubSim/skin/right_hand_comp active at tcp://10.0.2.15:10005/
+yarp: Port /icubSim/skin/right_hand_comp/rpc:i active at tcp://10.0.2.15:10006/
+yarp: Port /icubSim/inertial active at tcp://10.0.2.15:10007/
+yarp: Port /icubSim/joint_vsens/left_leg:i active at tcp://10.0.2.15:10008/
+yarp: Port /icubSim/joint_vsens/right_leg:i active at tcp://10.0.2.15:10009/
+yarp: Port /icubSim/joint_vsens/torso:i active at tcp://10.0.2.15:10010/
+yarp: Port /icubSim/joint_vsens/right_arm:i active at tcp://10.0.2.15:10011/
+yarp: Port /icubSim/joint_vsens/left_arm:i active at tcp://10.0.2.15:10012/
+yarp: Port /icubSim/skinManager/skin_events:o active at tcp://10.0.2.15:10013/
+yarp: Port /icubSim/skin/left_arm_comp active at tcp://10.0.2.15:10014/
+yarp: Port /icubSim/skin/right_arm_comp active at tcp://10.0.2.15:10015/
+yarp: Port /icubSim/skin/left_forearm_comp active at tcp://10.0.2.15:10016/
+yarp: Port /icubSim/skin/right_forearm_comp active at tcp://10.0.2.15:10017/
+yarp: Port /icubSim/skin/torso_comp active at tcp://10.0.2.15:10018/
 ||| finding file [cameras]
 ||| checking [/usr/local/src/robot/jacub/src/Sim_camera.ini] (pwd)
 ||| checking [/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/Sim_camera.ini] (context)
 ||| found /usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/Sim_camera.ini
-yarp: Port /icubSim/cam/left failed to activate at tcp://10.0.2.15:10019/ (address conflict)
-yarp: Port /icubSim/cam/right failed to activate at tcp://10.0.2.15:10020/ (address conflict)
-yarp: Port /icubSim/cam failed to activate at tcp://10.0.2.15:10021/ (address conflict)
-yarp: Port /icubSim/robotDescriptionClient/rpc active at tcp://10.0.2.15:10030/
+yarp: Port /icubSim/cam/left active at tcp://10.0.2.15:10019/
+yarp: Port /icubSim/cam/right active at tcp://10.0.2.15:10020/
+yarp: Port /icubSim/cam active at tcp://10.0.2.15:10021/
+[[01;34mINFO[00m]External robotDescriptionServer was not found. Opening a new RobotDescriptionServer. 
+yarp: Port /robotDescription/rpc active at tcp://10.0.2.15:10022/
+[[01;34mINFO[00m]created device <robotDescriptionServer>. See C++ class RobotDescriptionServer for documentation.
+yarp: Port /icubSim/robotDescriptionClient/rpc active at tcp://10.0.2.15:10023/
+yarp: Receiving input from /icubSim/robotDescriptionClient/rpc to /robotDescription/rpc using tcp
 yarp: Sending output from /icubSim/robotDescriptionClient/rpc to /robotDescription/rpc using tcp
 [[01;34mINFO[00m]created device <robotDescriptionClient>. See C++ class RobotDescriptionClient for documentation.
-[[01;34mINFO[00m]External robotDescriptionServer was found. Connection succesful. 
 [[01;32mDEBUG[00m]Creating interface for body part left_arm
 ||| finding file [left_arm]
 ||| checking [/usr/local/src/robot/jacub/src/Sim_left_arm.ini] (pwd)
@@ -418,27 +660,11 @@ yarp: Sending output from /icubSim/robotDescriptionClient/rpc to /robotDescripti
 [[01;32mDEBUG[00m]joints parameter is 16
 [[01;34mINFO[00m]/icubSim/left_arm : no ROS initialization required 
 [[01;34mINFO[00m]/icubSim/left_arm  initting YARP initialization 
-yarp: Port /icubSim/left_arm/rpc:i failed to activate at tcp://10.0.2.15:10031/ (address conflict)
-[[01;31mERROR[00m]Error opening port  /icubSim/left_arm/rpc:i
- 
-[[01;31mERROR[00m]/icubSim/left_arm Something wrong when initting yarp ports 
-yarpdev: ***ERROR*** driver <controlboardwrapper2> was found but could not open
-[[01;31mERROR[00m]Device not available. Here are the known devices:
-[[01;31mERROR[00m]Device "test_motor", C++ class yarp::dev::TestMotor, wrapped by "controlboard"
-Device "remote_grabber", C++ class yarp::dev::RemoteFrameGrabber, wrapped by "grabber"
-Device "grabber", C++ class yarp::dev::ServerFrameGrabber, is a network wrapper.
-Device "sound_grabber", C++ class yarp::dev::ServerSoundGrabber, is a network wrapper.
-Device "pipe", C++ class yarp::dev::DevicePipe, has no network wrapper
-Device "group", C++ class yarp::dev::DeviceGroup, has no network wrapper
-Device "remote_controlboard", C++ class yarp::dev::RemoteControlBoard, wrapped by "controlboardwrapper2"
-Device "inertial", C++ class yarp::dev::ServerInertial, is a network wrapper.
-Device "controlboardwrapper2", C++ class yarp::dev::ControlBoardWrapper2, is a network wrapper.
-Device "batteryClient", C++ class batteryClient, has no network wrapper
-Device "analogsensorclient", C++ class AnalogSensorClient, has no network wrapper
-Device "analogServer", C++ class yarp::dev::AnalogWrapper, is a network wrapper.
-Device "virtualAnalogServer", C
-[[01;33mWARNING[00m]Previous error message was truncated
-[[01;31mERROR[00m]RobotDescriptionClient::registerDevice() received error from server 
+yarp: Port /icubSim/left_arm/rpc:i active at tcp://10.0.2.15:10024/
+yarp: Port /icubSim/left_arm/command:i active at tcp://10.0.2.15:10025/
+yarp: Port /icubSim/left_arm/state:o active at tcp://10.0.2.15:10026/
+yarp: Port /icubSim/left_arm/stateExt:o active at tcp://10.0.2.15:10027/
+[[01;34mINFO[00m]created wrapper <controlboardwrapper2>. See C++ class yarp::dev::ControlBoardWrapper2 for documentation.
 [[01;32mDEBUG[00m]Creating interface for body part right_arm
 ||| finding file [right_arm]
 ||| checking [/usr/local/src/robot/jacub/src/Sim_right_arm.ini] (pwd)
@@ -450,27 +676,11 @@ Device "virtualAnalogServer", C
 [[01;32mDEBUG[00m]joints parameter is 16
 [[01;34mINFO[00m]/icubSim/right_arm : no ROS initialization required 
 [[01;34mINFO[00m]/icubSim/right_arm  initting YARP initialization 
-yarp: Port /icubSim/right_arm/rpc:i failed to activate at tcp://10.0.2.15:10035/ (address conflict)
-[[01;31mERROR[00m]Error opening port  /icubSim/right_arm/rpc:i
- 
-[[01;31mERROR[00m]/icubSim/right_arm Something wrong when initting yarp ports 
-yarpdev: ***ERROR*** driver <controlboardwrapper2> was found but could not open
-[[01;31mERROR[00m]Device not available. Here are the known devices:
-[[01;31mERROR[00m]Device "test_motor", C++ class yarp::dev::TestMotor, wrapped by "controlboard"
-Device "remote_grabber", C++ class yarp::dev::RemoteFrameGrabber, wrapped by "grabber"
-Device "grabber", C++ class yarp::dev::ServerFrameGrabber, is a network wrapper.
-Device "sound_grabber", C++ class yarp::dev::ServerSoundGrabber, is a network wrapper.
-Device "pipe", C++ class yarp::dev::DevicePipe, has no network wrapper
-Device "group", C++ class yarp::dev::DeviceGroup, has no network wrapper
-Device "remote_controlboard", C++ class yarp::dev::RemoteControlBoard, wrapped by "controlboardwrapper2"
-Device "inertial", C++ class yarp::dev::ServerInertial, is a network wrapper.
-Device "controlboardwrapper2", C++ class yarp::dev::ControlBoardWrapper2, is a network wrapper.
-Device "batteryClient", C++ class batteryClient, has no network wrapper
-Device "analogsensorclient", C++ class AnalogSensorClient, has no network wrapper
-Device "analogServer", C++ class yarp::dev::AnalogWrapper, is a network wrapper.
-Device "virtualAnalogServer", C
-[[01;33mWARNING[00m]Previous error message was truncated
-[[01;31mERROR[00m]RobotDescriptionClient::registerDevice() received error from server 
+yarp: Port /icubSim/right_arm/rpc:i active at tcp://10.0.2.15:10028/
+yarp: Port /icubSim/right_arm/command:i active at tcp://10.0.2.15:10029/
+yarp: Port /icubSim/right_arm/state:o active at tcp://10.0.2.15:10030/
+yarp: Port /icubSim/right_arm/stateExt:o active at tcp://10.0.2.15:10031/
+[[01;34mINFO[00m]created wrapper <controlboardwrapper2>. See C++ class yarp::dev::ControlBoardWrapper2 for documentation.
 [[01;32mDEBUG[00m]Creating interface for body part head
 ||| finding file [head]
 ||| checking [/usr/local/src/robot/jacub/src/Sim_head.ini] (pwd)
@@ -482,27 +692,11 @@ Device "virtualAnalogServer", C
 [[01;32mDEBUG[00m]joints parameter is 6
 [[01;34mINFO[00m]/icubSim/head : no ROS initialization required 
 [[01;34mINFO[00m]/icubSim/head  initting YARP initialization 
-yarp: Port /icubSim/head/rpc:i failed to activate at tcp://10.0.2.15:10039/ (address conflict)
-[[01;31mERROR[00m]Error opening port  /icubSim/head/rpc:i
- 
-[[01;31mERROR[00m]/icubSim/head Something wrong when initting yarp ports 
-yarpdev: ***ERROR*** driver <controlboardwrapper2> was found but could not open
-[[01;31mERROR[00m]Device not available. Here are the known devices:
-[[01;31mERROR[00m]Device "test_motor", C++ class yarp::dev::TestMotor, wrapped by "controlboard"
-Device "remote_grabber", C++ class yarp::dev::RemoteFrameGrabber, wrapped by "grabber"
-Device "grabber", C++ class yarp::dev::ServerFrameGrabber, is a network wrapper.
-Device "sound_grabber", C++ class yarp::dev::ServerSoundGrabber, is a network wrapper.
-Device "pipe", C++ class yarp::dev::DevicePipe, has no network wrapper
-Device "group", C++ class yarp::dev::DeviceGroup, has no network wrapper
-Device "remote_controlboard", C++ class yarp::dev::RemoteControlBoard, wrapped by "controlboardwrapper2"
-Device "inertial", C++ class yarp::dev::ServerInertial, is a network wrapper.
-Device "controlboardwrapper2", C++ class yarp::dev::ControlBoardWrapper2, is a network wrapper.
-Device "batteryClient", C++ class batteryClient, has no network wrapper
-Device "analogsensorclient", C++ class AnalogSensorClient, has no network wrapper
-Device "analogServer", C++ class yarp::dev::AnalogWrapper, is a network wrapper.
-Device "virtualAnalogServer", C
-[[01;33mWARNING[00m]Previous error message was truncated
-[[01;31mERROR[00m]RobotDescriptionClient::registerDevice() received error from server 
+yarp: Port /icubSim/head/rpc:i active at tcp://10.0.2.15:10032/
+yarp: Port /icubSim/head/command:i active at tcp://10.0.2.15:10033/
+yarp: Port /icubSim/head/state:o active at tcp://10.0.2.15:10034/
+yarp: Port /icubSim/head/stateExt:o active at tcp://10.0.2.15:10035/
+[[01;34mINFO[00m]created wrapper <controlboardwrapper2>. See C++ class yarp::dev::ControlBoardWrapper2 for documentation.
 [[01;32mDEBUG[00m]Creating interface for body part left_leg
 ||| finding file [left_leg]
 ||| checking [/usr/local/src/robot/jacub/src/Sim_left_leg.ini] (pwd)
@@ -514,27 +708,11 @@ Device "virtualAnalogServer", C
 [[01;32mDEBUG[00m]joints parameter is 6
 [[01;34mINFO[00m]/icubSim/left_leg : no ROS initialization required 
 [[01;34mINFO[00m]/icubSim/left_leg  initting YARP initialization 
-yarp: Port /icubSim/left_leg/rpc:i failed to activate at tcp://10.0.2.15:10043/ (address conflict)
-[[01;31mERROR[00m]Error opening port  /icubSim/left_leg/rpc:i
- 
-[[01;31mERROR[00m]/icubSim/left_leg Something wrong when initting yarp ports 
-yarpdev: ***ERROR*** driver <controlboardwrapper2> was found but could not open
-[[01;31mERROR[00m]Device not available. Here are the known devices:
-[[01;31mERROR[00m]Device "test_motor", C++ class yarp::dev::TestMotor, wrapped by "controlboard"
-Device "remote_grabber", C++ class yarp::dev::RemoteFrameGrabber, wrapped by "grabber"
-Device "grabber", C++ class yarp::dev::ServerFrameGrabber, is a network wrapper.
-Device "sound_grabber", C++ class yarp::dev::ServerSoundGrabber, is a network wrapper.
-Device "pipe", C++ class yarp::dev::DevicePipe, has no network wrapper
-Device "group", C++ class yarp::dev::DeviceGroup, has no network wrapper
-Device "remote_controlboard", C++ class yarp::dev::RemoteControlBoard, wrapped by "controlboardwrapper2"
-Device "inertial", C++ class yarp::dev::ServerInertial, is a network wrapper.
-Device "controlboardwrapper2", C++ class yarp::dev::ControlBoardWrapper2, is a network wrapper.
-Device "batteryClient", C++ class batteryClient, has no network wrapper
-Device "analogsensorclient", C++ class AnalogSensorClient, has no network wrapper
-Device "analogServer", C++ class yarp::dev::AnalogWrapper, is a network wrapper.
-Device "virtualAnalogServer", C
-[[01;33mWARNING[00m]Previous error message was truncated
-[[01;31mERROR[00m]RobotDescriptionClient::registerDevice() received error from server 
+yarp: Port /icubSim/left_leg/rpc:i active at tcp://10.0.2.15:10036/
+yarp: Port /icubSim/left_leg/command:i active at tcp://10.0.2.15:10037/
+yarp: Port /icubSim/left_leg/state:o active at tcp://10.0.2.15:10038/
+yarp: Port /icubSim/left_leg/stateExt:o active at tcp://10.0.2.15:10039/
+[[01;34mINFO[00m]created wrapper <controlboardwrapper2>. See C++ class yarp::dev::ControlBoardWrapper2 for documentation.
 [[01;32mDEBUG[00m]Creating interface for body part right_leg
 ||| finding file [right_leg]
 ||| checking [/usr/local/src/robot/jacub/src/Sim_right_leg.ini] (pwd)
@@ -546,27 +724,11 @@ Device "virtualAnalogServer", C
 [[01;32mDEBUG[00m]joints parameter is 6
 [[01;34mINFO[00m]/icubSim/right_leg : no ROS initialization required 
 [[01;34mINFO[00m]/icubSim/right_leg  initting YARP initialization 
-yarp: Port /icubSim/right_leg/rpc:i failed to activate at tcp://10.0.2.15:10047/ (address conflict)
-[[01;31mERROR[00m]Error opening port  /icubSim/right_leg/rpc:i
- 
-[[01;31mERROR[00m]/icubSim/right_leg Something wrong when initting yarp ports 
-yarpdev: ***ERROR*** driver <controlboardwrapper2> was found but could not open
-[[01;31mERROR[00m]Device not available. Here are the known devices:
-[[01;31mERROR[00m]Device "test_motor", C++ class yarp::dev::TestMotor, wrapped by "controlboard"
-Device "remote_grabber", C++ class yarp::dev::RemoteFrameGrabber, wrapped by "grabber"
-Device "grabber", C++ class yarp::dev::ServerFrameGrabber, is a network wrapper.
-Device "sound_grabber", C++ class yarp::dev::ServerSoundGrabber, is a network wrapper.
-Device "pipe", C++ class yarp::dev::DevicePipe, has no network wrapper
-Device "group", C++ class yarp::dev::DeviceGroup, has no network wrapper
-Device "remote_controlboard", C++ class yarp::dev::RemoteControlBoard, wrapped by "controlboardwrapper2"
-Device "inertial", C++ class yarp::dev::ServerInertial, is a network wrapper.
-Device "controlboardwrapper2", C++ class yarp::dev::ControlBoardWrapper2, is a network wrapper.
-Device "batteryClient", C++ class batteryClient, has no network wrapper
-Device "analogsensorclient", C++ class AnalogSensorClient, has no network wrapper
-Device "analogServer", C++ class yarp::dev::AnalogWrapper, is a network wrapper.
-Device "virtualAnalogServer", C
-[[01;33mWARNING[00m]Previous error message was truncated
-[[01;31mERROR[00m]RobotDescriptionClient::registerDevice() received error from server 
+yarp: Port /icubSim/right_leg/rpc:i active at tcp://10.0.2.15:10040/
+yarp: Port /icubSim/right_leg/command:i active at tcp://10.0.2.15:10041/
+yarp: Port /icubSim/right_leg/state:o active at tcp://10.0.2.15:10042/
+yarp: Port /icubSim/right_leg/stateExt:o active at tcp://10.0.2.15:10043/
+[[01;34mINFO[00m]created wrapper <controlboardwrapper2>. See C++ class yarp::dev::ControlBoardWrapper2 for documentation.
 [[01;32mDEBUG[00m]Creating interface for body part torso
 ||| finding file [torso]
 ||| checking [/usr/local/src/robot/jacub/src/Sim_torso.ini] (pwd)
@@ -578,27 +740,290 @@ Device "virtualAnalogServer", C
 [[01;32mDEBUG[00m]joints parameter is 3
 [[01;34mINFO[00m]/icubSim/torso : no ROS initialization required 
 [[01;34mINFO[00m]/icubSim/torso  initting YARP initialization 
-yarp: Port /icubSim/torso/rpc:i failed to activate at tcp://10.0.2.15:10051/ (address conflict)
-[[01;31mERROR[00m]Error opening port  /icubSim/torso/rpc:i
- 
-[[01;31mERROR[00m]/icubSim/torso Something wrong when initting yarp ports 
-yarpdev: ***ERROR*** driver <controlboardwrapper2> was found but could not open
-[[01;31mERROR[00m]Device not available. Here are the known devices:
-[[01;31mERROR[00m]Device "test_motor", C++ class yarp::dev::TestMotor, wrapped by "controlboard"
-Device "remote_grabber", C++ class yarp::dev::RemoteFrameGrabber, wrapped by "grabber"
-Device "grabber", C++ class yarp::dev::ServerFrameGrabber, is a network wrapper.
-Device "sound_grabber", C++ class yarp::dev::ServerSoundGrabber, is a network wrapper.
-Device "pipe", C++ class yarp::dev::DevicePipe, has no network wrapper
-Device "group", C++ class yarp::dev::DeviceGroup, has no network wrapper
-Device "remote_controlboard", C++ class yarp::dev::RemoteControlBoard, wrapped by "controlboardwrapper2"
-Device "inertial", C++ class yarp::dev::ServerInertial, is a network wrapper.
-Device "controlboardwrapper2", C++ class yarp::dev::ControlBoardWrapper2, is a network wrapper.
-Device "batteryClient", C++ class batteryClient, has no network wrapper
-Device "analogsensorclient", C++ class AnalogSensorClient, has no network wrapper
-Device "analogServer", C++ class yarp::dev::AnalogWrapper, is a network wrapper.
-Device "virtualAnalogServer", C
-[[01;33mWARNING[00m]Previous error message was truncated
-[[01;31mERROR[00m]RobotDescriptionClient::registerDevice() received error from server 
+yarp: Port /icubSim/torso/rpc:i active at tcp://10.0.2.15:10044/
+yarp: Port /icubSim/torso/command:i active at tcp://10.0.2.15:10045/
+yarp: Port /icubSim/torso/state:o active at tcp://10.0.2.15:10046/
+yarp: Port /icubSim/torso/stateExt:o active at tcp://10.0.2.15:10047/
+[[01;34mINFO[00m]created wrapper <controlboardwrapper2>. See C++ class yarp::dev::ControlBoardWrapper2 for documentation.
+yarp: Removing input from /icubSim/robotDescriptionClient/rpc to /robotDescription/rpc
 yarp: Removing output from /icubSim/robotDescriptionClient/rpc to /robotDescription/rpc
-[[01;34mINFO[00m]Closing module...
-[[01;34mINFO[00m]Successfully terminated...bye...
+||| clearing context
+||| adding context [cameraCalibration]
+||| configuring
+||| default config file specified as icubSimEyes.ini
+||| checking [/usr/local/src/robot/jacub/src/icubSimEyes.ini] (pwd)
+||| checking [/home/vagrant/.config/yarp/robots/] (robot YARP_CONFIG_HOME)
+||| checking [/home/vagrant/.local/share/yarp/robots/] (robot YARP_DATA_HOME)
+||| checking [/etc/yarp/robots/] (robot YARP_CONFIG_DIRS)
+||| checking [/usr/local/src/robot/yarp/build/share/yarp/robots/] (robot YARP_DATA_DIRS)
+||| checking [/usr/local/src/robot/icub-main/build/share/iCub/robots/] (robot YARP_DATA_DIRS)
+||| checking [/usr/local/src/robot/iCubContrib/share/ICUBcontrib/robots/] (robot YARP_DATA_DIRS)
+||| checking [/usr/local/src/robot/icub-tests/suits/robots/] (robot YARP_DATA_DIRS)
+||| checking [/usr/local/src/robot/yarp/build/share/yarp/config/path.d] (robot path.d YARP_DATA_DIRS)
+||| checking [/usr/local/src/robot/icub-main/build/share/iCub/config/path.d] (robot path.d YARP_DATA_DIRS)
+||| checking [/usr/local/src/robot/iCubContrib/share/ICUBcontrib/config/path.d] (robot path.d YARP_DATA_DIRS)
+||| checking [/usr/local/src/robot/icub-tests/suits/config/path.d] (robot path.d YARP_DATA_DIRS)
+||| checking [/home/vagrant/.config/yarp/contexts/cameraCalibration] (context YARP_CONFIG_HOME)
+||| checking [/home/vagrant/.local/share/yarp/contexts/cameraCalibration] (context YARP_DATA_HOME)
+||| checking [/etc/yarp/contexts/cameraCalibration] (context YARP_CONFIG_DIRS)
+||| checking [/usr/local/src/robot/yarp/build/share/yarp/contexts/cameraCalibration] (context YARP_DATA_DIRS)
+||| checking [/usr/local/src/robot/icub-main/build/share/iCub/contexts/cameraCalibration] (context YARP_DATA_DIRS)
+||| found /usr/local/src/robot/icub-main/build/share/iCub/contexts/cameraCalibration
+||| checking [/usr/local/src/robot/iCubContrib/share/ICUBcontrib/contexts/cameraCalibration] (context YARP_DATA_DIRS)
+||| checking [/usr/local/src/robot/icub-tests/suits/contexts/cameraCalibration] (context YARP_DATA_DIRS)
+||| checking [/usr/local/src/robot/icub-main/build/share/iCub/contexts/cameraCalibration/icubSimEyes.ini] (context)
+||| found /usr/local/src/robot/icub-main/build/share/iCub/contexts/cameraCalibration/icubSimEyes.ini
+||| finding file [video]
+||| checking [/usr/local/src/robot/jacub/src/Video.ini] (pwd)
+||| checking [/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/Video.ini] (context)
+||| found /usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/Video.ini
+[[01;34mINFO[00m]Adding video texture face
+yarp: Port /icubSim/texture/face active at tcp://10.0.2.15:10048/
+[[01;34mINFO[00m]Adding video texture screen
+yarp: Port /icubSim/texture/screen active at tcp://10.0.2.15:10049/
+[[01;34mINFO[00m]Adding video texture sky
+yarp: Port /icubSim/texture/sky active at tcp://10.0.2.15:10050/
+[[01;32mDEBUG[00m]***** OdeSdlSimulation::simLoop 
+||| finding file [logo]
+||| checking [/usr/local/src/robot/jacub/src/data/robotcub.bmp] (pwd)
+||| checking [/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/data/robotcub.bmp] (context)
+||| found /usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/data/robotcub.bmp
+||| finding file [/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/data/robotcub.bmp]
+||| finding file [floor]
+||| checking [/usr/local/src/robot/jacub/src/data/texture/crate.raw] (pwd)
+||| checking [/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/data/texture/crate.raw] (context)
+||| found /usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/data/texture/crate.raw
+||| finding file [body1]
+||| checking [/usr/local/src/robot/jacub/src/data/texture/metal2.raw] (pwd)
+||| checking [/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/data/texture/metal2.raw] (context)
+||| found /usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/data/texture/metal2.raw
+||| finding file [body2]
+||| checking [/usr/local/src/robot/jacub/src/data/texture/brushed-metal.raw] (pwd)
+||| checking [/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/data/texture/brushed-metal.raw] (context)
+||| found /usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/data/texture/brushed-metal.raw
+||| finding file [skybox_ft]
+||| checking [/usr/local/src/robot/jacub/src/data/texture/skybox/ft.raw] (pwd)
+||| checking [/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/data/texture/skybox/ft.raw] (context)
+||| found /usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/data/texture/skybox/ft.raw
+||| finding file [skybox_bk]
+||| checking [/usr/local/src/robot/jacub/src/data/texture/skybox/bk.raw] (pwd)
+||| checking [/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/data/texture/skybox/bk.raw] (context)
+||| found /usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/data/texture/skybox/bk.raw
+||| finding file [skybox_lt]
+||| checking [/usr/local/src/robot/jacub/src/data/texture/skybox/lt.raw] (pwd)
+||| checking [/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/data/texture/skybox/lt.raw] (context)
+||| found /usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/data/texture/skybox/lt.raw
+||| finding file [skybox_rt]
+||| checking [/usr/local/src/robot/jacub/src/data/texture/skybox/rt.raw] (pwd)
+||| checking [/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/data/texture/skybox/rt.raw] (context)
+||| found /usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/data/texture/skybox/rt.raw
+||| finding file [skybox_up]
+||| checking [/usr/local/src/robot/jacub/src/data/texture/skybox/up.raw] (pwd)
+||| checking [/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/data/texture/skybox/up.raw] (context)
+||| found /usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/data/texture/skybox/up.raw
+||| finding file [face]
+||| checking [/usr/local/src/robot/jacub/src/data/texture/face.raw] (pwd)
+||| checking [/usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/data/texture/face.raw] (context)
+||| found /usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/data/texture/face.raw
+[[01;32mDEBUG[00m]Loading texture   ' /usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/blueTexture.bmp '  
+[[01;32mDEBUG[00m]......... OK!  
+[[01;32mDEBUG[00m]Texture Size  96   96 
+[[01;32mDEBUG[00m]Bpp from /usr/local/src/robot/icub-main/build/share/iCub/contexts/simConfig/models/blueTexture.bmp is not 24: 8
+yarp: Port /icubSim/face/eyelids active at tcp://10.0.2.15:10051/
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 166)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 191)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 196)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 201)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 204)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 201)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 209)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 213)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 229)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 237)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 208)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 216)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 199)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 203)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 195)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 184)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 206)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 194)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 186)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 201)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 179)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 196)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 206)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 176)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 180)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 166)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 165)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 172)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 157)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 148)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 153)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 156)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 155)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 168)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 164)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 168)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 140)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 136)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 167)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 147)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 183)
+yarp: multicast connection 224.1.1.3 on network interface for 10.0.2.15
+yarp: Sending output from /icubSim/cam/left to /imageProc/image/in using mcast
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 158)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 180)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 164)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 165)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 151)
+yarp: Receiving input from /jacub/head/rpc:o to /icubSim/head/rpc:i using tcp
+yarp: Receiving input from /jacub/head/command:o to /icubSim/head/command:i using udp
+yarp: Sending output from /icubSim/head/stateExt:o to /jacub/head/stateExt:i using udp
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 175)
+yarp: Receiving input from /jacub/right_arm/rpc:o to /icubSim/right_arm/rpc:i using tcp
+yarp: Receiving input from /jacub/right_arm/command:o to /icubSim/right_arm/command:i using udp
+yarp: Sending output from /icubSim/right_arm/stateExt:o to /jacub/right_arm/stateExt:i using udp
+[[01;31mERROR[00m]setRefAccelerationRaw not yet implemented for iCubSimulationControl
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 80)
+yarp: Removing input from /jacub/right_arm/rpc:o to /icubSim/right_arm/rpc:i
+yarp: Removing input from /jacub/head/rpc:o to /icubSim/head/rpc:i
+[[01;33mWARNING[00m]you could get a more accurate dynamics simulation by decreasing the timestep in ode_params.ini (current value: 49, suggested value: 47)
+[[01;33mWARNING[00m]you could get a more accurate dynamics simulation by decreasing the timestep in ode_params.ini (current value: 49, suggested value: 47)
+[[01;33mWARNING[00m]you could get a more accurate dynamics simulation by decreasing the timestep in ode_params.ini (current value: 49, suggested value: 41)
+[[01;33mWARNING[00m]you could get a more accurate dynamics simulation by decreasing the timestep in ode_params.ini (current value: 49, suggested value: 44)
+[[01;33mWARNING[00m]you could get a more accurate dynamics simulation by decreasing the timestep in ode_params.ini (current value: 49, suggested value: 42)
+[[01;33mWARNING[00m]you could get a more accurate dynamics simulation by decreasing the timestep in ode_params.ini (current value: 49, suggested value: 43)
+[[01;33mWARNING[00m]you could get a more accurate dynamics simulation by decreasing the timestep in ode_params.ini (current value: 49, suggested value: 44)
+[[01;33mWARNING[00m]you could get a more accurate dynamics simulation by decreasing the timestep in ode_params.ini (current value: 49, suggested value: 46)
+[[01;33mWARNING[00m]you could get a more accurate dynamics simulation by decreasing the timestep in ode_params.ini (current value: 49, suggested value: 44)
+[[01;33mWARNING[00m]you could get a more accurate dynamics simulation by decreasing the timestep in ode_params.ini (current value: 49, suggested value: 47)
+[[01;33mWARNING[00m]you could get a more accurate dynamics simulation by decreasing the timestep in ode_params.ini (current value: 49, suggested value: 46)
+yarp: Receiving input from /jacub/head/rpc:o to /icubSim/head/rpc:i using tcp
+yarp: Removing output from /icubSim/head/stateExt:o to /jacub/head/stateExt:i
+yarp: Sending output from /icubSim/head/stateExt:o to /jacub/head/stateExt:i using udp
+yarp: Removing input from /jacub/head/command:o to /icubSim/head/command:i
+yarp: Receiving input from /jacub/head/command:o to /icubSim/head/command:i using udp
+yarp: Receiving input from /jacub/right_arm/rpc:o to /icubSim/right_arm/rpc:i using tcp
+yarp: Removing output from /icubSim/right_arm/stateExt:o to /jacub/right_arm/stateExt:i
+yarp: Sending output from /icubSim/right_arm/stateExt:o to /jacub/right_arm/stateExt:i using udp
+[[01;31mERROR[00m]setRefAccelerationRaw not yet implemented for iCubSimulationControl
+yarp: Removing input from /jacub/right_arm/command:o to /icubSim/right_arm/command:i
+yarp: Receiving input from /jacub/right_arm/command:o to /icubSim/right_arm/command:i using udp
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 56)
+yarp: Removing input from /jacub/head/rpc:o to /icubSim/head/rpc:i
+yarp: Removing input from /jacub/right_arm/rpc:o to /icubSim/right_arm/rpc:i
+yarp: Receiving input from /jacub/head/rpc:o to /icubSim/head/rpc:i using tcp
+yarp: Removing output from /icubSim/head/stateExt:o to /jacub/head/stateExt:i
+yarp: Sending output from /icubSim/head/stateExt:o to /jacub/head/stateExt:i using udp
+yarp: Removing input from /jacub/head/command:o to /icubSim/head/command:i
+yarp: Receiving input from /jacub/head/command:o to /icubSim/head/command:i using udp
+yarp: Receiving input from /jacub/right_arm/rpc:o to /icubSim/right_arm/rpc:i using tcp
+yarp: Removing output from /icubSim/right_arm/stateExt:o to /jacub/right_arm/stateExt:i
+yarp: Sending output from /icubSim/right_arm/stateExt:o to /jacub/right_arm/stateExt:i using udp
+[[01;31mERROR[00m]setRefAccelerationRaw not yet implemented for iCubSimulationControl
+yarp: Removing input from /jacub/right_arm/command:o to /icubSim/right_arm/command:i
+yarp: Receiving input from /jacub/right_arm/command:o to /icubSim/right_arm/command:i using udp
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 54)
+yarp: Removing input from /jacub/right_arm/rpc:o to /icubSim/right_arm/rpc:i
+yarp: Removing input from /jacub/head/rpc:o to /icubSim/head/rpc:i
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 56)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 63)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 57)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 54)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 53)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 56)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 50)
+yarp: Receiving input from /jacub/head/rpc:o to /icubSim/head/rpc:i using tcp
+yarp: Removing output from /icubSim/head/stateExt:o to /jacub/head/stateExt:i
+yarp: Sending output from /icubSim/head/stateExt:o to /jacub/head/stateExt:i using udp
+yarp: Removing input from /jacub/head/command:o to /icubSim/head/command:i
+yarp: Receiving input from /jacub/head/command:o to /icubSim/head/command:i using udp
+yarp: Receiving input from /jacub/right_arm/rpc:o to /icubSim/right_arm/rpc:i using tcp
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 59)
+yarp: Removing output from /icubSim/right_arm/stateExt:o to /jacub/right_arm/stateExt:i
+yarp: Sending output from /icubSim/right_arm/stateExt:o to /jacub/right_arm/stateExt:i using udp
+[[01;31mERROR[00m]setRefAccelerationRaw not yet implemented for iCubSimulationControl
+yarp: Removing input from /jacub/right_arm/command:o to /icubSim/right_arm/command:i
+yarp: Receiving input from /jacub/right_arm/command:o to /icubSim/right_arm/command:i using udp
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 64)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 60)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 54)
+yarp: Removing input from /jacub/right_arm/rpc:o to /icubSim/right_arm/rpc:i
+yarp: Removing input from /jacub/head/rpc:o to /icubSim/head/rpc:i
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 54)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 50)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 57)
+yarp: Receiving input from /jacub/head/rpc:o to /icubSim/head/rpc:i using tcp
+yarp: Removing output from /icubSim/head/stateExt:o to /jacub/head/stateExt:i
+yarp: Sending output from /icubSim/head/stateExt:o to /jacub/head/stateExt:i using udp
+yarp: Removing input from /jacub/head/command:o to /icubSim/head/command:i
+yarp: Receiving input from /jacub/head/command:o to /icubSim/head/command:i using udp
+yarp: Receiving input from /jacub/right_arm/rpc:o to /icubSim/right_arm/rpc:i using tcp
+yarp: Removing output from /icubSim/right_arm/stateExt:o to /jacub/right_arm/stateExt:i
+yarp: Sending output from /icubSim/right_arm/stateExt:o to /jacub/right_arm/stateExt:i using udp
+[[01;31mERROR[00m]setRefAccelerationRaw not yet implemented for iCubSimulationControl
+yarp: Removing input from /jacub/right_arm/command:o to /icubSim/right_arm/command:i
+yarp: Receiving input from /jacub/right_arm/command:o to /icubSim/right_arm/command:i using udp
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 56)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 66)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 53)
+[[01;33mWARNING[00m]you could get a more accurate dynamics simulation by decreasing the timestep in ode_params.ini (current value: 49, suggested value: 47)
+yarp: Removing input from /jacub/right_arm/rpc:o to /icubSim/right_arm/rpc:i
+yarp: Removing input from /jacub/head/rpc:o to /icubSim/head/rpc:i
+yarp: Receiving input from /jacub/head/rpc:o to /icubSim/head/rpc:i using tcp
+yarp: Removing output from /icubSim/head/stateExt:o to /jacub/head/stateExt:i
+yarp: Sending output from /icubSim/head/stateExt:o to /jacub/head/stateExt:i using udp
+yarp: Removing input from /jacub/head/command:o to /icubSim/head/command:i
+yarp: Receiving input from /jacub/head/command:o to /icubSim/head/command:i using udp
+yarp: Receiving input from /jacub/right_arm/rpc:o to /icubSim/right_arm/rpc:i using tcp
+yarp: Removing output from /icubSim/right_arm/stateExt:o to /jacub/right_arm/stateExt:i
+yarp: Sending output from /icubSim/right_arm/stateExt:o to /jacub/right_arm/stateExt:i using udp
+[[01;31mERROR[00m]setRefAccelerationRaw not yet implemented for iCubSimulationControl
+yarp: Removing input from /jacub/right_arm/command:o to /icubSim/right_arm/command:i
+yarp: Receiving input from /jacub/right_arm/command:o to /icubSim/right_arm/command:i using udp
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 55)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 53)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 50)
+[[01;33mWARNING[00m]you could get a more accurate dynamics simulation by decreasing the timestep in ode_params.ini (current value: 49, suggested value: 44)
+[[01;33mWARNING[00m]you could get a more accurate dynamics simulation by decreasing the timestep in ode_params.ini (current value: 49, suggested value: 46)
+yarp: Removing input from /jacub/right_arm/rpc:o to /icubSim/right_arm/rpc:i
+yarp: Removing input from /jacub/head/rpc:o to /icubSim/head/rpc:i
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 58)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 68)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 58)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 55)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 53)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 64)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 56)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 65)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 65)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 66)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 67)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 68)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 60)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 64)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 69)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 71)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 67)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 70)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 80)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 67)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 68)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 62)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 52)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 51)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 54)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 56)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 52)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 54)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 53)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 51)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 52)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 59)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 54)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 55)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 55)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 65)
+[[01;33mWARNING[00m]the simulation is too slow to run in real-time, you should increase the timestep in ode_params.ini (current value: 49, suggested value: 65)

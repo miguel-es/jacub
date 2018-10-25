@@ -1,4 +1,6 @@
 /viewer1
-yarp: Port /viewer1 failed to activate at tcp://10.0.2.15:10026/ (address conflict)
-Error: port failed to open, quitting.
-Error open ports
+yarp: Port /viewer1 active at tcp://10.0.2.15:10055/
+yarp: multicast connection 224.1.1.4 on network interface for 10.0.2.15
+yarp: Receiving input from /imageProc/image/out to /viewer1 using mcast
+Surface STARTED! Dimensions: 320x240 -- PixelFormat: 3
+Transmitting click information...

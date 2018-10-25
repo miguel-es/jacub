@@ -34,3 +34,14 @@ coordenadas de cabeza:
 2: + izquierda - derecha (ziquierda-derecha)
 1: + derecha - izquierda (ladear la cabeza)
 0: + arriba - abajo (arroba abajo)
+
+Para inicializar el CartecianSolver: iKinCartesianSolver  --context simCartesianControl --part left_arm
+
+Para inicializar el CartecianController: yarprobotinterface --context simCartesianControl
+
+Los archivos de configuraci{on de los varios modulos est{an en $ICUB_ROOT/app: /usr/local/src/robot/icub-main/app
+
+PAra automatizar el inicio de modulos: robotScripting/scripts/robotScripting.xml.template
+
+
+

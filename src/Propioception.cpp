@@ -78,12 +78,12 @@ printf("poli creado");
     
     int i;
     for (i = 0; i < nj; i++) {
-         tmp[i] = 10.0;
+         tmp[i] = 20.0;
     }
     pos_arm->setRefAccelerations(tmp.data());
 
     for (i = 0; i < nj; i++) {
-        tmp[i] = 5.0;
+        tmp[i] = 10.0;
         pos_arm->setRefSpeed(i, tmp[i]);
     }
 
@@ -118,6 +118,10 @@ void moveHeadLeft(int angle){
     moveHead(axe0_pos,axe1_pos,angle);
 }
 
+void closeHand(){
+
+}
+
 void moveHead(int angle0, int angle1, int angle2){
 
     IPositionControl *pos;
@@ -147,74 +151,21 @@ void moveHead(int angle0, int angle1, int angle2){
 }
 
 void moveRightHand(int pos0,int pos1,int pos2, int pos3){
-/*Network yarp;
 
-    Property params;
-    params.fromCommand(argc, argv);
-
-    if (!params.check("robot"))
-    {
-        fprintf(stderr, "Please specify the name of the robot\n");
-        fprintf(stderr, "--robot name (e.g. icub)\n");
-        return 1;
-    }
-    std::string robotName=params.find("robot").asString();
-    std::string remotePorts="/";
-    remotePorts+=robotName;
-    remotePorts+="/right_arm";
-
-    std::string localPorts="/test/client";
-
-    Property options;
-    options.put("device", "remote_controlboard");
-    options.put("local", localPorts);   //local port names
-    options.put("remote", remotePorts); //where we connect to
-
-    // create a device
-    PolyDriver right_arm(options);*/
     if (!right_arm->isValid()) {
         printf("Device not available.  Here are the known devices:\n");
         printf("%s", Drivers::factory().toString().c_str());
-        //return 0;
     }
-
-    /*IPositionControl *pos_arm;
-    IEncoders *encs_arm;
-
-    bool ok;
-    ok = right_arm->view(pos_arm);
-    ok = ok && right_arm->view(encs_arm);
-
-    if (!ok) {
-        printf("Problems acquiring interfaces\n");
-        //return 0;
-    }*/
-
     int nj=0;
     pos_arm->getAxes(&nj);
-   Vector encoders;
+    Vector encoders;
     Vector command;
     Vector tmp;
     encoders.resize(nj);
     tmp.resize(nj);
     command.resize(nj);
     
-    /*int i;
-    for (i = 0; i < nj; i++) {
-         tmp[i] = 10.0;
-    }
-    pos_arm->setRefAccelerations(tmp.data());
-
-    for (i = 0; i < nj; i++) {
-        tmp[i] = 5.0;
-        pos_arm->setRefSpeed(i, tmp[i]);
-    }
-
-    pos_arm->setRefSpeeds(tmp.data());*/
-    
-    //fisrst read all encoders
-    //
-
+    //TODO: what's the function of encoders?
     printf("waiting for encoders");
     while(!encs_arm->getEncoders(encoders.data()))
     {
@@ -293,10 +244,12 @@ Body body;
 //printf("\nholis2 :D");
 
     //float at = 0;
+body.moveHeadDown(60);
     int dir = -1;
-for (int i=10;i<10;i++){
+for (int i=0;i<10;i++){
 
-//body.moveHeadRight(dir*20);
+printf("moving head");
+body.moveHeadRight(dir*20);
 
     //pos->positionMove(2,dir*45);
     //pos->positionMove(command.data());
@@ -314,6 +267,41 @@ for (int i=10;i<10;i++){
 }
 body.moveHeadDown(60);
 body.moveHeadRight(20);
+
+    int times=0;
+    while(true)
+    {
+        times++;
+        if (times%2)
+        {
+body.moveRightHand(-50,20,-10,50);
+    
+        }
+        else
+        {
+        //rest position
+body.moveRightHand(-20,40,-10,30);
+        }
+
+        //pos_arm->positionMove(command.data());
+
+        int count=5;
+        while(count--)
+            {
+                Time::delay(0.1);
+                /*bool ret=encs_arm->getEncoders(encoders.data());
+                
+                if (!ret)
+                {
+                    fprintf(stderr, "Error receiving encoders, check connectivity with the robot\n");
+                }
+                else
+                { 
+                    printf("%.1lf %.1lf %.1lf %.1lf\n", encoders[0], encoders[1], encoders[2], encoders[3]);
+                }*/
+            }
+    }
+
 body.moveRightHand(-50,20,-10,50);
     /*
     Network yarp;
