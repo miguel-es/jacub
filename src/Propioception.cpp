@@ -2,12 +2,20 @@
 
 #include <string>
 #include <cstdio>
+#include <cmath>
+
 
 #include <yarp/os/Network.h>
 #include <yarp/dev/ControlBoardInterfaces.h>
+#include <yarp/dev/CartesianControl.h>
 #include <yarp/dev/PolyDriver.h>
 #include <yarp/os/Time.h>
 #include <yarp/sig/Vector.h>
+#include <yarp/dev/IVelocityControl.h>
+#include <yarp/dev/IEncoder.h>
+
+
+#define MAX_TORSO_PITCH     30.0    // [deg]
 
 using namespace std;
 using namespace yarp::dev;
@@ -21,7 +29,7 @@ float ref;
 
 IPositionControl *pos_arm;
 IEncoders *encs_arm;
-
+ICartesianControl *icart_arm;
 
 public:
 	PolyDriver* head;
@@ -54,21 +62,68 @@ public:
     	// create the device
 	    head = new PolyDriver(prop);
 printf("poli creado");
-	    prop.put("device","remote_controlboard");
+	    prop.put("device","cartesiancontrollerclient");
 	    prop.put("local","/jacub/right_arm");
-	    prop.put("remote","/icubSim/right_arm");
+	    prop.put("remote","/icubSim/cartesianController/left_arm");
 	    right_arm = new PolyDriver(prop);
         //this->right_arm = right_arm_d;
 
 
     bool ok;
-    ok = right_arm->view(pos_arm);
-    ok = ok && right_arm->view(encs_arm);
+    ok = right_arm->view(icart_arm);
+    //ok = ok && right_arm->view(encs_arm);
 
     if (!ok) {
         printf("Problems acquiring interfaces\n");
         //return 0;
     }
+
+        icart_arm->setTrajTime(1.0);
+Vector newDof, curDof;
+        icart_arm->getDOF(curDof);
+        newDof=curDof;
+
+        // enable the torso yaw and pitch
+        // disable the torso roll
+        newDof[0]=1;
+        newDof[1]=0;
+        newDof[2]=1;
+        
+        // send the request for dofs reconfiguration
+        icart_arm->setDOF(newDof,curDof);
+        // impose some restriction on the torso pitch
+                int axis=0; // pitch joint
+        double min, max;
+
+    printf("\nHoli\n");
+        // sometimes it may be helpful to reduce
+        // the range of variability of the joints;
+        // for example here we don't want the torso
+        // to lean out more than 30 degrees forward
+
+        // we keep the lower limit
+        icart_arm->getLimits(axis,&min,&max);
+        icart_arm->setLimits(axis,min,MAX_TORSO_PITCH);
+
+        Bottle info;
+        icart_arm->getInfo(info);
+        fprintf(stdout,"info _____= %s\n",info.toString().c_str());
+
+        //icart_arm->registerEvent(*this);
+    /*
+
+
+        // print out some info about the controller
+        Bottle info;
+        icart->getInfo(info);
+        fprintf(stdout,"info = %s\n",info.toString().c_str());
+
+        // register the event, attaching the callback
+        icart->registerEvent(*this);
+
+        xd.resize(3);
+        od.resize(4);
+
     int nj=0;
     pos_arm->getAxes(&nj);
     Vector encoders;
@@ -86,8 +141,8 @@ printf("poli creado");
         tmp[i] = 10.0;
         pos_arm->setRefSpeed(i, tmp[i]);
     }
-
-    pos_arm->setRefSpeeds(tmp.data());
+*/
+    //pos_arm->setRefSpeeds(tmp.data());
 
     /*printf("waiting for encoders");
     while(!encs_arm->getEncoders(encoders.data()))
@@ -96,8 +151,53 @@ printf("poli creado");
         printf(".");
     }
     printf("\n;");
+
 */
+    printf("\nHoli\n");
         }
+
+void moveCartArm(){
+Network yarp;
+    if (!yarp.checkNetwork())
+    {
+        fprintf(stdout,"Error: yarp server does not seem available\n");
+        //return 1;
+    }
+
+double t;
+double t0;double t1;
+t=t0=t1=yarp::os::SystemClock::nowSystem();t=yarp::os::SystemClock::nowSystem();
+Vector xd(3);
+Vector od(4);
+        xd[0]=-0.3;
+        xd[1]=-0.1+0.1*cos(2.0*M_PI*0.1*(t-t0));
+        xd[2]=+0.1+0.1*sin(2.0*M_PI*0.1*(t-t0));
+
+printf("\n:DD\n");
+        // we keep the orientation of the left arm constant:
+        // we want the middle finger to point forward (end-effector x-axis)
+        // with the palm turned down (end-effector y-axis points leftward);
+        // to achieve that it is enough to rotate the root frame of pi around z-axis
+        od[0]=0.0; od[1]=0.0; od[2]=1.0; od[3]=M_PI;
+if(icart_arm!=NULL){
+printf("movinggg arm***\n");
+    bool ok;
+    ok = right_arm->view(icart_arm);
+    //ok = ok && right_arm->view(encs_arm);
+printf("movinggg arm...***\n");
+    if (!ok) {
+        printf("Problems acquiring interfaces\n");
+        //return 0;
+    }
+        Bottle info;
+        icart_arm->getInfo(info);
+        fprintf(stdout,"possssss _____= %s\n",info.toString().c_str());
+
+        icart_arm->goToPose(xd,od);
+}else{
+printf("\nKKKK-----\n");
+}
+}
 
 void moveArm(){}
 
@@ -244,6 +344,9 @@ Body body;
 //printf("\nholis2 :D");
 
     //float at = 0;
+printf("moving arm\n");
+//body.moveCartArm();
+printf("moved cart");
 body.moveHeadDown(60);
     int dir = -1;
 for (int i=0;i<10;i++){
