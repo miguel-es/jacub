@@ -76,6 +76,11 @@ outContext.moving=true;
                         outImage(x,y).g=gray;
                         outImage(x,y).b=gray;
                     }
+                   if(x==106){
+                        outImage(x,y).r = 0;
+                        outImage(x,y).g = 0;
+                      outImage(x,y).b = 0;
+                    }
                 }
             }
             if (ct>0) {

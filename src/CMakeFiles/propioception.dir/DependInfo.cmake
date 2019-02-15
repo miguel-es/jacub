@@ -4,7 +4,7 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/usr/local/src/robot/jacub/src/Propioception.cpp" "/usr/local/src/robot/jacub/src/CMakeFiles/propioception.dir/Propioception.cpp.o"
+  "/usr/local/src/robot/jacub/src/PropioceptionModule.cpp" "/usr/local/src/robot/jacub/src/CMakeFiles/propioception.dir/PropioceptionModule.cpp.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 

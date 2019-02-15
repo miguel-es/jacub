@@ -6,20 +6,30 @@
 
 #IncludeRegexTransform: 
 
-/usr/local/src/robot/jacub/src/Propioception.cpp
-string
--
+/usr/local/src/robot/jacub/src/PropioceptionModule.cpp
 cstdio
+-
+cmath
 -
 yarp/os/Network.h
 -
-yarp/dev/ControlBoardInterfaces.h
+yarp/os/RFModule.h
 -
-yarp/dev/PolyDriver.h
+yarp/os/RateThread.h
 -
 yarp/os/Time.h
 -
 yarp/sig/Vector.h
+-
+yarp/math/Math.h
+-
+yarp/dev/ControlBoardInterfaces.h
+-
+yarp/dev/CartesianControl.h
+-
+yarp/dev/PolyDriver.h
+-
+yarp/dev/IVelocityControl.h
 -
 
 /usr/local/src/robot/yarp/build/src/libYARP_conf/include/yarp/conf/api.h
@@ -38,6 +48,12 @@ cstddef
 
 /usr/local/src/robot/yarp/build/src/libYARP_conf/include/yarp/conf/system.h
 yarp/conf/numeric.h
+-
+
+/usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/AbstractContactable.h
+yarp/os/UnbufferedContactable.h
+-
+yarp/os/Port.h
 -
 
 /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/Bottle.h
@@ -190,6 +206,12 @@ yarp/os/Bottle.h
 yarp/os/ConstString.h
 -
 
+/usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/NetFloat64.h
+yarp/conf/numeric.h
+-
+yarp/os/api.h
+-
+
 /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/NetInt32.h
 yarp/conf/numeric.h
 -
@@ -334,6 +356,48 @@ yarp/conf/system.h
 string
 -
 
+/usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/RFModule.h
+yarp/os/Port.h
+-
+yarp/os/PortReaderBuffer.h
+-
+yarp/os/RpcServer.h
+-
+yarp/os/ResourceFinder.h
+-
+
+/usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/RateThread.h
+yarp/os/Runnable.h
+-
+
+/usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/ResourceFinder.h
+yarp/os/ConstString.h
+-
+yarp/os/Searchable.h
+-
+yarp/os/Value.h
+-
+yarp/os/Bottle.h
+-
+yarp/os/Property.h
+-
+yarp/os/ResourceFinderOptions.h
+-
+
+/usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/ResourceFinderOptions.h
+yarp/os/api.h
+-
+yarp/os/ConstString.h
+-
+
+/usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/RpcServer.h
+yarp/os/AbstractContactable.h
+-
+
+/usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/Runnable.h
+yarp/os/api.h
+-
+
 /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/Searchable.h
 cstddef
 -
@@ -342,6 +406,14 @@ yarp/os/ConstString.h
 
 /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/Semaphore.h
 yarp/os/api.h
+-
+
+/usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/Stamp.h
+yarp/os/NetInt32.h
+-
+yarp/os/NetFloat64.h
+-
+yarp/os/Portable.h
 -
 
 /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/SystemClock.h
@@ -416,6 +488,16 @@ yarp/conf/api.h
 
 /usr/local/src/robot/yarp/src/libYARP_dev/include/yarp/dev/CalibratorInterfaces.h
 yarp/dev/DeviceDriver.h
+-
+
+/usr/local/src/robot/yarp/src/libYARP_dev/include/yarp/dev/CartesianControl.h
+yarp/os/Bottle.h
+-
+yarp/os/Stamp.h
+-
+yarp/dev/DeviceDriver.h
+-
+yarp/sig/Vector.h
 -
 
 /usr/local/src/robot/yarp/src/libYARP_dev/include/yarp/dev/ControlBoardInterfaces.h
@@ -584,6 +666,44 @@ yarp/dev/Drivers.h
 
 /usr/local/src/robot/yarp/src/libYARP_dev/include/yarp/dev/api.h
 yarp/conf/api.h
+-
+
+/usr/local/src/robot/yarp/src/libYARP_math/include/yarp/math/Math.h
+yarp/sig/Vector.h
+-
+yarp/sig/Matrix.h
+-
+yarp/math/api.h
+-
+yarp/math/Quaternion.h
+-
+
+/usr/local/src/robot/yarp/src/libYARP_math/include/yarp/math/Quaternion.h
+yarp/math/api.h
+-
+yarp/sig/Vector.h
+-
+yarp/sig/Matrix.h
+-
+yarp/os/Portable.h
+-
+yarp/os/NetInt32.h
+-
+
+/usr/local/src/robot/yarp/src/libYARP_math/include/yarp/math/api.h
+yarp/conf/api.h
+-
+
+/usr/local/src/robot/yarp/src/libYARP_sig/include/yarp/sig/Matrix.h
+cstdlib
+-
+memory.h
+-
+yarp/os/Portable.h
+-
+yarp/sig/Vector.h
+-
+yarp/os/ManagedBytes.h
 -
 
 /usr/local/src/robot/yarp/src/libYARP_sig/include/yarp/sig/Vector.h

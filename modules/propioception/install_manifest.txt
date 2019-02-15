@@ -1,0 +1,2 @@
+/usr/local/bin/propioception
+/usr/local/share/iCub/modules/propioception.xml

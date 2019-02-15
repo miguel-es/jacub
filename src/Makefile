@@ -149,32 +149,32 @@ propioception/fast:
 	$(MAKE) -f CMakeFiles/propioception.dir/build.make CMakeFiles/propioception.dir/build
 .PHONY : propioception/fast
 
-Propioception.o: Propioception.cpp.o
+PropioceptionModule.o: PropioceptionModule.cpp.o
 
-.PHONY : Propioception.o
+.PHONY : PropioceptionModule.o
 
 # target to build an object file
-Propioception.cpp.o:
-	$(MAKE) -f CMakeFiles/propioception.dir/build.make CMakeFiles/propioception.dir/Propioception.cpp.o
-.PHONY : Propioception.cpp.o
+PropioceptionModule.cpp.o:
+	$(MAKE) -f CMakeFiles/propioception.dir/build.make CMakeFiles/propioception.dir/PropioceptionModule.cpp.o
+.PHONY : PropioceptionModule.cpp.o
 
-Propioception.i: Propioception.cpp.i
+PropioceptionModule.i: PropioceptionModule.cpp.i
 
-.PHONY : Propioception.i
+.PHONY : PropioceptionModule.i
 
 # target to preprocess a source file
-Propioception.cpp.i:
-	$(MAKE) -f CMakeFiles/propioception.dir/build.make CMakeFiles/propioception.dir/Propioception.cpp.i
-.PHONY : Propioception.cpp.i
+PropioceptionModule.cpp.i:
+	$(MAKE) -f CMakeFiles/propioception.dir/build.make CMakeFiles/propioception.dir/PropioceptionModule.cpp.i
+.PHONY : PropioceptionModule.cpp.i
 
-Propioception.s: Propioception.cpp.s
+PropioceptionModule.s: PropioceptionModule.cpp.s
 
-.PHONY : Propioception.s
+.PHONY : PropioceptionModule.s
 
 # target to generate assembly for a file
-Propioception.cpp.s:
-	$(MAKE) -f CMakeFiles/propioception.dir/build.make CMakeFiles/propioception.dir/Propioception.cpp.s
-.PHONY : Propioception.cpp.s
+PropioceptionModule.cpp.s:
+	$(MAKE) -f CMakeFiles/propioception.dir/build.make CMakeFiles/propioception.dir/PropioceptionModule.cpp.s
+.PHONY : PropioceptionModule.cpp.s
 
 iDevER.o: iDevER.cpp.o
 
@@ -241,9 +241,9 @@ help:
 	@echo "... iDevER"
 	@echo "... propioception"
 	@echo "... edit_cache"
-	@echo "... Propioception.o"
-	@echo "... Propioception.i"
-	@echo "... Propioception.s"
+	@echo "... PropioceptionModule.o"
+	@echo "... PropioceptionModule.i"
+	@echo "... PropioceptionModule.s"
 	@echo "... iDevER.o"
 	@echo "... iDevER.i"
 	@echo "... iDevER.s"

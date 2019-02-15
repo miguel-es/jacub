@@ -19,6 +19,6 @@ target_link_libraries(visualPerception ${YARP_LIBRARIES})
 add_executable(iDevER iDevER.cpp)
 target_link_libraries(iDevER ${YARP_LIBRARIES})
 
-add_executable(propioception Propioception.cpp)
+add_executable(propioception PropioceptionModule.cpp)
 target_link_libraries(propioception ${YARP_LIBRARIES})
 

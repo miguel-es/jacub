@@ -1,5 +1,5 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/propioception.dir/Propioception.cpp.o"
+  "CMakeFiles/propioception.dir/PropioceptionModule.cpp.o"
   "propioception.pdb"
   "propioception"
 )

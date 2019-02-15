@@ -57,38 +57,38 @@ include CMakeFiles/propioception.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/propioception.dir/flags.make
 
-CMakeFiles/propioception.dir/Propioception.cpp.o: CMakeFiles/propioception.dir/flags.make
-CMakeFiles/propioception.dir/Propioception.cpp.o: Propioception.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/usr/local/src/robot/jacub/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/propioception.dir/Propioception.cpp.o"
-	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/propioception.dir/Propioception.cpp.o -c /usr/local/src/robot/jacub/src/Propioception.cpp
+CMakeFiles/propioception.dir/PropioceptionModule.cpp.o: CMakeFiles/propioception.dir/flags.make
+CMakeFiles/propioception.dir/PropioceptionModule.cpp.o: PropioceptionModule.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/usr/local/src/robot/jacub/src/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/propioception.dir/PropioceptionModule.cpp.o"
+	/usr/bin/c++   $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/propioception.dir/PropioceptionModule.cpp.o -c /usr/local/src/robot/jacub/src/PropioceptionModule.cpp
 
-CMakeFiles/propioception.dir/Propioception.cpp.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/propioception.dir/Propioception.cpp.i"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /usr/local/src/robot/jacub/src/Propioception.cpp > CMakeFiles/propioception.dir/Propioception.cpp.i
+CMakeFiles/propioception.dir/PropioceptionModule.cpp.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/propioception.dir/PropioceptionModule.cpp.i"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /usr/local/src/robot/jacub/src/PropioceptionModule.cpp > CMakeFiles/propioception.dir/PropioceptionModule.cpp.i
 
-CMakeFiles/propioception.dir/Propioception.cpp.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/propioception.dir/Propioception.cpp.s"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /usr/local/src/robot/jacub/src/Propioception.cpp -o CMakeFiles/propioception.dir/Propioception.cpp.s
+CMakeFiles/propioception.dir/PropioceptionModule.cpp.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/propioception.dir/PropioceptionModule.cpp.s"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /usr/local/src/robot/jacub/src/PropioceptionModule.cpp -o CMakeFiles/propioception.dir/PropioceptionModule.cpp.s
 
-CMakeFiles/propioception.dir/Propioception.cpp.o.requires:
+CMakeFiles/propioception.dir/PropioceptionModule.cpp.o.requires:
 
-.PHONY : CMakeFiles/propioception.dir/Propioception.cpp.o.requires
+.PHONY : CMakeFiles/propioception.dir/PropioceptionModule.cpp.o.requires
 
-CMakeFiles/propioception.dir/Propioception.cpp.o.provides: CMakeFiles/propioception.dir/Propioception.cpp.o.requires
-	$(MAKE) -f CMakeFiles/propioception.dir/build.make CMakeFiles/propioception.dir/Propioception.cpp.o.provides.build
-.PHONY : CMakeFiles/propioception.dir/Propioception.cpp.o.provides
+CMakeFiles/propioception.dir/PropioceptionModule.cpp.o.provides: CMakeFiles/propioception.dir/PropioceptionModule.cpp.o.requires
+	$(MAKE) -f CMakeFiles/propioception.dir/build.make CMakeFiles/propioception.dir/PropioceptionModule.cpp.o.provides.build
+.PHONY : CMakeFiles/propioception.dir/PropioceptionModule.cpp.o.provides
 
-CMakeFiles/propioception.dir/Propioception.cpp.o.provides.build: CMakeFiles/propioception.dir/Propioception.cpp.o
+CMakeFiles/propioception.dir/PropioceptionModule.cpp.o.provides.build: CMakeFiles/propioception.dir/PropioceptionModule.cpp.o
 
 
 # Object files for target propioception
 propioception_OBJECTS = \
-"CMakeFiles/propioception.dir/Propioception.cpp.o"
+"CMakeFiles/propioception.dir/PropioceptionModule.cpp.o"
 
 # External object files for target propioception
 propioception_EXTERNAL_OBJECTS =
 
-propioception: CMakeFiles/propioception.dir/Propioception.cpp.o
+propioception: CMakeFiles/propioception.dir/PropioceptionModule.cpp.o
 propioception: CMakeFiles/propioception.dir/build.make
 propioception: /usr/local/src/robot/yarp/build/lib/libYARP_dev.so.2.3.72
 propioception: /usr/local/src/robot/yarp/build/lib/libYARP_name.so.2.3.72
@@ -105,7 +105,7 @@ CMakeFiles/propioception.dir/build: propioception
 
 .PHONY : CMakeFiles/propioception.dir/build
 
-CMakeFiles/propioception.dir/requires: CMakeFiles/propioception.dir/Propioception.cpp.o.requires
+CMakeFiles/propioception.dir/requires: CMakeFiles/propioception.dir/PropioceptionModule.cpp.o.requires
 
 .PHONY : CMakeFiles/propioception.dir/requires
 
