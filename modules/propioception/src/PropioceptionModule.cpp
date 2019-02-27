@@ -4,10 +4,10 @@
  // in the operational space.
  //
  // Author: Ugo Pattacini - <ugo.pattacini@iit.it>
- 
+
  #include <cstdio>
  #include <cmath>
- 
+
  #include <yarp/os/Network.h>
  #include <yarp/os/RFModule.h>
  #include <yarp/os/RateThread.h>
@@ -20,17 +20,17 @@
 #include <yarp/dev/CartesianControl.h>
 #include <yarp/dev/PolyDriver.h>
 #include <yarp/dev/IVelocityControl.h>
- 
+
  #define CTRL_THREAD_PER     0.02    // [s]
  #define PRINT_STATUS_PER    1.0     // [s]
  #define MAX_TORSO_PITCH     30.0    // [deg]
- 
+
  using namespace std;
  using namespace yarp::os;
  using namespace yarp::dev;
  using namespace yarp::sig;
  using namespace yarp::math;
- 
+
  class BodyCtrlThread: public RateThread,
                    public CartesianEvent
  {
@@ -44,22 +44,22 @@
 
      Vector xd;
      Vector od;
- 
+
      int startup_context_id;
- 
+
      double t;
      double t0;
      double t1;
     int axe0_pos;
     int axe1_pos;
     int axe2_pos;
- 
+
      // the event callback attached to the "motion-ongoing"
      virtual void cartesianEventCallback()
      {
          fprintf(stdout,"20%% of trajectory attained\n");
      }
- 
+
  public:
      BodyCtrlThread(const double period) : RateThread(int(period*1000.0))
      {
@@ -68,7 +68,7 @@
          cartesianEventParameters.type="motion-ongoing";
          cartesianEventParameters.motionOngoingCheckPoint=0.2;
      }
- 
+
      virtual bool threadInit()
      {
          // open a left_arm interface to connect to the cartesian server of the simulator
@@ -116,27 +116,27 @@
         Vector newDof, curDof;
         left_arm_ctrl->getDOF(curDof);
         newDof=curDof;
- 
+
         // enable the torso yaw and pitch
         // disable the torso roll
         newDof[0]=1;
         newDof[1]=0;
         newDof[2]=1;
-         
+
         // send the request for dofs reconfiguration
         left_arm_ctrl->setDOF(newDof,curDof);
-         
+
         // impose some restriction on the torso pitch
-        limitTorsoPitch();       
- 
+        limitTorsoPitch();
+
         // print out some info about the controller
         //Bottle info;
         //left_arm_ctrl->getInfo(info);
         //fprintf(stdout,"left arm info = %s\n",info.toString().c_str());
- 
+
         // register the event, attaching the callback
         left_arm_ctrl->registerEvent(*this);
- 
+
         xd.resize(3);
         od.resize(4);
 
@@ -148,21 +148,21 @@
              printf("Couldn't get head controller. Is the iCub_SIM running?");
              return false;
         }
- 
+
         head.view(head_ctrl);
         return true;
      }
- 
+
      virtual void afterStart(bool s)
      {
          if (s)
              printf("Body thread started successfully\n");
          else
              printf("Body thread did not start\n");
- 
+
          //t=t0=t1=Time::now();
      }
- 
+
      virtual void run()
      {
          //t=Time::now();
@@ -171,21 +171,21 @@
         moveLeftArm();
         closeHand();
      }
- 
+
      virtual void threadRelease()
      {
          // we require an immediate stop
          // before closing the left_arm for safety reason
          left_arm_ctrl->stopControl();
  //head_ctrl->stopControl();
- 
+
          // it's a good rule to restore the controller
          // context as it was before opening the module
          left_arm_ctrl->restoreContext(startup_context_id);
- 
+
          left_arm.close();
      }
- 
+
     void moveHeadUp(int angle){
         moveHead(angle,axe1_pos,axe2_pos);
 
@@ -233,10 +233,15 @@
          // translational target part: a circular trajectory
          // in the yz plane centered in [-0.3,-0.1,0.1] with radius=0.1 m
          // and frequency 0.1 Hz
-
-         xd[0]=-0.3;
+//-0.55387995 0.35 -0.09
+//-0.35 -0.09 0.55387995
+/*xd[0]=-0.35;
+         xd[1]=-0.09;
+         xd[2]=+0.55387995;*/
+         xd[0]=-0.35;
          xd[1]=-0.1;
-         xd[2]=+0.1;
+         xd[2]=+0.002;
+
          // we keep the orientation of the left arm constant:
          // we want the middle finger to point forward (end-effector x-axis)
          // with the palm turned down (end-effector y-axis points leftward);
@@ -272,7 +277,7 @@
         command[7]=0.0;
         command[8]= 80.0;
         command[9]=12.0;
-        command[10]=18.0; 
+        command[10]=18.0;
         command[11]=27.0;
         command[12]=50.0;
         command[13]=20.0;
@@ -280,42 +285,42 @@
         command[15]=135.0;
 
         left_hand_ctrl->positionMove(command.data());
-        
+
     }
 
      void limitTorsoPitch()
      {
          int axis=0; // pitch joint
          double min, max;
- 
+
          // sometimes it may be helpful to reduce
          // the range of variability of the joints;
          // for example here we don't want the torso
          // to lean out more than 30 degrees forward
- 
+
          // we keep the lower limit
          left_arm_ctrl->getLimits(axis,&min,&max);
          left_arm_ctrl->setLimits(axis,min,MAX_TORSO_PITCH);
      }
- 
+
      void printStatus()
      {
          if (t-t1>=PRINT_STATUS_PER)
          {
              Vector x,o,xdhat,odhat,qdhat;
- 
+
              // we get the current arm pose in the
              // operational space
              left_arm_ctrl->getPose(x,o);
- 
+
              // we get the final destination of the arm
              // as found by the solver: it differs a bit
              // from the desired pose according to the tolerances
              left_arm_ctrl->getDesired(xdhat,odhat,qdhat);
- 
+
              double e_x=norm(xdhat-x);
              double e_o=norm(odhat-o);
- 
+
              fprintf(stdout,"+++++++++\n");
              fprintf(stdout,"xd          [m] = %s\n",xd.toString().c_str());
              fprintf(stdout,"xdhat       [m] = %s\n",xdhat.toString().c_str());
@@ -326,48 +331,48 @@
              fprintf(stdout,"norm(e_x)   [m] = %g\n",e_x);
              fprintf(stdout,"norm(e_o) [rad] = %g\n",e_o);
              fprintf(stdout,"---------\n\n");
- 
+
              t1=t;
          }
      }
  };
- 
- 
- 
+
+
+
  class Propioception: public RFModule
  {
  protected:
      BodyCtrlThread *thr;
- 
+
  public:
      virtual bool configure(ResourceFinder &rf)
      {
          Time::turboBoost();
- 
+
          thr=new BodyCtrlThread(CTRL_THREAD_PER);
          if (!thr->start())
          {
              delete thr;
              return false;
          }
- 
+
          return true;
      }
- 
+
      virtual bool close()
      {
          thr->stop();
          delete thr;
- 
+
          return true;
      }
- 
+
      virtual double getPeriod()    { return 1.0;  }
      virtual bool   updateModule() { return true; }
  };
- 
- 
- 
+
+
+
  int main()
  {
      Network yarp;
@@ -379,7 +384,7 @@
      }
 
      Propioception propiomod;
- 
+
      ResourceFinder rf;
 
      return propiomod.runModule(rf);

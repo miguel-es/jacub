@@ -22,7 +22,12 @@
 #include "rapidjson/stringbuffer.h"
 #include "rapidjson/prettywriter.h"
 
+#include <yarp/cv/Cv.h>
+#include <opencv2/core/core.hpp>
+#include <opencv2/opencv.hpp>
 
+
+using namespace cv;
 using namespace yarp::sig;
 using namespace yarp::os;
 using namespace rapidjson;
@@ -46,6 +51,15 @@ int main(int argc, char *argv[])
         outContext.color="c1";
 outContext.size="s1";
 outContext.moving=true;
+
+outImage.resize(image->width(), image->height());
+
+Mat in_cv = yarp::cv::toCvMat(outImage);
+        outImage = img;
+
+    //cvNamedWindow("test",1);
+    //cvShowImage("test",cvImage);
+
 
 //		VisualContext v;
 //v.size="fuck";

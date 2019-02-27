@@ -35,6 +35,12 @@ rapidjson/stringbuffer.h
 /usr/local/src/robot/jacub/modules/percepction/src/rapidjson/stringbuffer.h
 rapidjson/prettywriter.h
 /usr/local/src/robot/jacub/modules/percepction/src/rapidjson/prettywriter.h
+yarp/cv/Cv.h
+-
+opencv2/core/core.hpp
+-
+opencv2/opencv.hpp
+-
 
 /usr/local/src/robot/jacub/modules/percepction/src/VisualContext.h
 yarp/os/Portable.h
