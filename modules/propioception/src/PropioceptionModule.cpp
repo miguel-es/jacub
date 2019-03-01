@@ -168,8 +168,10 @@
          //t=Time::now();
         moveHeadDown(60);
         //moveHeadRight(60);
-        moveLeftArm();
+        moveLeftArm(-0.35,-0.1,-0.02,0.0,0.0,4.0);
+        //levantar mano 0.256580715101553 0.657913812963914 0.172362917052873
         closeHand();
+       moveLeftArm(-0.35,-0.1,+0.15,0.0,0.0, 8.0);
      }
 
      virtual void threadRelease()
@@ -227,7 +229,7 @@
     axe2_pos=angle2;
     }
 
-     bool moveLeftArm()
+     bool moveLeftArm(double x, double y, double z, double ox,double oy, double oz)
      {
 
          // translational target part: a circular trajectory
@@ -238,15 +240,18 @@
 /*xd[0]=-0.35;
          xd[1]=-0.09;
          xd[2]=+0.55387995;*/
-         xd[0]=-0.35;
+         /*xd[0]=-0.35;
          xd[1]=-0.1;
-         xd[2]=+0.002;
+         xd[2]=+0.002;*/
+         xd[0]=x;
+         xd[1]=y;
+         xd[2]=z;
 
          // we keep the orientation of the left arm constant:
          // we want the middle finger to point forward (end-effector x-axis)
          // with the palm turned down (end-effector y-axis points leftward);
          // to achieve that it is enough to rotate the root frame of pi around z-axis
-         od[0]=0.0; od[1]=0.0; od[2]=1.0; od[3]=M_PI;
+         od[0]=ox; od[1]=oy; od[2]=oz; od[3]=M_PI;
 
          left_arm_ctrl->goToPose(xd,od);
          bool done = left_arm_ctrl->waitMotionDone(0.1,4.0);
@@ -274,15 +279,46 @@
 
         v.resize(njoints);
         //New positions for the fingers
-        command[7]=0.0;
+        //15.0 80.0   0.0   0.0  70.0   0.0  70.0   0.0  60.0
+        //0.0   80.0   10.0   40.0   30.0   60.0   20.0   50.0   150.0
+        /*command[7]=0.0;
         command[8]= 80.0;
         command[9]=12.0;
         command[10]=18.0;
-        command[11]=27.0;
-        command[12]=50.0;
+        command[11]=0.0;  //command[11]=27.0;
+        command[12]=90.0; //command[12]=50.0;
         command[13]=20.0;
         command[14]=50.0;
-        command[15]=135.0;
+        command[15]=135.0;*/
+        /*command[7]=15.0;
+        command[8]= 80.0;
+        command[9]=0.0;
+        command[10]=0.0;
+        command[11]=70.0;  //command[11]=27.0;
+        command[12]=0.0; //command[12]=50.0;
+        command[13]=70.0;
+        command[14]=0.0;
+        command[15]=60.0;*/
+        command[5]=-37.0;
+       command[7]=0.0; //juntar dedos - = mas abiertos
+        command[8]= 88.0; //pulgar hacia palma
+        command[9]=0.0; //pulgar despegar
+        command[10]=54.0; //doblar pulgar
+        command[11]=56.7;  //command[11]=27.0; //doblar indicie hacia palma
+        command[12]=104.0; //command[12]=50.0; //doblar indice +=más doblado
+        command[13]=70.0; //dedo medio doblado +=mas doblado
+        command[14]=61.0; //dedo medio doblas
+        command[15]=151.0; //meñique doblar +=mas doblado*/
+        //articulación 5 muñeca arroba abajo
+               /* command[7]=58.8; //juntar dedos - = mas abiertos
+        command[8]= 80.8; //pulgar hacia palma
+        command[9]=0.0; //pulgar despegar
+        command[10]=104.4; //doblar pulgar
+        command[11]=46.8;  //command[11]=27.0; //doblar indicie hacia palma
+        command[12]=86.4; //command[12]=50.0; //doblar indice +=más doblado
+        command[13]=50.0; //dedo medio doblado +=mas doblado
+        command[14]=81.0; //dedo medio doblas
+        command[15]=137.0; //meñique doblar +=mas doblado*/
 
         left_hand_ctrl->positionMove(command.data());
 

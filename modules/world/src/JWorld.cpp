@@ -4,33 +4,33 @@
  // in the operational space.
  //
  // Author: Ugo Pattacini - <ugo.pattacini@iit.it>
- 
+
  #include <cstdio>
  #include <cmath>
- 
+
  #include <yarp/os/Network.h>
  #include <yarp/os/RFModule.h>
  #include <yarp/os/RateThread.h>
  #include <yarp/os/RpcClient.h>
 
- 
+
  #define CTRL_THREAD_PER     0.02    // [s]
 
  using namespace std;
  using namespace yarp::os;
 
- 
+
  class WorldCtrlThread: public RateThread
  {
 
      RpcClient world_port;
      bool inited;
- 
+
      // the event callback attached to the "motion-ongoing"
 
  public:
      WorldCtrlThread(const double period) : RateThread(int(period*1000.0)){}
- 
+
      virtual bool threadInit()
      {
 
@@ -46,32 +46,32 @@
        }
        return true;
      }
- 
+
      virtual void afterStart(bool s)
      {
          if (s)
              printf("World control thread started successfully\n");
          else
              printf("World control thread did not start\n");
- 
+
      }
- 
+
      virtual void run()
      {
          if(!inited){
-	        import3DModel("pia/mesaes.x","woodred.bmp",0.0f,0.0f,-0.2f);
+	        //import3DModel("pia/mesaes.x","woodred.bmp",0.0f,0.0f,-0.2f);
             //addObj("box",0.05f,0.05f,0.05f,0.0f,0.6f,0.4f,0,0,1);
-
+            addObj("box",0.06f,0.06f,0.06f,0.09f,0.55387995f,0.35f,0,0,1);
             inited=true;
         }
      }
- 
+
      virtual void threadRelease()
      {
-         
+
          world_port.close();
      }
- 
+
       void addObj(string obj,float size1,float size2,float size3,float x,float y,float z, int r, int g, int b){
 	  Bottle cmd;
 	  cmd.addString("world");
@@ -109,43 +109,43 @@ void import3DModel(string xmodel,string texture,float x,float y, float z){
 	}
 
  };
- 
- 
- 
+
+
+
  class JWorld: public RFModule
  {
  protected:
      WorldCtrlThread *thr;
- 
+
  public:
      virtual bool configure(ResourceFinder &rf)
      {
          Time::turboBoost();
- 
+
          thr=new WorldCtrlThread(CTRL_THREAD_PER);
          if (!thr->start())
          {
              delete thr;
              return false;
          }
- 
+
          return true;
      }
- 
+
      virtual bool close()
      {
          thr->stop();
          delete thr;
- 
+
          return true;
      }
- 
+
      virtual double getPeriod()    { return 1.0;  }
      virtual bool   updateModule() { return true; }
  };
- 
- 
- 
+
+
+
  int main()
  {
      Network yarp;
@@ -157,7 +157,7 @@ void import3DModel(string xmodel,string texture,float x,float y, float z){
      }
 
      JWorld world;
- 
+
      ResourceFinder rf;
 
      return world.runModule(rf);
