@@ -64,6 +64,7 @@ world mk smodel mesa2.x woodred.bmp 0 0 2
 
 world mk smodel pia/mesaes.x woodred.bmp 0 0 -0.2
 
+Para mover el objeto enfrente del robot incrementar la tercera coordenada de pos (z)
 world mk box (three params for size) (three params for pos) (three params for colour)
 world mk box 0.1 0.1 0.1 0 2 0.1 1 0 0
 

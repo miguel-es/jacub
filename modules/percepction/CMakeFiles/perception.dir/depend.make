@@ -21,6 +21,8 @@ CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/src/libYAR
 CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/ContactStyle.h
 CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/Contactable.h
 CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/LocalReader.h
+CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/Log.h
+CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/ManagedBytes.h
 CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/Mutex.h
 CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/NameStore.h
 CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/NestedContact.h
@@ -57,5 +59,12 @@ CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/src/libYAR
 CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/Vocab.h
 CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/api.h
 CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/src/libYARP_sig/include/yarp/sig/Image.h
+CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/src/libYARP_sig/include/yarp/sig/ImageDraw.h
+CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/src/libYARP_sig/include/yarp/sig/ImageFile.h
+CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/src/libYARP_sig/include/yarp/sig/Matrix.h
+CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/src/libYARP_sig/include/yarp/sig/Sound.h
+CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/src/libYARP_sig/include/yarp/sig/SoundFile.h
+CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/src/libYARP_sig/include/yarp/sig/Vector.h
+CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/src/libYARP_sig/include/yarp/sig/all.h
 CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/src/libYARP_sig/include/yarp/sig/api.h
 

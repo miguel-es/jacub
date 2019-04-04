@@ -22,6 +22,8 @@ CMakeFiles/perception.dir/src/Perception.o
  /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/ContactStyle.h
  /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/Contactable.h
  /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/LocalReader.h
+ /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/Log.h
+ /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/ManagedBytes.h
  /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/Mutex.h
  /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/NameStore.h
  /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/NestedContact.h
@@ -58,4 +60,11 @@ CMakeFiles/perception.dir/src/Perception.o
  /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/Vocab.h
  /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/api.h
  /usr/local/src/robot/yarp/src/libYARP_sig/include/yarp/sig/Image.h
+ /usr/local/src/robot/yarp/src/libYARP_sig/include/yarp/sig/ImageDraw.h
+ /usr/local/src/robot/yarp/src/libYARP_sig/include/yarp/sig/ImageFile.h
+ /usr/local/src/robot/yarp/src/libYARP_sig/include/yarp/sig/Matrix.h
+ /usr/local/src/robot/yarp/src/libYARP_sig/include/yarp/sig/Sound.h
+ /usr/local/src/robot/yarp/src/libYARP_sig/include/yarp/sig/SoundFile.h
+ /usr/local/src/robot/yarp/src/libYARP_sig/include/yarp/sig/Vector.h
+ /usr/local/src/robot/yarp/src/libYARP_sig/include/yarp/sig/all.h
  /usr/local/src/robot/yarp/src/libYARP_sig/include/yarp/sig/api.h

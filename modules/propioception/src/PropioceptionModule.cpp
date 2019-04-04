@@ -168,7 +168,7 @@
          //t=Time::now();
         moveHeadDown(60);
         //moveHeadRight(60);
-        moveLeftArm(-0.35,-0.1,-0.02,0.0,0.0,4.0);
+        moveLeftArm(-0.35,-0.1,0.0,0.0,0.0,4.0);
         //levantar mano 0.256580715101553 0.657913812963914 0.172362917052873
         closeHand();
        moveLeftArm(-0.35,-0.1,+0.15,0.0,0.0, 8.0);
@@ -251,7 +251,7 @@
          // we want the middle finger to point forward (end-effector x-axis)
          // with the palm turned down (end-effector y-axis points leftward);
          // to achieve that it is enough to rotate the root frame of pi around z-axis
-         od[0]=ox; od[1]=oy; od[2]=oz; od[3]=M_PI;
+         od[0]=ox; od[1]=oy; od[2]=oz; od[3]=-M_PI;
 
          left_arm_ctrl->goToPose(xd,od);
          bool done = left_arm_ctrl->waitMotionDone(0.1,4.0);
