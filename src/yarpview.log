@@ -1,6 +1,0 @@
-/viewer1
-yarp: Port /viewer1 active at tcp://10.0.2.15:10055/
-yarp: multicast connection 224.1.1.4 on network interface for 10.0.2.15
-yarp: Receiving input from /imageProc/image/out to /viewer1 using mcast
-Surface STARTED! Dimensions: 320x240 -- PixelFormat: 3
-Transmitting click information...

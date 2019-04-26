@@ -1,9 +1,0 @@
-#!/bin/sh
-nohup yarpserver 2>&1 > yarpserver.log &
-nohup iCub_SIM 2>&1 > iCub_SIM.log  &
-#java World
-#java Jacub
-nohup yarpview --name /viewer1 2>&1 > yarpview.log &
-yarp connect /icubSim/cam/left /viewer1 mcast
-java World
-java Jacub
