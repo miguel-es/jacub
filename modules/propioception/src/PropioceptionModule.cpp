@@ -44,6 +44,7 @@
 
      Vector xd;
      Vector od;
+     bool moved;
 
      int startup_context_id;
 
@@ -71,6 +72,7 @@
 
      virtual bool threadInit()
      {
+     moved = false;
          // open a left_arm interface to connect to the cartesian server of the simulator
          // we suppose that:
          //
@@ -165,13 +167,31 @@
 
      virtual void run()
      {
+     if(!moved){
          //t=Time::now();
         moveHeadDown(60);
         //moveHeadRight(60);
-        moveLeftArm(-0.35,-0.1,0.0,0.0,0.0,4.0);
+        //moveLeftArm(x,y,z,0.0,0.0,4.0);
+        /*
+        -x = hacia adelante
+        -y = hacia la izquierda
+         z = hacia arriba
+        */
+       //buena moveLeftArm(-0.35,-0.1,-0.1,0.0,0.0,4.0);
+
+      // pra -40 de mulñeca  moveLeftArm(-0.35,-0.1,-0.1,0.0,0.0,4.0);
+      moveLeftArm(-0.35,-0.1,-0.034,0.0,0.0,4.0);
         //levantar mano 0.256580715101553 0.657913812963914 0.172362917052873
+        fprintf(stdout,"moving wrist...\n");
+        moveWrist();
+        fprintf(stdout,"wrist movement finished...\n");
         closeHand();
+
        moveLeftArm(-0.35,-0.1,+0.15,0.0,0.0, 8.0);
+       fprintf(stdout,"levantando mano...\n");
+
+       moved = true;
+       }
      }
 
      virtual void threadRelease()
@@ -261,6 +281,100 @@
         return done;
      }
 
+
+    bool moveWrist(){
+        IEncoders *enc;
+        IVelocityControl *vel;
+
+        left_hand.view(enc);
+        left_hand.view(vel);
+
+        int njoints=0;
+        enc->getAxes(&njoints);
+        //Vector v;
+        Vector command;
+        command.resize(njoints);
+        enc->getEncoders(command.data()); //get the current position
+
+        //command.resize(njoints);
+
+        //v.resize(njoints);
+        //New positions for the fingers
+        //15.0 80.0   0.0   0.0  70.0   0.0  70.0   0.0  60.0
+        //0.0   80.0   10.0   40.0   30.0   60.0   20.0   50.0   150.0
+        /*command[7]=0.0;
+        command[8]= 80.0;
+        command[9]=12.0;
+        command[10]=18.0;
+        command[11]=0.0;  //command[11]=27.0;
+        command[12]=90.0; //command[12]=50.0;
+        command[13]=20.0;
+        command[14]=50.0;
+        command[15]=135.0;*/
+        /*command[7]=15.0;
+        command[8]= 80.0;
+        command[9]=0.0;
+        command[10]=0.0;
+        command[11]=70.0;  //command[11]=27.0;
+        command[12]=0.0; //command[12]=50.0;
+        command[13]=70.0;
+        command[14]=0.0;
+        command[15]=60.0;*/
+        /*command[5]=-70.0;
+               command[7]=0.0; //juntar dedos - = mas abiertos
+        command[8]= 88.0; //pulgar hacia palma
+        command[9]=0.0; //pulgar despegar
+        command[10]=54.0; //doblar pulgar
+        command[11]=56.7;  //command[11]=27.0; //doblar indicie hacia palma
+        command[12]=104.0; //command[12]=50.0; //doblar indice +=más doblado
+        command[13]=70.0; //dedo medio doblado +=mas doblado
+        command[14]=61.0; //dedo medio doblas
+        command[15]=151.0; //meñique doblar +=mas doblado*/
+        command[5]=0.0;
+        command[6]=22.2;
+        command[7]=58.8;
+        command[8]=20.0;
+        command[9]=19.8;
+        command[10]=19.8;
+        command[11]=9.9;
+        command[12]=10.8;
+        command[13]=9.9;
+        command[14]=10.8;
+        command[15]=10.8;
+       //command[7]=0.0; //juntar dedos - = mas abiertos
+        //command[8]= 88.0; //pulgar hacia palma
+       // command[9]=0.0; //pulgar despegar
+        //command[10]=54.0; //doblar pulgar
+        //command[11]=56.7;  //command[11]=27.0; //doblar indicie hacia palma
+        //command[12]=104.0; //command[12]=50.0; //doblar indice +=más doblado
+        //command[13]=70.0; //dedo medio doblado +=mas doblado
+        //command[14]=61.0; //dedo medio doblas
+        //command[15]=151.0; //meñique doblar +=mas doblado*/
+        //articulación 5 muñeca arroba abajo
+               /* command[7]=58.8; //juntar dedos - = mas abiertos
+        command[8]= 80.8; //pulgar hacia palma
+        command[9]=0.0; //pulgar despegar
+        command[10]=104.4; //doblar pulgar
+        command[11]=46.8;  //command[11]=27.0; //doblar indicie hacia palma
+        command[12]=86.4; //command[12]=50.0; //doblar indice +=más doblado
+        command[13]=50.0; //dedo medio doblado +=mas doblado
+        command[14]=81.0; //dedo medio doblas
+        command[15]=137.0; //meñique doblar +=mas doblado*/
+        printf("\ncommando => %s\n\n\n",command.toString().c_str());
+
+
+        left_hand_ctrl->positionMove(command.data());
+                printf("wrist moving upwards...\n");
+
+        bool done = left_arm_ctrl->waitMotionDone(0.1,4.0);
+         if(!done){
+            printf("Left arm is taking to long to complete the movement\n");
+        }
+        printf("Done wrist %d\n",done);
+        return done;
+
+    }
+
     bool closeHand(){
         IEncoders *enc;
         IVelocityControl *vel;
@@ -320,7 +434,8 @@
         command[14]=81.0; //dedo medio doblas
         command[15]=137.0; //meñique doblar +=mas doblado*/
 
-        left_hand_ctrl->positionMove(command.data());
+        bool done = left_hand_ctrl->positionMove(command.data());
+        printf("closing hand...%d\n",done);
 
     }
 

@@ -19,4 +19,10 @@ VisualContext:: VisualContext(char* color,char* size, bool moving){
 struct VisualContext{
 	string color;
 	string size;
+
+	virtual bool write(yarp::os::ConnectionWriter& connection) {
+	string = "holis";
+    connection.appendString();
+    return true;
+  }
 };

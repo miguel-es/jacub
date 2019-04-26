@@ -5,7 +5,8 @@
  //
  // Author: Ugo Pattacini - <ugo.pattacini@iit.it>
 
- #include <cstdio>
+ #include<iostream>
+ //#include <cstdio>
  #include <cmath>
 
  #include <yarp/os/Network.h>
@@ -62,6 +63,8 @@
 	        //import3DModel("pia/mesaes.x","woodred.bmp",0.0f,0.0f,-0.2f);
             //addObj("box",0.05f,0.05f,0.05f,0.0f,0.6f,0.4f,0,0,1);
             addObj("box",0.06f,0.06f,0.06f,0.09f,0.55387995f,0.35f,0,0,1);
+            addObj("box",0.07f,0.07f,0.07f,0.04f,0.7f,0.35f,1,0,0);
+            //world mk box 0.1 0.1 0.1 0 0.7 0.3 1 0 0
             inited=true;
         }
      }
@@ -86,7 +89,7 @@
 	  cmd.addInt(r);
 	  cmd.addInt(g);
 	  cmd.addInt(b);
-	printf("Adding %s\n to the world",obj.c_str());
+	printf("Adding %s to the world",obj.c_str());
 	Bottle response;
 	world_port.write(cmd,response);
 	printf("World por response: %s",response.toString());

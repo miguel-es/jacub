@@ -105,30 +105,6 @@ CMakeFiles/perception.dir/build: perception
 
 .PHONY : CMakeFiles/perception.dir/build
 
-# Object files for target perception
-perception_OBJECTS = \
-"CMakeFiles/perception.dir/src/Perception.o"
-
-# External object files for target perception
-perception_EXTERNAL_OBJECTS =
-
-CMakeFiles/CMakeRelink.dir/perception: CMakeFiles/perception.dir/src/Perception.o
-CMakeFiles/CMakeRelink.dir/perception: CMakeFiles/perception.dir/build.make
-CMakeFiles/CMakeRelink.dir/perception: /usr/local/src/robot/yarp/build/lib/libYARP_dev.so.2.3.72
-CMakeFiles/CMakeRelink.dir/perception: /usr/local/src/robot/yarp/build/lib/libYARP_name.so.2.3.72
-CMakeFiles/CMakeRelink.dir/perception: /usr/local/src/robot/yarp/build/lib/libYARP_init.so.2.3.72
-CMakeFiles/CMakeRelink.dir/perception: /usr/local/src/robot/yarp/build/lib/libYARP_math.so.2.3.72
-CMakeFiles/CMakeRelink.dir/perception: /usr/local/src/robot/yarp/build/lib/libYARP_sig.so.2.3.72
-CMakeFiles/CMakeRelink.dir/perception: /usr/local/src/robot/yarp/build/lib/libYARP_OS.so.2.3.72
-CMakeFiles/CMakeRelink.dir/perception: CMakeFiles/perception.dir/relink.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/usr/local/src/robot/jacub/modules/percepction/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable CMakeFiles/CMakeRelink.dir/perception"
-	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/perception.dir/relink.txt --verbose=$(VERBOSE)
-
-# Rule to relink during preinstall.
-CMakeFiles/perception.dir/preinstall: CMakeFiles/CMakeRelink.dir/perception
-
-.PHONY : CMakeFiles/perception.dir/preinstall
-
 CMakeFiles/perception.dir/requires: CMakeFiles/perception.dir/src/Perception.o.requires
 
 .PHONY : CMakeFiles/perception.dir/requires

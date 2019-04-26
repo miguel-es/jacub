@@ -68,6 +68,7 @@ Para mover el objeto enfrente del robot incrementar la tercera coordenada de pos
 world mk box (three params for size) (three params for pos) (three params for colour)
 world mk box 0.1 0.1 0.1 0 2 0.1 1 0 0
 
+agregar caja roja
 world mk box 0.1 0.1 0.1 0 0.7 0.3 1 0 0
 
 bola debajo de mano izquierda: world set ball 0.09 0.55387995 0.35
@@ -75,4 +76,8 @@ bola debajo de mano izquierda: world set ball 0.09 0.55387995 0.35
 world reference-frame : x y z
 cartecian reference-frame : -y z -x (-0.55387995 0.35 -0.09)
 cartecian reference-frame : -z -x y (-0.35 -0.09 0.55387995)
+
+-x = hacia adelante
+-y = hacia la izquierda
+ z = hacia arriba
 

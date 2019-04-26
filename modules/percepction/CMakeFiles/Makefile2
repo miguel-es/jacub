@@ -66,7 +66,7 @@ CMAKE_BINARY_DIR = /usr/local/src/robot/jacub/modules/percepction
 CMakeFiles/perception.dir/all:
 	$(MAKE) -f CMakeFiles/perception.dir/build.make CMakeFiles/perception.dir/depend
 	$(MAKE) -f CMakeFiles/perception.dir/build.make CMakeFiles/perception.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/usr/local/src/robot/jacub/modules/percepction/CMakeFiles --progress-num=1,2,3 "Built target perception"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/usr/local/src/robot/jacub/modules/percepction/CMakeFiles --progress-num=1,2 "Built target perception"
 .PHONY : CMakeFiles/perception.dir/all
 
 # Include target in all.
@@ -76,7 +76,7 @@ all: CMakeFiles/perception.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/perception.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /usr/local/src/robot/jacub/modules/percepction/CMakeFiles 3
+	$(CMAKE_COMMAND) -E cmake_progress_start /usr/local/src/robot/jacub/modules/percepction/CMakeFiles 2
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/perception.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /usr/local/src/robot/jacub/modules/percepction/CMakeFiles 0
 .PHONY : CMakeFiles/perception.dir/rule
@@ -85,16 +85,6 @@ CMakeFiles/perception.dir/rule: cmake_check_build_system
 perception: CMakeFiles/perception.dir/rule
 
 .PHONY : perception
-
-# Pre-install relink rule for target.
-CMakeFiles/perception.dir/preinstall:
-	$(MAKE) -f CMakeFiles/perception.dir/build.make CMakeFiles/perception.dir/preinstall
-.PHONY : CMakeFiles/perception.dir/preinstall
-
-# Prepare target for install.
-preinstall: CMakeFiles/perception.dir/preinstall
-
-.PHONY : preinstall
 
 # clean rule for target.
 CMakeFiles/perception.dir/clean:

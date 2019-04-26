@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
     VisualContext v;
     BufferedPort<ImageOf<PixelBgr> > imagePort;  // make a port for reading images
     BufferedPort<ImageOf<PixelBgr> > outPort;
-    BufferedPort<VisualContext> contextOutPort;
+    BufferedPort<Bottle> contextOutPort;
 
 
     imagePort.open("/imageProc/image/in");  // give the port a name
@@ -91,7 +91,8 @@ int main(int argc, char *argv[])
     while (true) { // repeat forever
         ImageOf<PixelBgr> *image = imagePort.read();  // read an image
         ImageOf<PixelBgr> &outImage = outPort.prepare(); //get an output image
-        VisualContext &outContext = contextOutPort.prepare(); //get an output image
+        Bottle &outContext = contextOutPort.prepare(); //get an output image
+        outContext.clear();
         //outContext.color="c1";
 //outContext.size="s1";
 //outContext.moving=true;
@@ -176,9 +177,11 @@ for (std::vector<KeyPoint>::const_iterator i = keypoints.begin(); i != keypoints
 
     object.AddMember("color", colorv, allocator);
     object.AddMember("size", sizev, allocator);
-    //object.AddMember("moving", false, allocator);
+    object.AddMember("attended", true, allocator);
     //string blobname = "obj"+to_string(nblobs);
     //printf("nam3 => %s",blobname.c_str());
+
+    object.AddMember("attended", sizev, allocator);
     rapidjson::Value objname;
 		objname.SetString(("obj"+to_string(++nblobs)).c_str(), allocator);
 
@@ -202,6 +205,7 @@ for (std::vector<KeyPoint>::const_iterator i = keypoints.begin(); i != keypoints
 
 	std::cout << "Visual context: "<< strbuf.GetString() << std::endl;
 
+	//attend(document);
      /*   StringBuffer sb;
         PrettyWriter<StringBuffer> writer(sb);
         context.Accept(writer);
@@ -328,8 +332,11 @@ for (std::vector<KeyPoint>::const_iterator i = keypoints.begin(); i != keypoints
                // printf("Best guess at blue target: %g %g\n", xMean, yMean);
             }
 
-            outPort.write();
+            outPort.write();*/
+            outContext.addString(strbuf.GetString());
+
             contextOutPort.write();
+            /*
             int sector = 0;
             int xpos = floor(centroidx / 106);
             int ypos = floor(centroidy / 80);

@@ -56,6 +56,17 @@ CMAKE_BINARY_DIR = /usr/local/src/robot/jacub/modules/percepction
 #=============================================================================
 # Targets provided globally by CMake.
 
+# Special rule for the target install/strip
+install/strip: preinstall
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing the project stripped..."
+	/usr/bin/cmake -DCMAKE_INSTALL_DO_STRIP=1 -P cmake_install.cmake
+.PHONY : install/strip
+
+# Special rule for the target install/strip
+install/strip/fast: install/strip
+
+.PHONY : install/strip/fast
+
 # Special rule for the target install/local
 install/local: preinstall
 	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --cyan "Installing only the local directory..."
@@ -156,11 +167,6 @@ perception/fast:
 	$(MAKE) -f CMakeFiles/perception.dir/build.make CMakeFiles/perception.dir/build
 .PHONY : perception/fast
 
-# Manual pre-install relink rule for target.
-perception/preinstall:
-	$(MAKE) -f CMakeFiles/perception.dir/build.make CMakeFiles/perception.dir/preinstall
-.PHONY : perception/preinstall
-
 # target to build an object file
 src/Perception.o:
 	$(MAKE) -f CMakeFiles/perception.dir/build.make CMakeFiles/perception.dir/src/Perception.o
@@ -182,6 +188,7 @@ help:
 	@echo "... all (the default if no target is provided)"
 	@echo "... clean"
 	@echo "... depend"
+	@echo "... install/strip"
 	@echo "... install/local"
 	@echo "... perception"
 	@echo "... edit_cache"

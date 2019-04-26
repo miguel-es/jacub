@@ -1,0 +1,7 @@
+/usr/local/src/robot/jacub/modules/memory/CMakeFiles/install/strip.dir
+/usr/local/src/robot/jacub/modules/memory/CMakeFiles/install/local.dir
+/usr/local/src/robot/jacub/modules/memory/CMakeFiles/memory.dir
+/usr/local/src/robot/jacub/modules/memory/CMakeFiles/edit_cache.dir
+/usr/local/src/robot/jacub/modules/memory/CMakeFiles/rebuild_cache.dir
+/usr/local/src/robot/jacub/modules/memory/CMakeFiles/install.dir
+/usr/local/src/robot/jacub/modules/memory/CMakeFiles/list_install_components.dir
