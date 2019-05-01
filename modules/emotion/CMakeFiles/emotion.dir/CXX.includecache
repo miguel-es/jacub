@@ -6,10 +6,12 @@
 
 #IncludeRegexTransform: 
 
-/usr/local/src/robot/jacub/modules/iDevER/src/iDevER.cpp
+/usr/local/src/robot/jacub/modules/emotion/src/emotion.cpp
 cstdio
 -
 cmath
+-
+iostream
 -
 yarp/os/Network.h
 -
@@ -26,21 +28,13 @@ yarp/math/Math.h
 yarp/os/all.h
 -
 rapidjson/document.h
-/usr/local/src/robot/jacub/modules/iDevER/src/rapidjson/document.h
+/usr/local/src/robot/jacub/modules/emotion/src/rapidjson/document.h
 rapidjson/writer.h
-/usr/local/src/robot/jacub/modules/iDevER/src/rapidjson/writer.h
+/usr/local/src/robot/jacub/modules/emotion/src/rapidjson/writer.h
 rapidjson/stringbuffer.h
-/usr/local/src/robot/jacub/modules/iDevER/src/rapidjson/stringbuffer.h
+/usr/local/src/robot/jacub/modules/emotion/src/rapidjson/stringbuffer.h
 rapidjson/prettywriter.h
-/usr/local/src/robot/jacub/modules/iDevER/src/rapidjson/prettywriter.h
-rapidjson/filereadstream.h
-/usr/local/src/robot/jacub/modules/iDevER/src/rapidjson/filereadstream.h
-rapidjson/istreamwrapper.h
--
-fstream
--
-iostream
--
+/usr/local/src/robot/jacub/modules/emotion/src/rapidjson/prettywriter.h
 
 /usr/local/src/robot/yarp/build/src/libYARP_conf/include/yarp/conf/api.h
 yarp/conf/compiler.h

@@ -7,7 +7,7 @@
 
  #include <cstdio>
  #include <cmath>
-
+#include <iostream>
  #include <yarp/os/Network.h>
  #include <yarp/os/RFModule.h>
  #include <yarp/os/RateThread.h>
@@ -28,14 +28,16 @@
 
  using namespace std;
 using namespace yarp::os;
+using namespace rapidjson;
 
  class EmotionThread: public RateThread
  {
 
      rapidjson::Document STM;
 
-        Port port;
-        Port emotion_port;
+        Port input_port;
+        Port output_port;
+        Port emo_per_port;
      // the event callback attached to the "motion-ongoing"
 
  public:
@@ -69,13 +71,18 @@ using namespace yarp::os;
             return false;
        }*/
 
-       if(!emotion_in.open("/jacub/emotion/in")){
+       if(!input_port.open("/jacub/emotion/context/in")){
             printf("Failed creating input port for emotion module");
             return false;
        }
 
-       if(!emotion_out.open("/jacub/emotion/out")){
+       if(!output_port.open("/jacub/emotion/out")){
             printf("Failed creating output port for emotion module");
+            return false;
+       }
+
+       if(!emo_per_port.open("/jacub/emotion/perception")){
+            printf("Failed creating /jacub/emotion/perception/out port");
             return false;
        }
 
@@ -98,11 +105,68 @@ using namespace yarp::os;
      virtual void run()
      {
          //while (true) {
-        printf("waiting for input \n");
+        printf("Emotion: waiting for input \n");
         Bottle input;
-        port.read(input);
+        emo_per_port.read(input);
         //if (input!=NULL) {
-            printf("got %s\n",input.toString().c_str());
+            printf("Emotion: Got %s\n",input.toString().c_str());
+
+            rapidjson::Document attendedobj;
+
+            attendedobj.SetObject();
+            string input_context = input.toString();
+
+            input_context.erase(0,1);
+            input_context.erase(input_context.size()-1,input_context.size());
+            size_t pos;
+            //string "\\";
+	while ((pos = input_context.find("\\")) != std::string::npos) {
+		input_context.replace(pos, 1, "");
+	}
+
+
+	/*while ((pos = input_context.find("\"{")) != std::string::npos) {
+		input_context.replace(pos, 1, "{");
+	}
+	while ((pos = input_context.find("\"}")) != std::string::npos) {
+		input_context.replace(pos, 1, "}");
+	}*/
+	printf("CLEANSED =Z=> %s",input_context.c_str());
+	// create a rapidjson array type with similar syntax to std::vector
+	//rapidjson::Value objs(rapidjson::kArrayType);
+
+	// must pass an allocator when the object may need to allocate memory
+
+            if (attendedobj.Parse<0>(input_context.c_str()).HasParseError()){
+                printf("EM: Error trying to parse input\n");
+                return;
+            }
+
+
+            StringBuffer strbuf;
+	Writer<StringBuffer> writer(strbuf);
+	attendedobj.Accept(writer);
+
+	std::cout << "EM: received attended context "<< strbuf.GetString() << std::endl;
+
+	string gemotion =  "hap";
+
+	if(attendedobj.HasMember("color")){
+	//printf("tiene miembro!!\n");
+
+		//printf("COLOR => %s",attendedobj.color);
+           // assert(attendedobj["color"].IsString());
+
+           rapidjson::Value& color = attendedobj["color"];
+//printf("holis");
+	//printf("COLOR => %s",color.GetString());
+
+
+            if(strcmp(color.GetString(), "red")==0){
+                gemotion = "sad";
+            }////
+
+            }
            /* double total = 0;
             for (int i=0; i<input.size(); i++) {
                 total += input.get(i).asInt64();
@@ -122,14 +186,19 @@ using namespace yarp::os;
 Bottle response;
         emotioncmd.addString("set");
         emotioncmd.addString("all");
-        emotioncmd.addString("sad");
+        emotioncmd.addString(gemotion.c_str());
 
-        emotion_port.write(emotioncmd,response);
+        output_port.write(emotioncmd,response);
 
-        printf("emotional response  %s\n",response.toString().c_str());
+        //printf("emotional response  %s\n",response.toString().c_str());
 
-        printf("Generated emotion: sadness\n");
-   // _
+        printf("Generated emotion: %s\n",gemotion.c_str());
+
+        //Send generated emotion to  perseption module
+        Bottle emotion;
+        emotion.addString(gemotion.c_str());
+        emo_per_port.write(emotion);
+   // _emotioncmd.addString("set");
     }
 
      virtual void threadRelease()
@@ -153,7 +222,7 @@ Bottle response;
      {
          Time::turboBoost();
 
-         thr=new MemoryThread(CTRL_THREAD_PER);
+         thr=new EmotionThread(CTRL_THREAD_PER);
          if (!thr->start())
          {
              delete thr;

@@ -6,6 +6,7 @@
 */
 
 #include <stdio.h>
+#include <iostream>
 #include <yarp/os/Network.h>
 #include <yarp/os/BufferedPort.h>
 #include <yarp/os/BinPortable.h>
@@ -28,6 +29,7 @@
 
 #include <yarp/sig/all.h>
 
+ using namespace std;
 using namespace cv;
 using namespace yarp::sig;
 using namespace yarp::os;
@@ -54,13 +56,17 @@ int main(int argc, char *argv[])
     VisualContext v;
     BufferedPort<ImageOf<PixelBgr> > imagePort;  // make a port for reading images
     BufferedPort<ImageOf<PixelBgr> > outPort;
-    BufferedPort<Bottle> contextOutPort;
+    BufferedPort<Bottle> output_port;
+
+    Port input_port;
+    Port dever_port;
 
 
     imagePort.open("/imageProc/image/in");  // give the port a name
     outPort.open("/imageProc/image/out");
-    contextOutPort.open("/perception/context/out");
-
+    output_port.open("/jacub/perception/context/out");
+    input_port.open("/jacub/perception/emotion/in");
+    dever_port.open("/jacub/perception/iDevER");
 
     color_range blue;
     blue.from = cv::Scalar(100, 0, 0);
@@ -91,7 +97,7 @@ int main(int argc, char *argv[])
     while (true) { // repeat forever
         ImageOf<PixelBgr> *image = imagePort.read();  // read an image
         ImageOf<PixelBgr> &outImage = outPort.prepare(); //get an output image
-        Bottle &outContext = contextOutPort.prepare(); //get an output image
+        Bottle &outContext = output_port.prepare(); //get an output image
         outContext.clear();
         //outContext.color="c1";
 //outContext.size="s1";
@@ -117,6 +123,7 @@ rapidjson::Document document;
 	rapidjson::Document::AllocatorType& allocator = document.GetAllocator();
 
 //printf("Detecting blobs\n");
+bool attending = false;
 for (color_range color : colors) {
 for (area_range area : sizes) {
 
@@ -158,13 +165,9 @@ Mat color_filtered_img;
 std::vector<KeyPoint> keypoints;
 detector.detect(color_filtered_img, keypoints);
 
-
- //printf("\nblobs with features: color=%s and size=%s -> %d\n",color.name.c_str(),area.name.c_str(),keypoints.size());
-
 for (std::vector<KeyPoint>::const_iterator i = keypoints.begin(); i != keypoints.end(); ++i){
-//nblobs++;
-//printf("num blob %d\n",nblobs);
-    //std::cout << i->pt << ' ';
+
+
            int xpos = floor(i->pt.x / 106);
             int ypos = floor(i->pt.y / 80);
             rapidjson::Value object(rapidjson::kObjectType);
@@ -177,11 +180,8 @@ for (std::vector<KeyPoint>::const_iterator i = keypoints.begin(); i != keypoints
 
     object.AddMember("color", colorv, allocator);
     object.AddMember("size", sizev, allocator);
-    object.AddMember("attended", true, allocator);
-    //string blobname = "obj"+to_string(nblobs);
-    //printf("nam3 => %s",blobname.c_str());
 
-    object.AddMember("attended", sizev, allocator);
+
     rapidjson::Value objname;
 		objname.SetString(("obj"+to_string(++nblobs)).c_str(), allocator);
 
@@ -189,15 +189,18 @@ for (std::vector<KeyPoint>::const_iterator i = keypoints.begin(); i != keypoints
     document.AddMember(objname, object, allocator);
 
 }
-
- //printf("\n");
 	drawKeypoints( im_with_keypoints, keypoints, im_with_keypoints, Scalar(0,255,0), DrawMatchesFlags::DRAW_RICH_KEYPOINTS );
 
-       // printf("Context %s\n", str);
-
         }
 
         }
+    string id_attendedobj ="";
+   	if(nblobs>0){
+    int att = (rand() % nblobs)+1;
+    printf("attended => %d\n",att);
+    id_attendedobj= "obj"+std::to_string(att);
+    document[id_attendedobj.c_str()].AddMember("attended",true,allocator);
+    }
 
         StringBuffer strbuf;
 	Writer<StringBuffer> writer(strbuf);
@@ -205,15 +208,7 @@ for (std::vector<KeyPoint>::const_iterator i = keypoints.begin(); i != keypoints
 
 	std::cout << "Visual context: "<< strbuf.GetString() << std::endl;
 
-	//attend(document);
-     /*   StringBuffer sb;
-        PrettyWriter<StringBuffer> writer(sb);
-        context.Accept(writer);
-        auto str = sb.GetString();*/
-       // printf("Context %s\n", str);
-	//IplImage gray_img_hdr;
-
-	  line(im_with_keypoints, Point(0,80), Point(image->width(),80), Scalar(0, 255, 0),1,8,0);
+            line(im_with_keypoints, Point(0,80), Point(image->width(),80), Scalar(0, 255, 0),1,8,0);
 	  line(im_with_keypoints, Point(0,160), Point(image->width(),160), Scalar(0, 255, 0),1,8,0);
 	  line(im_with_keypoints, Point(106,0), Point(106,image->height()), Scalar(0, 255, 0),1,8,0);
 	  line(im_with_keypoints, Point(212,0), Point(212,image->height()), Scalar(0, 255, 0),1,8,0);
@@ -221,145 +216,57 @@ for (std::vector<KeyPoint>::const_iterator i = keypoints.begin(); i != keypoints
 
 
 	IplImage blobed = IplImage( im_with_keypoints );
-	//IplImage* blobed = (IplImage*)(IplImage(&im_with_keypoints));
-
-	//IplImage *blobed = cvGetImage(&im_with_keypoints, &gray_img_hdr);
-//addCircle(*image,PixelRgb(255,0,0),image->width()/2,image->height()/2,image->height()/4);
-
-//circle_t c;
-  //      detectAndDraw(imgMat, 1.3, c);
-
-//IplImage* p_ipl_image_in = cvCreateImage( cvSize(image->width,  image->height),
-									//image->depth, 3 );
-
-//Mat in_cv = yarp::cv::toCvMat(outImage);
-        //outImage = img;
-
-    //cvNamedWindow("test",1);
-    //cvShowImage("test",cvImage);
-
-
-//		VisualContext v;
-//v.size="fuck";
-//if(outContext.size=="holis"){printf("igual\n");}
-//printf(v.size.c_str());
- //printf("size igual a %s\n",outContext.size.c_str());
- //printf("size igual a holis nop %s \n",outContext.size.c_str());
-
- //if(outContext.content().size=="holis"){printf("igual");}else{printf("diferet2");}
-  //  printf("color %i, %s",outContext.content().color,outContext.content().size);
-
-
   ImageOf<PixelBgr> yarpReturnImage;
     yarpReturnImage.wrapIplImage(&blobed);
         outImage=yarpReturnImage;
 
-       /* if (image!=NULL) { // check we actually got something
-           // printf("We got an image of size %dx%d\n", image->width(), image->height());
-            double xMean = 0;
-            double yMean = 0;
-            double xBoxMax = image->width()-1;
-            double yBoxMax = image->height()-1;
-            double xBoxMin = -1;
-            double yBoxMin = -1;
-
-            int ct = 0;
-            for (int x=0; x<outImage->width(); x++) {
-                for (int y=0; y<outImage.height(); y++) {
-                    PixelRgb& pixel = image.pixel(x,y);
-                    // very simple test for blueishness
-                    // make sure blue level exceeds red and green by a factor of 2
-                    if (pixel.b>pixel.r*1.2+10 && pixel.b>pixel.g*1.2+10) {
-                        // there's a blueish pixel at (x,y)!
-                        // let's find the average location of these pixels
-                        if(x<xBoxMax) xBoxMax = x;
-                        if(y<yBoxMax) yBoxMax = y;
-                        if(x>xBoxMin) xBoxMin = x;
-                        if(y>yBoxMin) yBoxMin = y;
-
-                        xMean += x;
-                        yMean += y;
-                        ct++;
-
-                        outImage(x,y).r=pixel.r;
-                        outImage(x,y).g=pixel.g;
-                        outImage(x,y).b=pixel.b;
-                    }else{
-                        double gray = (outImage(x,y).r+outImage(x,y).g+outImage(x,y).b)/3;
-                        outImage(x,y).r=gray;
-                        outImage(x,y).g=gray;
-                        outImage(x,y).b=gray;
-                    }
-                    if(x==106 or x==212){
-                        outImage(x,y).r = 0;
-                        outImage(x,y).b = 0;
-                        outImage(x,y).g = 255;
-                    }
-                    if(y==80 or y==160){
-                        outImage(x,y).r = 0;
-                        outImage(x,y).b = 0;
-                        outImage(x,y).g = 255;
-
-                    }
-                }
-            }
-            //printf("Bounding box xmin %g ymin %g xmax %g ymax %g",xBoxMin,yBoxMin,xBoxMax,yBoxMax);
-            double centroidx = xBoxMax +floor((xBoxMin-xBoxMax)/2);
-            double centroidy = yBoxMax+floor((yBoxMin-yBoxMax)/2);
-            //printf("Centroid (%g, %g)",centroidx,centroidy);
-            outImage(centroidx,centroidy).r = 255;
-            outImage(centroidx,centroidy).b = 0;
-            outImage(centroidx,centroidy).g = 0;
-            outImage(centroidx+1,centroidy).r = 255;
-            outImage(centroidx+1,centroidy).b = 0;
-            outImage(centroidx+1,centroidy).g = 0;
-            outImage(centroidx-1,centroidy).r = 255;
-            outImage(centroidx-1,centroidy).b = 0;
-            outImage(centroidx-1,centroidy).g = 0;
-
-            outImage(centroidx,centroidy+1).r = 255;
-            outImage(centroidx,centroidy+1).b = 0;
-            outImage(centroidx,centroidy+1).g = 0;
-            outImage(centroidx,centroidy-1).r = 255;
-            outImage(centroidx,centroidy-1).b = 0;
-            outImage(centroidx,centroidy-1).g = 0;
-
-            if (ct>0) {
-                xMean /= ct;
-                yMean /= ct;
-            }
-            if (ct>(image->width()/20)*(image->height()/20)) {
-               // printf("Best guess at blue target: %g %g\n", xMean, yMean);
-            }
-
-            outPort.write();*/
-            outContext.addString(strbuf.GetString());
-
-            contextOutPort.write();
-            /*
-            int sector = 0;
-            int xpos = floor(centroidx / 106);
-            int ypos = floor(centroidy / 80);
-            //printf("Centroid coordinates: %d, %d\n", xpos, ypos);
-            Document context;
-            context.SetObject();
-            Document::AllocatorType& allocator = context.GetAllocator();
-            context.AddMember("color", "blue", allocator);
-            context.AddMember("size", "s1", allocator);
-            context.AddMember("moving", false, allocator);
-            context.AddMember("sector", 3*ypos+xpos+1,allocator);
-
-            StringBuffer sb;
-        PrettyWriter<StringBuffer> writer(sb);
-        context.Accept(writer);
-        auto str = sb.GetString();
-       // printf("Context %s\n", str);
-
-
-            //printf(string(context.GetString()));
-
-        }*/
         outPort.write();
+
+
+if(id_attendedobj!=""){
+rapidjson::Value& attendedobj = document[id_attendedobj.c_str()];
+
+	StringBuffer strbuf2;
+	Writer<StringBuffer> writer2(strbuf2);
+	attendedobj.Accept(writer2);
+
+	std::cout << "Attended context: "<< strbuf2.GetString() << std::endl;
+
+            outContext.addString(strbuf2.GetString());
+
+            output_port.write();
+
+	printf("Perception: waiting for emotion \n");
+        Bottle input;
+        input_port.read(input);
+        //if (input!=NULL) {
+            printf("Got %s\n",input.toString().c_str());
+            rapidjson::Value emov;
+		emov.SetString("+1", allocator);
+		    rapidjson::Value emo;
+		emo.SetString(input.toString().c_str(), allocator);
+
+          document[id_attendedobj.c_str()].AddMember(emo,emov,allocator);
+
+StringBuffer strbuf;
+	Writer<StringBuffer> writer(strbuf);
+	document.Accept(writer);
+
+	std::cout << "Visual context after emotion generation: "<< strbuf.GetString() << std::endl;
+
+
+	printf("PM: Sending context to iDevER\n");
+	Bottle att_context;
+	            att_context.addString(strbuf2.GetString());
+    dever_port.write(att_context);
+
+    printf("PM: Waiting for iDevER to perform action\n");
+    Bottle done;
+    dever_port.read(done);
+}
+
+
+
     }
     return 0;
 }

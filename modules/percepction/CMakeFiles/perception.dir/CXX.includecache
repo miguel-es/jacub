@@ -9,6 +9,8 @@
 /usr/local/src/robot/jacub/modules/percepction/src/Perception.cpp
 stdio.h
 -
+iostream
+-
 yarp/os/Network.h
 -
 yarp/os/BufferedPort.h

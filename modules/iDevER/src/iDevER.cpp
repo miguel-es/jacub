@@ -20,22 +20,27 @@
 #include "rapidjson/writer.h"
 #include "rapidjson/stringbuffer.h"
 #include "rapidjson/prettywriter.h"
+#include "rapidjson/filereadstream.h"
+#include <rapidjson/istreamwrapper.h>
 
+#include <fstream>
+#include <iostream>
 
  #define CTRL_THREAD_PER     0.02    // [s]
  #define PRINT_STATUS_PER    1.0     // [s]
  #define MAX_TORSO_PITCH     30.0    // [deg]
 
  using namespace std;
+using namespace rapidjson;
 using namespace yarp::os;
 
  class DevERThread: public RateThread
  {
 
-     rapidjson::Document STM;
+     rapidjson::Document LTM; //Long term memory (esquemas aprendidos)
 
-        Port port;
-        Port DevER_port;
+        Port input_port;
+        Port output_port;
      // the event callback attached to the "motion-ongoing"
 
  public:
@@ -49,32 +54,57 @@ using namespace yarp::os;
 
      virtual bool threadInit()
      {
-     //moved = false;
-         // open a left_arm interface to connect to the cartesian server of the simulator
-         // we suppose that:
-         //
-         // 1 - the iCub simulator is running
-         //     (launch: iCub_SIM)
-         //
-         // 2 - the cartesian server is running
-         //     (launch: yarprobotinterface --context simCartesianControl)
-         //
-         // 3 - the cartesian solver for the left arm is running too
-         //     (launch: iKinCartesianSolver --context simCartesianControl --part left_arm)
-         //
+      //ifstream inFile;
+      //inFile.open("../schemas/learned_schemas.json");
+        /*FILE* fp = fopen("../../schemas/learned.json", "rb"); // non-Windows use "r"
+        char readBuffer[65536];
+        FileReadStream is(fp, readBuffer, sizeof(readBuffer));
+
+        LTM.ParseStream(is);
+        StringBuffer strbuf;
+	Writer<StringBuffer> writer(strbuf);
+	LTM.Accept(writer);*/
 
 
-	   /*if(!port.open("/memory/in")){
+/*cout << "Visual context: "<< strbuf.GetString() << endl;	   /*if(!port.open("/memory/in")){
             printf("Failed creating port for memory");
             return false;
        }*/
 
-       if(!DevER_in.open("/jacub/DevER/in")){
+       std::ifstream ifs { R"(../../schemas/learned.json)" };
+    if ( !ifs.is_open() )
+    {
+        std::cerr << "Could not load ../../schemas/learned.json!\n";
+        return EXIT_FAILURE;
+    }
+
+    IStreamWrapper isw { ifs };
+
+    Document doc {};
+    doc.ParseStream( isw );
+
+    StringBuffer buffer {};
+    Writer<StringBuffer> writer { buffer };
+    doc.Accept( writer );
+
+    if (doc.HasParseError() )
+    {
+        std::cout << "Error  : " << doc.GetParseError()  << '\n'
+                  << "Offset : " << doc.GetErrorOffset() << '\n';
+        return EXIT_FAILURE;
+    }
+
+    const std::string jsonStr { buffer.GetString() };
+
+    std::cout << jsonStr << '\n';
+
+
+       if(!input_port.open("/jacub/DevER")){
             printf("Failed creating input port for DevER module");
             return false;
        }
 
-       if(!DevER_out.open("/jacub/DevER/out")){
+       if(!output_port.open("/jacub/DevER/out")){
             printf("Failed creating output port for DevER module");
             return false;
        }
@@ -97,39 +127,42 @@ using namespace yarp::os;
 
      virtual void run()
      {
+
+
          //while (true) {
         printf("waiting for input \n");
         Bottle input;
-        port.read(input);
+        input_port.read(input);
         //if (input!=NULL) {
             printf("got %s\n",input.toString().c_str());
-           /* double total = 0;
-            for (int i=0; i<input.size(); i++) {
-                total += input.get(i).asInt64();
+           rapidjson::Document attendedctx;
+
+            attendedctx.SetObject();
+            string input_context = input.toString();
+
+            input_context.erase(0,1);
+            input_context.erase(input_context.size()-1,input_context.size());
+            size_t pos;
+            //string "\\";
+	while ((pos = input_context.find("\\")) != std::string::npos) {
+		input_context.replace(pos, 1, "");
+	}
+
+	printf("CLEANSED =Z=> %s\n",input_context.c_str());
+
+	if (attendedctx.Parse<0>(input_context.c_str()).HasParseError()){
+                printf("EM: Error trying to parse input\n");
+                return;
             }
-            //Bottle output;// = port.prepare();
-            //output.clear();
-            //output.addString("total");
-            //output.addInt64(total);
-            printf("total %i",total);
-            //port.write();
-        }*/
-       // port.
-        //input->clear();
-        //printf("endedn runing\n");
 
-        Bottle DevERcmd;
-Bottle response;
-        DevERcmd.addString("set");
-        DevERcmd.addString("all");
-        DevERcmd.addString("sad");
 
-        DevER_port.write(DevERcmd,response);
+            StringBuffer strbuf;
+	Writer<StringBuffer> writer(strbuf);
+	attendedctx.Accept(writer);
 
-        printf("DevERal response  %s\n",response.toString().c_str());
+	std::cout << "DevER: received attended context \n"<< strbuf.GetString() << std::endl;
 
-        printf("Generated DevER: sadness\n");
-   // _
+
     }
 
      virtual void threadRelease()
@@ -153,7 +186,7 @@ Bottle response;
      {
          Time::turboBoost();
 
-         thr=new MemoryThread(CTRL_THREAD_PER);
+         thr=new DevERThread(CTRL_THREAD_PER);
          if (!thr->start())
          {
              delete thr;

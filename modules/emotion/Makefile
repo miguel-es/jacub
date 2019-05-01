@@ -48,10 +48,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /usr/local/src/robot/jacub/modules/memory
+CMAKE_SOURCE_DIR = /usr/local/src/robot/jacub/modules/emotion
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /usr/local/src/robot/jacub/modules/memory
+CMAKE_BINARY_DIR = /usr/local/src/robot/jacub/modules/emotion
 
 #=============================================================================
 # Targets provided globally by CMake.
@@ -124,9 +124,9 @@ list_install_components/fast: list_install_components
 
 # The main all target
 all: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /usr/local/src/robot/jacub/modules/memory/CMakeFiles /usr/local/src/robot/jacub/modules/memory/CMakeFiles/progress.marks
+	$(CMAKE_COMMAND) -E cmake_progress_start /usr/local/src/robot/jacub/modules/emotion/CMakeFiles /usr/local/src/robot/jacub/modules/emotion/CMakeFiles/progress.marks
 	$(MAKE) -f CMakeFiles/Makefile2 all
-	$(CMAKE_COMMAND) -E cmake_progress_start /usr/local/src/robot/jacub/modules/memory/CMakeFiles 0
+	$(CMAKE_COMMAND) -E cmake_progress_start /usr/local/src/robot/jacub/modules/emotion/CMakeFiles 0
 .PHONY : all
 
 # The main clean target
@@ -155,32 +155,32 @@ depend:
 .PHONY : depend
 
 #=============================================================================
-# Target rules for targets named memory
+# Target rules for targets named emotion
 
 # Build rule for target.
-memory: cmake_check_build_system
-	$(MAKE) -f CMakeFiles/Makefile2 memory
-.PHONY : memory
+emotion: cmake_check_build_system
+	$(MAKE) -f CMakeFiles/Makefile2 emotion
+.PHONY : emotion
 
 # fast build rule for target.
-memory/fast:
-	$(MAKE) -f CMakeFiles/memory.dir/build.make CMakeFiles/memory.dir/build
-.PHONY : memory/fast
+emotion/fast:
+	$(MAKE) -f CMakeFiles/emotion.dir/build.make CMakeFiles/emotion.dir/build
+.PHONY : emotion/fast
 
 # target to build an object file
-src/MemoryModule.o:
-	$(MAKE) -f CMakeFiles/memory.dir/build.make CMakeFiles/memory.dir/src/MemoryModule.o
-.PHONY : src/MemoryModule.o
+src/emotion.o:
+	$(MAKE) -f CMakeFiles/emotion.dir/build.make CMakeFiles/emotion.dir/src/emotion.o
+.PHONY : src/emotion.o
 
 # target to preprocess a source file
-src/MemoryModule.i:
-	$(MAKE) -f CMakeFiles/memory.dir/build.make CMakeFiles/memory.dir/src/MemoryModule.i
-.PHONY : src/MemoryModule.i
+src/emotion.i:
+	$(MAKE) -f CMakeFiles/emotion.dir/build.make CMakeFiles/emotion.dir/src/emotion.i
+.PHONY : src/emotion.i
 
 # target to generate assembly for a file
-src/MemoryModule.s:
-	$(MAKE) -f CMakeFiles/memory.dir/build.make CMakeFiles/memory.dir/src/MemoryModule.s
-.PHONY : src/MemoryModule.s
+src/emotion.s:
+	$(MAKE) -f CMakeFiles/emotion.dir/build.make CMakeFiles/emotion.dir/src/emotion.s
+.PHONY : src/emotion.s
 
 # Help Target
 help:
@@ -190,14 +190,14 @@ help:
 	@echo "... depend"
 	@echo "... install/strip"
 	@echo "... install/local"
-	@echo "... memory"
+	@echo "... emotion"
 	@echo "... edit_cache"
 	@echo "... rebuild_cache"
 	@echo "... install"
 	@echo "... list_install_components"
-	@echo "... src/MemoryModule.o"
-	@echo "... src/MemoryModule.i"
-	@echo "... src/MemoryModule.s"
+	@echo "... src/emotion.o"
+	@echo "... src/emotion.i"
+	@echo "... src/emotion.s"
 .PHONY : help
 
 

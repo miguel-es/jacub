@@ -42,6 +42,8 @@
      PolyDriver left_hand;
      IPositionControl *left_hand_ctrl;
 
+     Port input_port;
+
      Vector xd;
      Vector od;
      bool moved;
@@ -72,6 +74,12 @@
 
      virtual bool threadInit()
      {
+
+     if(!input_port.open("/jacub/propioception/in")){
+            printf("Failed creating input port for propioception module");
+            return false;
+     }
+
      moved = false;
          // open a left_arm interface to connect to the cartesian server of the simulator
          // we suppose that:
@@ -158,18 +166,25 @@
      virtual void afterStart(bool s)
      {
          if (s)
-             printf("Body thread started successfully\n");
+             printf("Propioception thread started successfully\n");
          else
-             printf("Body thread did not start\n");
+             printf("Propioception thread did not start\n");
 
          //t=t0=t1=Time::now();
      }
 
      virtual void run()
      {
+             moveHeadDown(60);
+     printf("Propioception Module: waiting for input \n");
+        Bottle input;
+        input_port.read(input);
+        //if (input!=NULL) {
+     printf("got %s\n",input.toString().c_str());
+
      if(!moved){
          //t=Time::now();
-        moveHeadDown(60);
+
         //moveHeadRight(60);
         //moveLeftArm(x,y,z,0.0,0.0,4.0);
         /*

@@ -1,0 +1,7 @@
+/usr/local/src/robot/jacub/modules/emotion/CMakeFiles/install/strip.dir
+/usr/local/src/robot/jacub/modules/emotion/CMakeFiles/install/local.dir
+/usr/local/src/robot/jacub/modules/emotion/CMakeFiles/emotion.dir
+/usr/local/src/robot/jacub/modules/emotion/CMakeFiles/edit_cache.dir
+/usr/local/src/robot/jacub/modules/emotion/CMakeFiles/rebuild_cache.dir
+/usr/local/src/robot/jacub/modules/emotion/CMakeFiles/install.dir
+/usr/local/src/robot/jacub/modules/emotion/CMakeFiles/list_install_components.dir
