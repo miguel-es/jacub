@@ -148,8 +148,6 @@ using namespace yarp::os;
 		input_context.replace(pos, 1, "");
 	}
 
-	printf("CLEANSED =Z=> %s\n",input_context.c_str());
-
 	if (attendedctx.Parse<0>(input_context.c_str()).HasParseError()){
                 printf("EM: Error trying to parse input\n");
                 return;
@@ -161,6 +159,56 @@ using namespace yarp::os;
 	attendedctx.Accept(writer);
 
 	std::cout << "DevER: received attended context \n"<< strbuf.GetString() << std::endl;
+
+	string actiondir =  "r";
+
+	if(attendedctx.HasMember("color")){
+	//printf("tiene miembro!!\n");
+
+		//printf("COLOR => %s",attendedobj.color);
+           // assert(attendedobj["color"].IsString());
+
+           rapidjson::Value& color = attendedctx["color"];
+//printf("holis");
+	//printf("COLOR => %s",color.GetString());
+
+
+            if(strcmp(color.GetString(), "red")==0){
+                actiondir = "l";
+            }////
+
+            }
+           /* double total = 0;
+            for (int i=0; i<input.size(); i++) {
+                total += input.get(i).asInt64();
+            }
+            //Bottle output;// = port.prepare();
+            //output.clear();
+            //output.addString("total");
+            //output.addInt64(total);
+            printf("total %i",total);
+            //port.write();
+        }*/
+       // port.
+        //input->clear();
+        //printf("endedn runing\n");
+//printf(" Creating bottle \n");
+        Bottle actioncmd;
+Bottle response;
+        actioncmd.addString("mv");
+        actioncmd.addString("lhnd");
+        actioncmd.addString(actiondir.c_str());
+
+
+        printf("iDevER: taken action: mv lhnd %s\n",actiondir.c_str());
+        output_port.write(actioncmd);
+
+
+        //printf("emotional response  %s\n",response.toString().c_str());
+
+        //printf("iDevER: taken action: mv lhnd %s\n",actiondir.c_str());
+
+        //Send generated emotion to  perseption module
 
 
     }

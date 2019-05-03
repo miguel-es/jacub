@@ -1,0 +1,44 @@
+{"lScheme":[
+			{
+				"id":"1","equilibrated":-1,
+				"context":[[-1]],
+				"lAction":["random"]
+			},
+			{
+				"id":"2",
+				"equilibrated":-1,
+				"context":[["T",1,"handOpen"]],
+				"lAction":["handClose"]
+			},
+			{
+				"id":"3",
+				"equilibrated":-1,
+				"context":[["V",1]],
+				"lAction":["showInterestIn V"]
+			},
+			{
+				"id":"4",
+				"equilibrated":-1,
+				"context":[["T",1]],
+				"lAction":["showInterestIn T"]
+			},
+			{
+				"id":"5",
+				"equilibrated":-1,
+				"context":[["V",2]],
+				"lAction":["changeAttention V"]
+			},
+			{
+				"id":"6",
+				"equilibrated":-1,
+				"context":[["T",2]],
+				"lAction":["changeAttention T"]
+			},
+			{
+				"id":"7",
+				"equilibrated":-1,
+				"context":[["V",2]],
+				"lAction":["showInterestIn V"]
+			}
+		]
+}

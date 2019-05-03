@@ -60,13 +60,14 @@ int main(int argc, char *argv[])
 
     Port input_port;
     Port dever_port;
-
+Port propio_port;
 
     imagePort.open("/imageProc/image/in");  // give the port a name
     outPort.open("/imageProc/image/out");
     output_port.open("/jacub/perception/context/out");
     input_port.open("/jacub/perception/emotion/in");
     dever_port.open("/jacub/perception/iDevER");
+    propio_port.open("/jacub/perception/propioception");
 
     color_range blue;
     blue.from = cv::Scalar(100, 0, 0);
@@ -197,7 +198,6 @@ for (std::vector<KeyPoint>::const_iterator i = keypoints.begin(); i != keypoints
     string id_attendedobj ="";
    	if(nblobs>0){
     int att = (rand() % nblobs)+1;
-    printf("attended => %d\n",att);
     id_attendedobj= "obj"+std::to_string(att);
     document[id_attendedobj.c_str()].AddMember("attended",true,allocator);
     }
@@ -260,9 +260,14 @@ StringBuffer strbuf;
 	            att_context.addString(strbuf2.GetString());
     dever_port.write(att_context);
 
-    printf("PM: Waiting for iDevER to perform action\n");
+    printf("PM: Waiting for DevER to perform action\n");
     Bottle done;
-    dever_port.read(done);
+    propio_port.read(done);
+
+    printf("Got %s\n",done.toString().c_str());
+
+
+
 }
 
 

@@ -131,7 +131,6 @@ using namespace rapidjson;
 	while ((pos = input_context.find("\"}")) != std::string::npos) {
 		input_context.replace(pos, 1, "}");
 	}*/
-	printf("CLEANSED =Z=> %s",input_context.c_str());
 	// create a rapidjson array type with similar syntax to std::vector
 	//rapidjson::Value objs(rapidjson::kArrayType);
 

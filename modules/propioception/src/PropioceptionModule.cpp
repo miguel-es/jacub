@@ -75,7 +75,7 @@
      virtual bool threadInit()
      {
 
-     if(!input_port.open("/jacub/propioception/in")){
+     if(!input_port.open("/jacub/propioception")){
             printf("Failed creating input port for propioception module");
             return false;
      }
@@ -176,13 +176,31 @@
      virtual void run()
      {
              moveHeadDown(60);
+             //moveLeftArm(-0.35,-0.1,-0.034,0.0,0.0,4.0);
      printf("Propioception Module: waiting for input \n");
-        Bottle input;
-        input_port.read(input);
+        Bottle action;
+        input_port.read(action);
         //if (input!=NULL) {
-     printf("got %s\n",input.toString().c_str());
+     printf("Got %s\n",action.toString().c_str());
+    bool done = false;
+    if(strcmp(action.toString().c_str(),"mv lhnd r")==0){
+        printf("Moving left hand to the right...\n");
+        done  = moveLeftArm(-0.35,-0.05,0.1,0.0,0.0,4.0);
+        printf("Done\n");
 
-     if(!moved){
+    }else if(strcmp(action.toString().c_str(),"mv lhnd l")==0){
+        printf("Moving left hand to the right...\n");
+        done  =  moveLeftArm(-0.35,0.03,0.1,0.0,0.0,4.0);
+        printf("Done\n");
+    }
+
+    //if(done){
+        Bottle donecmd;
+        donecmd.addString("done");
+        input_port.write(donecmd);
+
+    //}
+     /*if(!moved){
          //t=Time::now();
 
         //moveHeadRight(60);
@@ -195,7 +213,7 @@
        //buena moveLeftArm(-0.35,-0.1,-0.1,0.0,0.0,4.0);
 
       // pra -40 de mulñeca  moveLeftArm(-0.35,-0.1,-0.1,0.0,0.0,4.0);
-      moveLeftArm(-0.35,-0.1,-0.034,0.0,0.0,4.0);
+      /*moveLeftArm(-0.35,-0.1,-0.034,0.0,0.0,4.0);
         //levantar mano 0.256580715101553 0.657913812963914 0.172362917052873
         fprintf(stdout,"moving wrist...\n");
         moveWrist();
@@ -206,7 +224,7 @@
        fprintf(stdout,"levantando mano...\n");
 
        moved = true;
-       }
+       }*/
      }
 
      virtual void threadRelease()
