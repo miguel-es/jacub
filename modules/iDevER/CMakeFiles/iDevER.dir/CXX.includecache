@@ -37,6 +37,8 @@ rapidjson/filereadstream.h
 /usr/local/src/robot/jacub/modules/iDevER/src/rapidjson/filereadstream.h
 rapidjson/istreamwrapper.h
 -
+jsoncpp/json/json.h
+-
 fstream
 -
 iostream

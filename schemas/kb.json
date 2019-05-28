@@ -1,0 +1,45 @@
+{"schemes":[
+			{
+				"id":"1",
+				"equilibrated":-1,
+				"context":[{"sad":-1}, {"sad":-1}],
+				"actions":["random"]
+			},
+			{
+				"id":"2",
+				"equilibrated":-1,
+				"context":[{}, {"hap":1, "hand":"handOpen"}],
+				"actions":["handClose"]
+			},
+			{
+				"id":"3",
+				"equilibrated":-1,
+
+				"context":[{"hap":1},{}],
+				"actions":["showInterestInV"]
+			},
+			{
+				"id":"4",
+				"equilibrated":-1,
+				"context":[{}, {"hap":1}],
+				"actions":["showInterestInT"]
+			},
+			{
+				"id":"5",
+				"equilibrated":-1,
+				"context":[{"hap":2},{}],
+				"actions":["changeAttentionV"]
+			},
+			{
+				"id":"6",
+				"equilibrated":-1,
+				"context":[{}, {"hap":2}],
+				"actions":["changeAttentionT"]
+			},
+			{
+				"id":"7",
+				"equilibrated":-1,
+				"context":[{"hap":2}, {}],
+				"actions":["showInterestInV"]
+			}
+]}

@@ -23,6 +23,8 @@
 #include "rapidjson/filereadstream.h"
 #include <rapidjson/istreamwrapper.h>
 
+#include <jsoncpp/json/json.h>
+
 #include <fstream>
 #include <iostream>
 
@@ -41,6 +43,10 @@ using namespace yarp::os;
 
         Port input_port;
         Port output_port;
+
+        int totalSchemes;
+        bool partialMatch;
+        Document kb;
      // the event callback attached to the "motion-ongoing"
 
  public:
@@ -71,26 +77,29 @@ using namespace yarp::os;
             return false;
        }*/
 
-       std::ifstream ifs { R"(../../schemas/learned.json)" };
+       partialMatch = false;
+
+    // Load jacub's knowledge base (schemes)
+       std::ifstream ifs { R"(../../schemas/kb.json)" };
     if ( !ifs.is_open() )
     {
-        std::cerr << "Could not load ../../schemas/learned.json!\n";
+        std::cerr << "Could not load knokledge base ../../schemas/kb.json!\n";
         return EXIT_FAILURE;
     }
 
     IStreamWrapper isw { ifs };
 
-    Document doc {};
-    doc.ParseStream( isw );
+     //kb;
+    kb.ParseStream( isw );
 
     StringBuffer buffer {};
     Writer<StringBuffer> writer { buffer };
-    doc.Accept( writer );
+    kb.Accept( writer );
 
-    if (doc.HasParseError() )
+    if (kb.HasParseError() )
     {
-        std::cout << "Error  : " << doc.GetParseError()  << '\n'
-                  << "Offset : " << doc.GetErrorOffset() << '\n';
+        std::cout << "Error  : " << kb.GetParseError()  << '\n'
+                  << "Offset : " << kb.GetErrorOffset() << '\n';
         return EXIT_FAILURE;
     }
 
@@ -98,6 +107,8 @@ using namespace yarp::os;
 
     std::cout << jsonStr << '\n';
 
+    totalSchemes = kb["schemes"].GetArray().Size();
+        std::cout << totalSchemes << " loaded schemas" << '\n';
 
        if(!input_port.open("/jacub/DevER")){
             printf("Failed creating input port for DevER module");
@@ -110,9 +121,6 @@ using namespace yarp::os;
        }
 
        return true;
-
-
-
      }
 
      virtual void afterStart(bool s)
@@ -133,11 +141,11 @@ using namespace yarp::os;
         printf("waiting for input \n");
         Bottle input;
         input_port.read(input);
+                Document attendedContext;
         //if (input!=NULL) {
             printf("got %s\n",input.toString().c_str());
-           rapidjson::Document attendedctx;
 
-            attendedctx.SetObject();
+            attendedContext.SetObject();
             string input_context = input.toString();
 
             input_context.erase(0,1);
@@ -148,7 +156,7 @@ using namespace yarp::os;
 		input_context.replace(pos, 1, "");
 	}
 
-	if (attendedctx.Parse<0>(input_context.c_str()).HasParseError()){
+	if (attendedContext.Parse<0>(input_context.c_str()).HasParseError()){
                 printf("EM: Error trying to parse input\n");
                 return;
             }
@@ -156,28 +164,14 @@ using namespace yarp::os;
 
             StringBuffer strbuf;
 	Writer<StringBuffer> writer(strbuf);
-	attendedctx.Accept(writer);
+	attendedContext.Accept(writer);
 
 	std::cout << "DevER: received attended context \n"<< strbuf.GetString() << std::endl;
 
-	string actiondir =  "r";
+	string action =  engagement(&attendedContext);
+//string action ="";
 
-	if(attendedctx.HasMember("color")){
-	//printf("tiene miembro!!\n");
-
-		//printf("COLOR => %s",attendedobj.color);
-           // assert(attendedobj["color"].IsString());
-
-           rapidjson::Value& color = attendedctx["color"];
-//printf("holis");
-	//printf("COLOR => %s",color.GetString());
-
-
-            if(strcmp(color.GetString(), "red")==0){
-                actiondir = "l";
-            }////
-
-            }
+Json::Reader reader;
            /* double total = 0;
             for (int i=0; i<input.size(); i++) {
                 total += input.get(i).asInt64();
@@ -195,12 +189,10 @@ using namespace yarp::os;
 //printf(" Creating bottle \n");
         Bottle actioncmd;
 Bottle response;
-        actioncmd.addString("mv");
-        actioncmd.addString("lhnd");
-        actioncmd.addString(actiondir.c_str());
+        actioncmd.addString(action.c_str());
 
 
-        printf("iDevER: taken action: mv lhnd %s\n",actiondir.c_str());
+        printf("iDevER: taken action: %s\n",action.c_str());
         output_port.write(actioncmd);
 
 
@@ -213,12 +205,48 @@ Bottle response;
 
     }
 
+
      virtual void threadRelease()
      {
          // we require an immediate stop
          // before closing the left_arm for safety reason
 
          printf("Killing memory...\n");
+     }
+
+    string engagement(Document* context){
+
+     if(partialMatch){
+
+     }else{ //try a 100% matching
+        printf("Engagement: trying partial match");
+        for(auto& schema: kb["schemas"].GetArray()){
+            printf("holi iterando");
+        }
+
+     }
+
+     string action = "mvlhndr";
+
+	if(context->HasMember("color")){
+	//printf("tiene miembro!!\n");
+
+		//printf("COLOR => %s",attendedobj.color);
+           // assert(attendedobj["color"].IsString());
+
+          /*rapidjson::Value& color = context->color;
+//printf("holis");
+	//printf("COLOR => %s",color.GetString());
+
+
+            if(strcmp(color.GetString(), "red")==0){
+                action = "mvlhndl";
+            }////
+
+            }*/
+
+          return action;
+     }
      }
  };
 
