@@ -1,8 +1,8 @@
-#include "3DObject.h"
+/*#include "3DObject.h"
 
 3DObject(char* name, int x,int y, int z, int r, int g, int b, int osize,bool fixed)
 {
-    this.name = name;
+   /* this.name = name;
     int originx = x;
     int originy = y;
     int originz = z;
@@ -14,16 +14,16 @@
     int b = b;
     float osize ;
     bool fixed = fixed;
-    bool moving = false;
+    bool moving = false;*//*
 }
-
 bool isMoving(){
-    return originx==actualx && originy==actualy && originx==actualz;
-}
+/*
+    return originx==actualx && originy==actualy && originx==actualz;*/
+//}
 
 
 
-~3DObject()
-{
+//~3DObject()
+//{
     //dtor
-}
+//}

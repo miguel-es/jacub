@@ -6,10 +6,16 @@
 
 #IncludeRegexTransform: 
 
+../../src/utils/jutils.cpp
+string
+-
+
 /usr/local/src/robot/jacub/modules/iDevER/src/iDevER.cpp
 cstdio
 -
 cmath
+-
+jutils.cpp
 -
 yarp/os/Network.h
 -
@@ -25,19 +31,9 @@ yarp/math/Math.h
 -
 yarp/os/all.h
 -
-rapidjson/document.h
-/usr/local/src/robot/jacub/modules/iDevER/src/rapidjson/document.h
-rapidjson/writer.h
-/usr/local/src/robot/jacub/modules/iDevER/src/rapidjson/writer.h
-rapidjson/stringbuffer.h
-/usr/local/src/robot/jacub/modules/iDevER/src/rapidjson/stringbuffer.h
-rapidjson/prettywriter.h
-/usr/local/src/robot/jacub/modules/iDevER/src/rapidjson/prettywriter.h
-rapidjson/filereadstream.h
-/usr/local/src/robot/jacub/modules/iDevER/src/rapidjson/filereadstream.h
-rapidjson/istreamwrapper.h
--
 jsoncpp/json/json.h
+-
+yarp/os/impl/Logger.h
 -
 fstream
 -
@@ -750,6 +746,34 @@ yarp/os/MessageStack.h
 
 /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/api.h
 yarp/conf/api.h
+-
+
+/usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/impl/Logger.h
+yarp/conf/api.h
+-
+yarp/conf/system.h
+-
+yarp/os/ConstString.h
+-
+yarp/os/Log.h
+-
+yarp/os/impl/PlatformStdio.h
+-
+ace/Log_Msg.h
+-
+ace/Log_Record.h
+-
+ace/Log_Msg_Callback.h
+-
+cstdio
+-
+
+/usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/impl/PlatformStdio.h
+yarp/conf/system.h
+-
+ace/OS_NS_stdio.h
+-
+stdio.h
 -
 
 /usr/local/src/robot/yarp/src/libYARP_math/include/yarp/math/Math.h

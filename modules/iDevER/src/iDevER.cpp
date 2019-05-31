@@ -1,308 +1,385 @@
- // -*- mode:C++; tab-width:4; c-basic-offset:4; indent-tabs-mode:nil -*-
- //
- // A tutorial on how to use the Cartesian Interface to control a limb
- // in the operational space.
- //
- // Author: Ugo Pattacini - <ugo.pattacini@iit.it>
+// -*- mode:C++; tab-width:4; c-basic-offset:4; indent-tabs-mode:nil -*-
+//
+// A tutorial on how to use the Cartesian Interface to control a limb
+// in the operational space.
+//
+// Author: Ugo Pattacini - <ugo.pattacini@iit.it>
 
- #include <cstdio>
- #include <cmath>
+#include <cstdio>
+#include <cmath>
 
- #include <yarp/os/Network.h>
- #include <yarp/os/RFModule.h>
- #include <yarp/os/RateThread.h>
- #include <yarp/os/Time.h>
- #include <yarp/sig/Vector.h>
- #include <yarp/math/Math.h>
+#include <jutils.cpp>
+
+#include <yarp/os/Network.h>
+#include <yarp/os/RFModule.h>
+#include <yarp/os/RateThread.h>
+#include <yarp/os/Time.h>
+#include <yarp/sig/Vector.h>
+#include <yarp/math/Math.h>
 #include <yarp/os/all.h>
 
-#include "rapidjson/document.h"
-#include "rapidjson/writer.h"
-#include "rapidjson/stringbuffer.h"
-#include "rapidjson/prettywriter.h"
-#include "rapidjson/filereadstream.h"
-#include <rapidjson/istreamwrapper.h>
-
 #include <jsoncpp/json/json.h>
+
+#include <yarp/os/impl/Logger.h>
 
 #include <fstream>
 #include <iostream>
 
- #define CTRL_THREAD_PER     0.02    // [s]
- #define PRINT_STATUS_PER    1.0     // [s]
- #define MAX_TORSO_PITCH     30.0    // [deg]
+#define CTRL_THREAD_PER     0.02    // [s]
+#define PRINT_STATUS_PER    1.0     // [s]
+#define MAX_TORSO_PITCH     30.0    // [deg]
 
- using namespace std;
-using namespace rapidjson;
+using namespace std;
 using namespace yarp::os;
+using namespace yarp::os::impl;
 
- class DevERThread: public RateThread
- {
+class DevERThread: public RateThread
+{
 
-     rapidjson::Document LTM; //Long term memory (esquemas aprendidos)
+    Port input_port;
+    Port output_port;
 
-        Port input_port;
-        Port output_port;
+    int totalSchemes;
+    bool partialMatch;
 
-        int totalSchemes;
-        bool partialMatch;
-        Document kb;
-     // the event callback attached to the "motion-ongoing"
+    bool accommodated;
+    Json::Value kb;
+    string robotName;
+    // the event callback attached to the "motion-ongoing"
 
- public:
-    DevERThread(const double period) : RateThread(int(period*1000.0))
-     {
-         // we wanna raise an event each time the arm is at 20%
-         // of the trajectory (or 80% far from the target)
-         //cartesianEventParameters.type="motion-ongoing";
-         //cartesianEventParameters.motionOngoingCheckPoint=0.2;
-     }
-
-     virtual bool threadInit()
-     {
-      //ifstream inFile;
-      //inFile.open("../schemas/learned_schemas.json");
-        /*FILE* fp = fopen("../../schemas/learned.json", "rb"); // non-Windows use "r"
-        char readBuffer[65536];
-        FileReadStream is(fp, readBuffer, sizeof(readBuffer));
-
-        LTM.ParseStream(is);
-        StringBuffer strbuf;
-	Writer<StringBuffer> writer(strbuf);
-	LTM.Accept(writer);*/
-
-
-/*cout << "Visual context: "<< strbuf.GetString() << endl;	   /*if(!port.open("/memory/in")){
-            printf("Failed creating port for memory");
-            return false;
-       }*/
-
-       partialMatch = false;
-
-    // Load jacub's knowledge base (schemes)
-       std::ifstream ifs { R"(../../schemas/kb.json)" };
-    if ( !ifs.is_open() )
+public:
+    DevERThread(string robotName, const double period) : RateThread(int(period*1000.0))
     {
-        std::cerr << "Could not load knokledge base ../../schemas/kb.json!\n";
-        return EXIT_FAILURE;
+        // we wanna raise an event each time the arm is at 20%
+        // of the trajectory (or 80% far from the target)
+        //cartesianEventParameters.type="motion-ongoing";
+        //cartesianEventParameters.motionOngoingCheckPoint=0.2;
+        this->robotName = robotName;
+
     }
 
-    IStreamWrapper isw { ifs };
-
-     //kb;
-    kb.ParseStream( isw );
-
-    StringBuffer buffer {};
-    Writer<StringBuffer> writer { buffer };
-    kb.Accept( writer );
-
-    if (kb.HasParseError() )
+    virtual bool threadInit()
     {
-        std::cout << "Error  : " << kb.GetParseError()  << '\n'
-                  << "Offset : " << kb.GetErrorOffset() << '\n';
-        return EXIT_FAILURE;
-    }
 
-    const std::string jsonStr { buffer.GetString() };
 
-    std::cout << jsonStr << '\n';
+        partialMatch = false;
 
-    totalSchemes = kb["schemes"].GetArray().Size();
-        std::cout << totalSchemes << " loaded schemas" << '\n';
 
-       if(!input_port.open("/jacub/DevER")){
+        /* ifstream ifs("../../schemas/kb.json");
+        Json::Reader reader;
+        Json::Value obj;
+        reader.parse(ifs, obj);*/
+
+
+
+
+
+        Json::Reader reader;
+        reader.parse("{\"schemes\":[]}",  kb);
+
+        if(!input_port.open("/"+robotName+"/iDevER:i"))
+        {
             printf("Failed creating input port for DevER module");
             return false;
-       }
+        }
 
-       if(!output_port.open("/jacub/DevER/out")){
-            printf("Failed creating output port for DevER module");
+        if(!output_port.open("/"+robotName+"/DevER:or"))
+        {
+            printf("Failed creating port for body controler (/%s/DevER:or)",robotName);
             return false;
-       }
+        }
 
-       return true;
-     }
+string  local = "/"+robotName+"/DevER:or";
+string remote = "/"+robotName+"/bodyController:ir";
 
-     virtual void afterStart(bool s)
-     {
-         if (s)
-             printf("DevER thread started successfully\n");
-         else
-             printf("DevER thread did not start\n");
-
-         //t=t0=t1=Time::now();
-     }
-
-     virtual void run()
-     {
-
-
-         //while (true) {
-        printf("waiting for input \n");
-        Bottle input;
-        input_port.read(input);
-                Document attendedContext;
-        //if (input!=NULL) {
-            printf("got %s\n",input.toString().c_str());
-
-            attendedContext.SetObject();
-            string input_context = input.toString();
-
-            input_context.erase(0,1);
-            input_context.erase(input_context.size()-1,input_context.size());
-            size_t pos;
-            //string "\\";
-	while ((pos = input_context.find("\\")) != std::string::npos) {
-		input_context.replace(pos, 1, "");
-	}
-
-	if (attendedContext.Parse<0>(input_context.c_str()).HasParseError()){
-                printf("EM: Error trying to parse input\n");
-                return;
-            }
-
-
-            StringBuffer strbuf;
-	Writer<StringBuffer> writer(strbuf);
-	attendedContext.Accept(writer);
-
-	std::cout << "DevER: received attended context \n"<< strbuf.GetString() << std::endl;
-
-	string action =  engagement(&attendedContext);
-//string action ="";
-
-Json::Reader reader;
-           /* double total = 0;
-            for (int i=0; i<input.size(); i++) {
-                total += input.get(i).asInt64();
-            }
-            //Bottle output;// = port.prepare();
-            //output.clear();
-            //output.addString("total");
-            //output.addInt64(total);
-            printf("total %i",total);
-            //port.write();
-        }*/
-       // port.
-        //input->clear();
-        //printf("endedn runing\n");
-//printf(" Creating bottle \n");
-        Bottle actioncmd;
-Bottle response;
-        actioncmd.addString(action.c_str());
-
-
-        printf("iDevER: taken action: %s\n",action.c_str());
-        output_port.write(actioncmd);
-
-
-        //printf("emotional response  %s\n",response.toString().c_str());
-
-        //printf("iDevER: taken action: mv lhnd %s\n",actiondir.c_str());
-
-        //Send generated emotion to  perseption module
-
+    if(Network::connect(local,remote))
+    {
+        yInfo(" Stablished  port connection between %s and /%s",local.c_str(),remote.c_str());
+    }
+    else
+    {
+        yWarning(" Failed stablishing connection between %s and %s. Is the bodyController module running?\n",local.c_str(),remote.c_str());
 
     }
 
 
-     virtual void threadRelease()
-     {
-         // we require an immediate stop
-         // before closing the left_arm for safety reason
+        return true;
+    }
 
-         printf("Killing memory...\n");
-     }
+    virtual void afterStart(bool s)
+    {
+        if (s)
+            printf("DevER thread started successfully\n");
+        else
+            printf("DevER thread did not start\n");
 
-    string engagement(Document* context){
+        //t=t0=t1=Time::now();
+    }
 
-     if(partialMatch){
+    virtual void run()
+    {
+        printf("waiting for input \n");
 
-     }else{ //try a 100% matching
-        printf("Engagement: trying partial match");
-        for(auto& schema: kb["schemas"].GetArray()){
-            printf("holi iterando");
+        Bottle input;
+        input_port.read(input);
+
+
+
+        Json::Reader reader;
+        Json::Value attendedContext;
+
+        //printf("got input %s ----- \n",input.toString().c_str());
+        string input_string = input.toString();
+        prepareInput(input_string);
+
+        reader.parse(input_string.c_str(),  attendedContext);
+
+        std::cout << "Got context: " << '\n' << attendedContext.toStyledString() << '\n';
+
+        Json::Value matchedSchema = engagement(attendedContext);
+
+        for(Json::Value actionv: matchedSchema["actions"])
+        {
+            string action = actionv.asString();
+            std::cout << "Dev-ER: Excecuting action '" << action << "'\n";
+
+            if(action=="showInterestInV" || action=="showInterestInT" || action=="changeAttentionT"|| action=="changeAttentionV")  //mental actions
+            {
+                printf("mental action\n");
+            }
+            else   //bodily actions
+            {
+                //Send actions to body
+                printf("bodily action\n");
+                Bottle actioncmd;
+                Bottle response;
+                actioncmd.addString(action);
+                output_port.write(actioncmd);
+            }
+        }
+        //string action ="mv";
+
+    }
+
+
+    virtual void threadRelease()
+    {
+        // we require an immediate stop
+        // before closing the left_arm for safety reason
+
+        printf("Stoping iDevER...\n");
+
+        if(accommodated) //save the knowled base in file system
+        {
+
+        }
+    }
+
+    /**
+    * Searches among the learned schemas for the best match for the current context.
+    *
+    * @param context to match against coded as a json document
+    * @return the matched schema coded as a json document
+    */
+
+    Json::Value engagement(Json::Value context)
+    {
+
+        // std::cout << "context"<<context.toStyledString()<<'\n';
+        Json::Value matchedSchema;
+        float maxMatch = 0;
+
+        if(partialMatch) // if partial match is allowed
+        {
+
+        }
+        else   //try a 100% matching
+        {
+            printf("Engagement: trying partial match\n");
+            // std::cout << "KB"<<kb["schemes"].toStyledString()<<'\n';
+            for(Json::Value& schema: kb["schemes"])
+            {
+                //printf("entro\n");
+                float permatch = match(context,schema["context"]);
+                if(permatch>maxMatch)
+                {
+                    maxMatch = permatch;
+                    matchedSchema = schema;
+                }
+
+            }
+
         }
 
-     }
+        std::cout << "Engagement: matched schema [ " << maxMatch <<"% ]"<< matchedSchema.toStyledString() <<'\n';
+        return matchedSchema;
+    }
 
-     string action = "mvlhndr";
-
-	if(context->HasMember("color")){
-	//printf("tiene miembro!!\n");
-
-		//printf("COLOR => %s",attendedobj.color);
-           // assert(attendedobj["color"].IsString());
-
-          /*rapidjson::Value& color = context->color;
-//printf("holis");
-	//printf("COLOR => %s",color.GetString());
+    /**
+    * Compares two contexts
+    *
+    * @param contexts to be compared, the first will be compared agains the second
+    * @return matching percentaje. A 100 return value means a perfect match
+    */
 
 
-            if(strcmp(color.GetString(), "red")==0){
-                action = "mvlhndl";
-            }////
+    float match(Json::Value context1,Json::Value context2)
+    {
+        //printf("matching...\n");
+        float match = 0;
 
-            }*/
+        if(context2[1].size()==0)  // if tactile context is empty then it matches anything
+        {
+            match+=50;
+        }
 
-          return action;
-     }
-     }
- };
+        if(context2[0].size()==0)  // if visual context is empty then it matches anything
+        {
+            match+=50;
+        }
+        else
+        {
+            //printf("cisual contest not empty\n");
+
+            Json::Value::Members contenxtMembers = context1[0].getMemberNames();
+            int membersSize = contenxtMembers.size();
+            //std::cout << "camate [  ]"<<'\n';
+            for(string memberName: contenxtMembers)
+            {
+                //std::cout << "chekin [ " << memberName <<" ]"<<'\n';
+                if(context2[0][memberName].empty() || context1[0][memberName]==context2[0][memberName])
+                {
+                    match+=50/membersSize;
+                }
+            }
+
+        }
+        return match;
+
+    }
+
+    void test()
+    {
+        Json::Reader reader;
+        Json::Value context;
+        reader.parse("[{\"hap\":1,\"color\":\"red\",\"size\":\"0.3\"}, {}]",  context);
+
+        Json::Value matchedSchema = engagement(context);
+
+    }
+
+    bool loadKB(string kb_file){
+            // Load jacub's knowledge base (schemes)
+        //std::ifstream ifs { R"("++")" };
+        std::ifstream ifs;
+ ifs.open(kb_file);
+        //std::ifstream ifs("("+kb_file+")" );
+        if ( !ifs.is_open() )
+        {
+            std::cerr << "Could not load knokledge base "<<kb_file<<"\n";
+            return EXIT_FAILURE;
+        }
+
+        Json::Reader reader;
+        //Json::Value kb; // array of schemas
+        reader.parse(ifs, kb);
+
+        //std::cout << kb["schemes"].toStyledString() << '\n';
+
+        // toStyledString	(		 )
+        totalSchemes = kb["schemes"].size();
+
+        std::cout << totalSchemes << " schemas loaded" << '\n';
+    }
+};
 
 
 
- class DevER: public RFModule
- {
- protected:
-     DevERThread *thr;
+class DevER: public RFModule
+{
+protected:
+    DevERThread *devERthr;
 
- public:
-     virtual bool configure(ResourceFinder &rf)
-     {
-         Time::turboBoost();
+public:
+    virtual bool configure(ResourceFinder &rf)
+    {
 
-         thr=new DevERThread(CTRL_THREAD_PER);
-         if (!thr->start())
-         {
-             delete thr;
-             return false;
-         }
+    string robotName = rf.check("robot",Value("jacub")).asString();
+        //string robotName = rf.find("robot").asString();
+        printf("Encontró nombre de robot: %s\n",robotName.c_str());
 
-         return true;
-     }
+        Time::turboBoost();
+        devERthr=new DevERThread(robotName, CTRL_THREAD_PER);
+        if (!devERthr->start())
+        {
+            delete devERthr;
+            return false;
+        }
 
-     virtual bool close()
-     {
-         thr->stop();
-         delete thr;
+        devERthr->loadKB(rf.check("kb_file",Value("../../schemas/kb.json")).toString());
 
-         return true;
-     }
+        return true;
+    }
 
-     virtual double getPeriod()    { return 1.0;  }
-     virtual bool   updateModule() { return true; }
- };
+    virtual bool close()
+    {
+        devERthr->stop();
+        delete devERthr;
+
+        return true;
+    }
+
+    virtual double getPeriod()
+    {
+        return 1.0;
+    }
+    virtual bool   updateModule()
+    {
+        return true;
+    }
+};
 
 
 
- int main()
- {
-     Network yarp;
+int main(int argc, char *argv[])
+{
+    Network yarp;
 
-     if (!yarp.checkNetwork())
-     {
-         printf("Error: yarp server does not seem available\n");
-         return 1;
-     }
+    if (!yarp.checkNetwork())
+    {
+        yError("Yarp server does not seem available\n");
+        return 1;
+    }
 
-     DevER emo;
 
-     ResourceFinder rf;
+    DevER idever;
 
-     emo.runModule(rf);
+    ResourceFinder rf;
+rf.setVerbose(); //logs searched directories
+rf.setDefaultConfigFile("config.ini"); //specifies a default configuration file
+rf.configure(argc,argv);
+//idever.configure(rf);
 
-     //return Network::connect("/perception/context/out","/memory/in");
+string robotName = rf.check("robot",Value("jacub")).asString();
+
+/*
+string  local = "/"+robotName+"/DevER:or";
+string remote = "/"+robotName+"/bodyController:ir";
+
+    if(Network::connect(local,remote))
+    {
+        yError(" Yarp server does not seem available\n");
+        yInfo(" Stablished  port connection between %s and /%s",local.c_str(),remote.c_str());
+    }
+    else
+    {
+        yWarning(" Failed stablishing connection between %s and %s. Is the bodyController module running?\n",local.c_str(),remote.c_str());
+
+    }
+    */
+
+    idever.runModule(rf);
+    //return Network::connect("/perception/context/out","/memory/in");
     // return 0;
- }
+}
 

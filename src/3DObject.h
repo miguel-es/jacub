@@ -1,8 +1,4 @@
-#ifndef 3DOBJECT_H
-#define 3DOBJECT_H
-
-
-class 3DObject
+/*class 3DObject
 {
     public:
         3DObject(char* name, int x,int y, int z, int r, int g, int b, int osize,bool fixed);
@@ -26,5 +22,4 @@ class 3DObject
     bool fixed;
     bool moving;
 };
-
-#endif // 3DOBJECT_H
+*/
