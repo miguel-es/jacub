@@ -16,11 +16,8 @@
  #include <yarp/math/Math.h>
 #include <yarp/os/all.h>
 
-#include "rapidjson/document.h"
-#include "rapidjson/writer.h"
-#include "rapidjson/stringbuffer.h"
-#include "rapidjson/prettywriter.h"
-
+#include <jsoncpp/json/json.h>
+#include <jutils.cpp>
 
  #define CTRL_THREAD_PER     0.02    // [s]
  #define PRINT_STATUS_PER    1.0     // [s]
@@ -28,16 +25,12 @@
 
  using namespace std;
 using namespace yarp::os;
-using namespace rapidjson;
 
  class EmotionThread: public RateThread
  {
-
-     rapidjson::Document STM;
-
-        Port input_port;
-        Port output_port;
-        Port emo_per_port;
+        Port inputContextPort;
+        Port outputEmotionalContextPort;
+        Port outputEmotionPort;
      // the event callback attached to the "motion-ongoing"
 
  public:
@@ -71,17 +64,17 @@ using namespace rapidjson;
             return false;
        }*/
 
-       if(!input_port.open("/jacub/emotion/context/in")){
+       if(!inputContextPort.open("/jacub/emotion/context/in")){
             printf("Failed creating input port for emotion module");
             return false;
        }
 
-       if(!output_port.open("/jacub/emotion/out")){
+       if(!outputEmotionalContextPort.open("/jacub/emotion/context/out")){
             printf("Failed creating output port for emotion module");
             return false;
        }
 
-       if(!emo_per_port.open("/jacub/emotion/perception")){
+       if(!outputEmotionPort.open("/jacub/emotion/perception")){
             printf("Failed creating /jacub/emotion/perception/out port");
             return false;
        }
@@ -106,24 +99,23 @@ using namespace rapidjson;
      {
          //while (true) {
         printf("Emotion: waiting for input \n");
-        Bottle input;
-        emo_per_port.read(input);
-        //if (input!=NULL) {
-            printf("Emotion: Got %s\n",input.toString().c_str());
+                Bottle input;
+        inputContextPort.read(input);
 
-            rapidjson::Document attendedobj;
 
-            attendedobj.SetObject();
-            string input_context = input.toString();
 
-            input_context.erase(0,1);
-            input_context.erase(input_context.size()-1,input_context.size());
-            size_t pos;
-            //string "\\";
-	while ((pos = input_context.find("\\")) != std::string::npos) {
-		input_context.replace(pos, 1, "");
-	}
+        Json::Reader reader;
+        Json::Value attendedContext;
 
+        //printf("got input %s ----- \n",input.toString().c_str());
+        string input_string = input.toString();
+        prepareInput(input_string);
+
+        reader.parse(input_string.c_str(),  attendedContext);
+
+        std::cout << "Got context: " << '\n' << attendedContext.toStyledString() << '\n';
+
+        std::cout << "Got context: " << '\n' << attendedContext[0].toStyledString() << '\n';
 
 	/*while ((pos = input_context.find("\"{")) != std::string::npos) {
 		input_context.replace(pos, 1, "{");
@@ -136,7 +128,7 @@ using namespace rapidjson;
 
 	// must pass an allocator when the object may need to allocate memory
 
-            if (attendedobj.Parse<0>(input_context.c_str()).HasParseError()){
+            /*if (attendedobj.Parse<0>(input_context.c_str()).HasParseError()){
                 printf("EM: Error trying to parse input\n");
                 return;
             }
@@ -147,39 +139,34 @@ using namespace rapidjson;
 	attendedobj.Accept(writer);
 
 	std::cout << "EM: received attended context "<< strbuf.GetString() << std::endl;
-
+*/
 	string gemotion =  "hap";
+	if(attendedContext[0].empty()){
+	printf("entro1\n");
+       // ((Json::objectValue) attendedContext[0]).append("sad");
+        gemotion = "sad";
+                std::cout << "Got context2: " << '\n' << attendedContext[0].type() << '\n';
+        attendedContext[0]["sad"] = -1;// = -1;
+                        std::cout << "Got context3: " << '\n' << attendedContext[0].toStyledString() << '\n';
 
-	if(attendedobj.HasMember("color")){
-	//printf("tiene miembro!!\n");
-
-		//printf("COLOR => %s",attendedobj.color);
-           // assert(attendedobj["color"].IsString());
-
-           rapidjson::Value& color = attendedobj["color"];
-//printf("holis");
-	//printf("COLOR => %s",color.GetString());
-
-
-            if(strcmp(color.GetString(), "red")==0){
-                gemotion = "sad";
-            }////
-
+    }else if(!attendedContext[0]["color"].empty()){
+printf("entro2/n");
+            if(strcmp(attendedContext[0]["color"].asString().c_str(), "c1")==0){
+                attendedContext[0]["hap"] = 1;
+        //attendedContext[0]["hap"] = 1;
+            }else{
+            gemotion = "sad";
             }
-           /* double total = 0;
-            for (int i=0; i<input.size(); i++) {
-                total += input.get(i).asInt64();
-            }
-            //Bottle output;// = port.prepare();
-            //output.clear();
-            //output.addString("total");
-            //output.addInt64(total);
-            printf("total %i",total);
-            //port.write();
-        }*/
-       // port.
-        //input->clear();
-        //printf("endedn runing\n");
+
+
+    } printf("saltó/n");
+
+
+          if(attendedContext[1].empty()){
+        attendedContext[1]["sad"]=-1;
+       // attendedContext[1] = -1;
+    }
+
 
         Bottle emotioncmd;
 Bottle response;
@@ -187,16 +174,16 @@ Bottle response;
         emotioncmd.addString("all");
         emotioncmd.addString(gemotion.c_str());
 
-        output_port.write(emotioncmd,response);
+        outputEmotionPort.write(emotioncmd,response);
 
         //printf("emotional response  %s\n",response.toString().c_str());
 
-        printf("Generated emotion: %s\n",gemotion.c_str());
+        std::cout << "Emotional context: "<< attendedContext.toStyledString() << std::endl;
 
         //Send generated emotion to  perseption module
-        Bottle emotion;
-        emotion.addString(gemotion.c_str());
-        emo_per_port.write(emotion);
+       // Bottle response;
+        response.addString(attendedContext.toStyledString());
+        outputEmotionalContextPort.write(response);
    // _emotioncmd.addString("set");
     }
 

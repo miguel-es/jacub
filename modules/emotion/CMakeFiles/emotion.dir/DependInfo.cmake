@@ -22,6 +22,7 @@ set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "/usr/local/src/robot/yarp/src/libYARP_manager/include"
   "/usr/local/src/robot/yarp/src/libYARP_profiler/include"
   "/usr/local/src/robot/yarp/src/libYARP_logger/include"
+  "../../src/utils"
   )
 
 # Targets to which this target links.

@@ -8,6 +8,7 @@ CMakeFiles/perception.dir/src/Perception.o
  /usr/local/src/robot/yarp/build/src/libYARP_conf/include/yarp/conf/compiler.h
  /usr/local/src/robot/yarp/build/src/libYARP_conf/include/yarp/conf/numeric.h
  /usr/local/src/robot/yarp/build/src/libYARP_conf/include/yarp/conf/system.h
+ /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/AbstractContactable.h
  /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/BinPortable-inl.h
  /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/BinPortable.h
  /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/Bottle.h
@@ -44,6 +45,12 @@ CMakeFiles/perception.dir/src/Perception.o
  /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/Portable.h
  /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/Property.h
  /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/QosStyle.h
+ /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/RFModule.h
+ /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/RateThread.h
+ /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/ResourceFinder.h
+ /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/ResourceFinderOptions.h
+ /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/RpcServer.h
+ /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/Runnable.h
  /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/Searchable.h
  /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/Semaphore.h
  /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/SystemClock.h
@@ -59,6 +66,8 @@ CMakeFiles/perception.dir/src/Perception.o
  /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/Value.h
  /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/Vocab.h
  /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/api.h
+ /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/impl/Logger.h
+ /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/impl/PlatformStdio.h
  /usr/local/src/robot/yarp/src/libYARP_sig/include/yarp/sig/Image.h
  /usr/local/src/robot/yarp/src/libYARP_sig/include/yarp/sig/ImageDraw.h
  /usr/local/src/robot/yarp/src/libYARP_sig/include/yarp/sig/ImageFile.h

@@ -360,7 +360,7 @@ rf.setDefaultConfigFile("config.ini"); //specifies a default configuration file
 rf.configure(argc,argv);
 //idever.configure(rf);
 
-string robotName = rf.check("robot",Value("jacub")).asString();
+//string robotName = rf.check("robot",Value("jacub")).asString();
 
 /*
 string  local = "/"+robotName+"/DevER:or";

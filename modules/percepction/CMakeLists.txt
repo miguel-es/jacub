@@ -17,8 +17,9 @@ source_group("Header Files" FILES ${folder_header})
 
 include_directories(${PROJECT_SOURCE_DIR}/include
                     ${YARP_INCLUDE_DIRS}
-                    ${OpenCV_INCLUDE_DIRS})
-
+                    ${OpenCV_INCLUDE_DIRS}
+		    ../../src/utils/)
+set (CMAKE_EXE_LINKER_FLAGS -ljsoncpp)
 add_executable(${PROJECTNAME} ${folder_header} ${folder_source})
 #target_link_libraries(${PROJECTNAME} ${YARP_LIBRARIES} ${OpenCV_LIBRARIES})
 target_link_libraries(${PROJECTNAME} ${YARP_LIBRARIES} opencv_features2d opencv_flann opencv_imgproc opencv_core)

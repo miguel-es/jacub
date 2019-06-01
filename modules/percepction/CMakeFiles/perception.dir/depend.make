@@ -7,6 +7,7 @@ CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/build/src/
 CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/build/src/libYARP_conf/include/yarp/conf/compiler.h
 CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/build/src/libYARP_conf/include/yarp/conf/numeric.h
 CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/build/src/libYARP_conf/include/yarp/conf/system.h
+CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/AbstractContactable.h
 CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/BinPortable-inl.h
 CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/BinPortable.h
 CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/Bottle.h
@@ -43,6 +44,12 @@ CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/src/libYAR
 CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/Portable.h
 CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/Property.h
 CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/QosStyle.h
+CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/RFModule.h
+CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/RateThread.h
+CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/ResourceFinder.h
+CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/ResourceFinderOptions.h
+CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/RpcServer.h
+CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/Runnable.h
 CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/Searchable.h
 CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/Semaphore.h
 CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/SystemClock.h
@@ -58,6 +65,8 @@ CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/src/libYAR
 CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/Value.h
 CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/Vocab.h
 CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/api.h
+CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/impl/Logger.h
+CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/src/libYARP_OS/include/yarp/os/impl/PlatformStdio.h
 CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/src/libYARP_sig/include/yarp/sig/Image.h
 CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/src/libYARP_sig/include/yarp/sig/ImageDraw.h
 CMakeFiles/perception.dir/src/Perception.o: /usr/local/src/robot/yarp/src/libYARP_sig/include/yarp/sig/ImageFile.h
