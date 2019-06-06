@@ -69,7 +69,7 @@ using namespace yarp::os;
             return false;
        }
 
-       if(!outputEmotionalContextPort.open("/jacub/emotion/context/out")){
+       if(!outputEmotionalContextPort.open("/jacub/emotion/emotionalContext:o")){
             printf("Failed creating output port for emotion module");
             return false;
        }
@@ -146,24 +146,24 @@ using namespace yarp::os;
        // ((Json::objectValue) attendedContext[0]).append("sad");
         gemotion = "sad";
                 std::cout << "Got context2: " << '\n' << attendedContext[0].type() << '\n';
-        attendedContext[0]["sad"] = -1;// = -1;
+        attendedContext[0]["emo"] = "sad";// = -1;
                         std::cout << "Got context3: " << '\n' << attendedContext[0].toStyledString() << '\n';
 
     }else if(!attendedContext[0]["color"].empty()){
 printf("entro2/n");
             if(strcmp(attendedContext[0]["color"].asString().c_str(), "c1")==0){
-                attendedContext[0]["hap"] = 1;
+                attendedContext[0]["emo"] = "hap";
         //attendedContext[0]["hap"] = 1;
             }else{
             gemotion = "sad";
             }
 
 
-    } printf("saltó/n");
+    }
 
 
           if(attendedContext[1].empty()){
-        attendedContext[1]["sad"]=-1;
+        attendedContext[1]["emo"]="sad";
        // attendedContext[1] = -1;
     }
 
@@ -182,7 +182,11 @@ Bottle response;
 
         //Send generated emotion to  perseption module
        // Bottle response;
-        response.addString(attendedContext.toStyledString());
+
+       Json::FastWriter fastWriter;
+std::string output = fastWriter.write(attendedContext);
+
+        response.addString(output);
         outputEmotionalContextPort.write(response);
    // _emotioncmd.addString("set");
     }

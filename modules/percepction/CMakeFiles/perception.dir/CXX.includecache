@@ -6,6 +6,10 @@
 
 #IncludeRegexTransform: 
 
+../../src/utils/jutils.cpp
+string
+-
+
 /usr/local/src/robot/jacub/modules/percepction/src/Perception.cpp
 stdio.h
 -
@@ -46,6 +50,8 @@ opencv2/core/core.hpp
 opencv2/opencv.hpp
 -
 yarp/sig/all.h
+-
+jutils.cpp
 -
 
 /usr/local/src/robot/jacub/modules/percepction/src/VisualContext.h
