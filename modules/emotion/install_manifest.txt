@@ -1,2 +1,0 @@
-/usr/local/bin/emotion
-/usr/local/share/iCub/modules/emotion.xml

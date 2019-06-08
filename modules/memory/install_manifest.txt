@@ -1,2 +1,0 @@
-/usr/local/bin/memory
-/usr/local/share/iCub/modules/memory.xml

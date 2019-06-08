@@ -1,2 +1,0 @@
-/usr/local/bin/iDevER
-/usr/local/share/iCub/modules/iDevER.xml

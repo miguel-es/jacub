@@ -1,7 +1,0 @@
-/usr/local/src/robot/jacub/modules/percepction/CMakeFiles/install/strip.dir
-/usr/local/src/robot/jacub/modules/percepction/CMakeFiles/install/local.dir
-/usr/local/src/robot/jacub/modules/percepction/CMakeFiles/perception.dir
-/usr/local/src/robot/jacub/modules/percepction/CMakeFiles/edit_cache.dir
-/usr/local/src/robot/jacub/modules/percepction/CMakeFiles/rebuild_cache.dir
-/usr/local/src/robot/jacub/modules/percepction/CMakeFiles/install.dir
-/usr/local/src/robot/jacub/modules/percepction/CMakeFiles/list_install_components.dir

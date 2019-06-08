@@ -1,7 +1,0 @@
-/usr/local/src/robot/jacub/modules/world/CMakeFiles/install/strip.dir
-/usr/local/src/robot/jacub/modules/world/CMakeFiles/install/local.dir
-/usr/local/src/robot/jacub/modules/world/CMakeFiles/jworld.dir
-/usr/local/src/robot/jacub/modules/world/CMakeFiles/edit_cache.dir
-/usr/local/src/robot/jacub/modules/world/CMakeFiles/rebuild_cache.dir
-/usr/local/src/robot/jacub/modules/world/CMakeFiles/install.dir
-/usr/local/src/robot/jacub/modules/world/CMakeFiles/list_install_components.dir

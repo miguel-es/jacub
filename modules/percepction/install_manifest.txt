@@ -1,2 +1,0 @@
-/usr/local/bin/perception
-/usr/local/share/iCub/modules/perception.xml
