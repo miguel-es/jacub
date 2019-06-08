@@ -32,6 +32,7 @@
 #include <opencv2/opencv.hpp>
 
 #include <yarp/sig/all.h>
+#include <jutils.cpp>
 
 #define CTRL_THREAD_PER     0.02    // [s]
 
@@ -65,10 +66,11 @@ string robotName;
     BufferedPort<ImageOf<PixelBgr> > outputImagePort;
     Port outputContextPort;
 
-    Port inputEmotionPort;
+    Port inputEmotionalContextPort;
     Port outputAttendedContextPort;
-    Port propio_port;
+    Port inputExpectationPort;
     Json::Value perceptualMemory;
+    Json::Value expectation;
 
             Json::Reader jreader;
 
@@ -149,73 +151,36 @@ public:
 
         }
 
-    inputEmotionPort.open("/"+robotName+"/perception/emotion:i");
-    outputAttendedContextPort.open("/"+robotName+"/perception/attention/context:o");
 
-    //propio_port.open("/jacub/perception/propioception");
 
-   /* std::ifstream ifs;
- ifs.open(perceptualMemoryPath);
-        //std::ifstream ifs("("+kb_file+")" );
-        if ( !ifs.is_open() )
+
+        local = "/"+robotName+"/perception/emotionalContext:i";
+            remote = "/"+robotName+"/emotion/emotionalContext:o";
+
+                inputEmotionalContextPort.open(local);
+
+            //outputImagePort.open("/"+robotName+"/perception/image:o");
+
+            if(Network::connect(remote, local))
         {
-            std::cerr << "Could not load perception file "<<perceptualMemoryPath<<"\n";
-            return EXIT_FAILURE;
+            yInfo(" Stablished  port connection between %s and %s",local.c_str(),remote.c_str());
+        }
+        else
+        {
+            yWarning(" Failed stablishing connection between %s and %s. Is emotion module running?\n",local.c_str(),remote.c_str());
+
         }
 
-        Json::Reader reader;
-        //Json::Value kb; // array of schemas
-        reader.parse(ifs, perceptualMemory);*/
+       // inputEmotionPort.open("/"+robotName+"/perception/emotionalContext:i");
 
-/*son::Reader reader;
-        reader.parse("{\"schemes\":[]}",  kb);
-
-    color_range c1;
-    c1.from = cv::Scalar(100, 0, 0);
-    c1.to = cv::Scalar(255, 0, 0);
-    c1.name = "c1";
-    color_range c2;
-    c2.from = cv::Scalar(0, 0, 100);
-    c2.to = cv::Scalar(0, 0, 255);
-    c2.name = "c2";
-
-    //learned colors
-    color_range colors[] = {blue,red};
+   // outputAttendedContextPort.open("/"+robotName+"/perception/attention/context:o");
 
 
-    area_range s1;
-    s1.from = 20;
-    s1.to = 100;
-    s1.name = "s1";
-    area_range s2;
-    s2.from = 101;
-    s2.to = 10000;
-    s2.name = "s2";
-    //learned colors
-    area_range sizes[] = {s1, s2};*/
-
-    /*std::cout << "Perceptual memory: " << '\n' << perceptualMemory.toStyledString() << '\n';*/
-
-        //Json::Reader reader;
-        //reader.parse("{\"schemes\":[]}",  kb);
-
-        /*if(!input_port.open("/"+robotName+"/iDevER:i"))
-        {
-            printf("Failed creating input port for DevER module");
-            return false;
-        }
-
-        if(!output_port.open("/"+robotName+"/DevER:or"))
-        {
-            printf("Failed creating port for body controler (/%s/DevER:or)",robotName);
-            return false;
-        }*/
+          local = "/"+robotName+"/perception/attendedConext:o";
+         remote = "/"+robotName+"/iDevER/context:i";
 
 
-
-
-          local = "/"+robotName+"/DevER:or";
-         remote = "/"+robotName+"/bodyController:ir";
+             outputAttendedContextPort.open(local);
 
         if(Network::connect(local,remote))
         {
@@ -223,11 +188,27 @@ public:
         }
         else
         {
-            yWarning(" Failed stablishing connection between %s and %s. Is the bodyController module running?\n",local.c_str(),remote.c_str());
+            yWarning(" Failed stablishing connection between %s and %s. Is the iDevER module running?\n",local.c_str(),remote.c_str());
 
         }
 
-        jreader.parse("{}",  perceptualMemory);
+        local = "/"+robotName+"/perception/expectation:i";
+         remote = "/"+robotName+"/iDevER/expectation:o";
+
+
+             inputExpectationPort.open(local);
+
+        if(Network::connect(remote, local))
+        {
+            yInfo(" Stablished  port connection between %s and /%s",local.c_str(),remote.c_str());
+        }
+        else
+        {
+            yWarning(" Failed stablishing connection between %s and %s. Is the iDevER module running?\n",local.c_str(),remote.c_str());
+
+        }
+
+       //jreader.parse("{}",  perceptualMemory);
 
         return true;
     }
@@ -248,6 +229,7 @@ public:
         Bottle outputAttendedContext;// = outputAttendedContextPort.prepare(); //get an output image
         //outContext.clear();
         //outContext.color="c1";
+        //outContext.color="c1";
 //outContext.size="s1";
 //outContext.moving=true;
 
@@ -263,15 +245,18 @@ public:
 
         jreader.parse("[{},{}]",  perceptualContext); // initialization
 
+                std::cout << "Perceptual  memory: "<< perceptualMemory.toStyledString() << std::endl;
+
         bool attending = false;
         for (Json::Value color : perceptualMemory["colors"])
         {
             for (Json::Value area : perceptualMemory["sizes"])
             {
 
-                //printf("Detecting objects of color:%s and size:%s\n",color["name"].asString().c_str(),area["name"].asString().c_str());
+                printf("Detecting objects of color:%s and size:%s\n",color["name"].asString().c_str(),area["name"].asString().c_str());
 //
 
+printf("area => %s\n",area.toStyledString().c_str());
                 SimpleBlobDetector::Params params;
 
                 // Change thresholds
@@ -280,9 +265,9 @@ public:
 
                 // Filter by Area.
                 params.filterByArea = true;
-                //printf("area between %d - %d" ,area.from,area.to);
-                params.minArea = area["from"].asDouble();
-                params.maxArea = area["to"].asDouble();;
+                printf("area between %d - %d\n" ,area["from"].asInt(),area["to"].asInt());
+                params.minArea = area["from"].asInt();
+                params.maxArea = area["to"].asInt();
 
                 // Filter by Circularity
                 //params.filterByCircularity = true;
@@ -302,12 +287,13 @@ public:
 
                 Mat color_filtered_img;
 
-               // std::cout << "Color: "<< color.toStyledString() << std::endl;
+                std::cout << "Color from : "<< color["from"][0].asInt() << ","<< color["from"][1].asInt() << ","<<color["from"][2].asInt() << ","<<std::endl;
+                std::cout << "Color to : "<< color["to"][0].asInt() << ","<< color["to"][1].asInt() << ","<<color["to"][2].asInt() << ","<<std::endl;
 
                 cv::Scalar from = cv::Scalar(color["from"][0].asInt(),color["from"][1].asInt(),color["from"][2].asInt());
                 cv::Scalar to = cv::Scalar(color["to"][0].asInt(),color["to"][1].asInt(),color["to"][2].asInt());
 
-
+                //std::cout << "from: "<< from.toString() << std::endl;
                 inRange(imgMat, from, to, color_filtered_img);
 
                 std::vector<KeyPoint> keypoints;
@@ -318,7 +304,7 @@ public:
 
                     printf("Detected something\n");
                 string objId = "obj"+to_string(++nblobs);
-                perceptualContext.append(objId.c_str());
+                //perceptualContext.append(objId.c_str());
 
                     int xpos = floor(i->pt.x / 106);
                     int ypos = floor(i->pt.y / 80);
@@ -326,12 +312,12 @@ public:
 
 
                     Json::Value perceivedObj;
-                    perceivedObj.append("color");
+                    //perceivedObj.append("color");
 
                     perceivedObj["color"]= color["name"].asString();
 
                     //Json::Value perceivedSize;
-                    perceivedObj.append("size");
+                    //perceivedObj.append("size");
                     perceivedObj["size"]= area["name"].asString();
                     //sizev.SetString(area.name.c_str(), allocator);
 
@@ -342,7 +328,7 @@ public:
                     //Json::Value objName;
                     //perceivedObj.SetString(("obj"+to_string(++nblobs)).c_str(), allocator);
 
-                    perceivedObj.append("sector");
+                    //perceivedObj.append("sector");
                     perceivedObj["sector"] = 3*ypos+xpos+1;
                     perceptualContext[0][objId] = perceivedObj;
                 }
@@ -353,26 +339,7 @@ public:
         }
 
         printf("for ended\n");
-        //Json::Value *.asDouble();;
-        Json::Value attendedContext;
-
-        jreader.parse("[{},{}]",  attendedContext);
-
-        string attendedObjId ="";
-        //Json::Value *attendedContext;
-        if(nblobs>0)
-        {
-            int att = (rand() % nblobs)+1;
-            attendedObjId= "obj"+std::to_string(att);
-            attendedContext[0] = perceptualContext[attendedObjId.c_str()];
-        }
-
-        /*StringBuffer strbuf;
-        Writer<StringBuffer> writer(strbuf);
-        document.Accept(writer);*/
-
-        std::cout << "Perceptual  context: "<< perceptualContext.toStyledString() << std::endl;
-std::cout << "Attended  context: "<< attendedContext.toStyledString() << std::endl;
+        //Json::Value *.asDouble();
 
         line(im_with_keypoints, Point(0,80), Point(inputImage->width(),80), Scalar(0, 255, 0),1,8,0);
         line(im_with_keypoints, Point(0,160), Point(inputImage->width(),160), Scalar(0, 255, 0),1,8,0);
@@ -388,14 +355,61 @@ std::cout << "Attended  context: "<< attendedContext.toStyledString() << std::en
 
         outputImagePort.write();
 
-            printf("Sending context to emotion module  \n");
-            outputAttendedContext.addString(attendedContext.toStyledString());
+                std::cout << "Perceptual  context: "<< perceptualContext.toStyledString() << std::endl;
+        Json::Value attendedContext;
 
+        jreader.parse("[{},{}]",  attendedContext);
+
+        string attendedObjId ="";
+        //Json::Value *attendedContext;
+        //printf("TYPE => %d",perceptualContext.type());
+        if(nblobs>0)
+        {
+            int att = (rand() % nblobs)+1;
+            //printf("random attended=> %d\n",att);
+            attendedObjId+= "obj"+std::to_string(att);
+            //printf("random attended=> %s\n",attendedObjId.c_str());
+            attendedContext[0] = perceptualContext[0][attendedObjId.c_str()];
+        }
+
+        /*StringBuffer strbuf;
+        Writer<StringBuffer> writer(strbuf);
+        document.Accept(writer);*/
+
+std::cout << "Attended  context: "<< attendedContext.toStyledString() << std::endl;
+
+
+            printf("Sending context to emotion module  \n");
+
+
+Json::FastWriter fastWriter;
+std::string output = fastWriter.write(attendedContext);
+            outputAttendedContext.addString(output);
+
+            //Bottle response; // a attendedContext+emotion response is expected
             outputContextPort.write(outputAttendedContext);
 
             printf("Perception: waiting for emotion \n");
-           /* Bottle input;
-            inputEmotionPort.read(input);
+
+
+            Bottle input;
+            inputEmotionalContextPort.read(input);
+
+
+
+        printf("got input %s ----- \n",input.toString().c_str());
+        string input_string = input.toString();
+        prepareInput(input_string);
+
+                    Json::Reader reader;
+        Json::Value emotionalContext;
+
+        reader.parse(input_string.c_str(),  emotionalContext);
+
+
+        std::cout << "Got emotionalContext: " << '\n' << emotionalContext.toStyledString() << '\n';
+
+            /*
             //if (input!=NULL) {
             printf("Got %s\n",input.toString().c_str());
             rapidjson::Value emov;
@@ -411,18 +425,43 @@ std::cout << "Attended  context: "<< attendedContext.toStyledString() << std::en
 
             std::cout << "Visual context after emotion generation: "<< strbuf.GetString() << std::endl;
 
-
-            printf("PM: Sending context to iDevER\n");
-            Bottle att_context;
-            att_context.addString(strbuf2.GetString());
-            outputAttendedContextPort.write(att_context);
-
-            printf("PM: Waiting for DevER to perform action\n");
-            Bottle done;
-            //propio_port.read(done);
-
-            printf("Got %s\n",done.toString().c_str());
 */
+            printf("Sending context to iDevER\n");
+
+
+
+
+            //Json::FastWriter fastWriter;
+ output = fastWriter.write(emotionalContext);
+
+            Bottle outputToIDevER;
+            //outputToIDevER.addString(strbuf2.GetString());
+
+        outputToIDevER.addString(output);
+        outputAttendedContextPort.write(outputToIDevER);
+
+            /*Bottle doneInput;
+            att_context.addString(strbuf2.GetString());*/
+            /*outpuEmotionalContextPort.write(outputToIDevER);
+*/
+            printf("Waiting for DevER to finish\n");
+            Bottle expectationBottle;
+            inputExpectationPort.read(expectationBottle);
+
+            printf("got input %s ----- \n",expectationBottle.toString().c_str());
+        string expectationString = expectationBottle.toString();
+        prepareInput(expectationString);
+
+                    //Json::Reader reader;
+        //Json::Value expectation;
+
+        reader.parse(expectationString.c_str(),  expectation);
+
+
+        std::cout << "Got expectation: " << '\n' << expectation.toStyledString() << '\n';
+
+
+            //printf("Got %s\n",done.toString().c_str());
 
         }
 
@@ -481,13 +520,15 @@ public:
 
         Time::turboBoost();
         perceptionThr=new PerceptionThread(robotName, CTRL_THREAD_PER);
+                perceptionThr->loadPerceptualMemory(rf.check("perceptual_memory_path",Value("../../schemas/perceptualMemory.json")).toString());
+
         if (!perceptionThr->start())
         {
             delete perceptionThr;
             return false;
         }
 
-        perceptionThr->loadPerceptualMemory(rf.check("perceptual_memory_path",Value("../../schemas/perceptualMemory.json")).toString());
+        //perceptionThr->loadPerceptualMemory(rf.check("perceptual_memory_path",Value("../../schemas/perceptualMemory.json")).toString());
 
         return true;
     }

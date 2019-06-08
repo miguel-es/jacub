@@ -36,14 +36,18 @@ using namespace yarp::os::impl;
 class DevERThread: public RateThread
 {
 
-    Port input_port;
+    Port inputContextPort;
     Port output_port;
+    Port outputExpectationPort;
 
     int totalSchemes;
-    bool partialMatch;
+    bool allowPartialMatch;
 
     bool accommodated;
     Json::Value kb;
+
+    Json::Value matchedSchema;
+
     string robotName;
     // the event callback attached to the "motion-ongoing"
 
@@ -62,7 +66,7 @@ public:
     {
 
 
-        partialMatch = false;
+        allowPartialMatch = true;
 
 
         /* ifstream ifs("../../schemas/kb.json");
@@ -77,11 +81,18 @@ public:
         Json::Reader reader;
         reader.parse("{\"schemes\":[]}",  kb);
 
-        if(!input_port.open("/"+robotName+"/iDevER:i"))
+        if(!inputContextPort.open("/"+robotName+"/iDevER/context:i"))
         {
             printf("Failed creating input port for DevER module");
             return false;
         }
+
+        if(!outputExpectationPort.open("/"+robotName+"/iDevER/expectation:o"))
+        {
+            printf("Failed creating output port for expectation");
+            return false;
+        }
+
 
         if(!output_port.open("/"+robotName+"/DevER:or"))
         {
@@ -89,18 +100,18 @@ public:
             return false;
         }
 
-string  local = "/"+robotName+"/DevER:or";
-string remote = "/"+robotName+"/bodyController:ir";
+        string  local = "/"+robotName+"/DevER:or";
+        string remote = "/"+robotName+"/bodyController:ir";
 
-    if(Network::connect(local,remote))
-    {
-        yInfo(" Stablished  port connection between %s and /%s",local.c_str(),remote.c_str());
-    }
-    else
-    {
-        yWarning(" Failed stablishing connection between %s and %s. Is the bodyController module running?\n",local.c_str(),remote.c_str());
+        if(Network::connect(local,remote))
+        {
+            yInfo(" Stablished  port connection between %s and /%s",local.c_str(),remote.c_str());
+        }
+        else
+        {
+            yWarning(" Failed stablishing connection between %s and %s. Is the bodyController module running?\n",local.c_str(),remote.c_str());
 
-    }
+        }
 
 
         return true;
@@ -121,14 +132,14 @@ string remote = "/"+robotName+"/bodyController:ir";
         printf("waiting for input \n");
 
         Bottle input;
-        input_port.read(input);
+        inputContextPort.read(input);
 
 
 
         Json::Reader reader;
         Json::Value attendedContext;
 
-        //printf("got input %s ----- \n",input.toString().c_str());
+        printf("got input %s ----- \n",input.toString().c_str());
         string input_string = input.toString();
         prepareInput(input_string);
 
@@ -138,8 +149,12 @@ string remote = "/"+robotName+"/bodyController:ir";
 
         Json::Value matchedSchema = engagement(attendedContext);
 
+        //if(matchedSchema){
+
         for(Json::Value actionv: matchedSchema["actions"])
         {
+
+
             string action = actionv.asString();
             std::cout << "Dev-ER: Excecuting action '" << action << "'\n";
 
@@ -156,7 +171,37 @@ string remote = "/"+robotName+"/bodyController:ir";
                 actioncmd.addString(action);
                 output_port.write(actioncmd);
             }
+int i = 0;
+        while(i<200000000){i++;}
+printf("done action2\n");
         }
+
+       // } else { //cognitive impase
+            //reflection();
+
+        //}
+
+        printf("now sending expectarions\n");
+
+                Bottle expectativeBottle;
+
+        if(!matchedSchema["expected"].empty()){
+        Json::FastWriter fastWriter;
+std::string expected = fastWriter.write(matchedSchema["expected"]);
+        std::cout << "Writing out expectation: " << '\n' << expected << '\n';
+            expectativeBottle.addString(expected);
+        }else{
+        std::cout << "Writing out expectation: {}"<< '\n';
+        expectativeBottle.addString("{}");
+
+        }
+
+
+
+
+        outputExpectationPort.write(expectativeBottle);
+
+        //wait for expectations request
         //string action ="mv";
 
     }
@@ -188,28 +233,40 @@ string remote = "/"+robotName+"/bodyController:ir";
         // std::cout << "context"<<context.toStyledString()<<'\n';
         Json::Value matchedSchema;
         float maxMatch = 0;
-
-        if(partialMatch) // if partial match is allowed
+        int maxSpecificity = 0;
+        /*if(allowPartialMatch) // if partial match is allowed
         {
 
         }
         else   //try a 100% matching
-        {
-            printf("Engagement: trying partial match\n");
+        {*/
+            printf("Engagement: searching a match\n");
             // std::cout << "KB"<<kb["schemes"].toStyledString()<<'\n';
             for(Json::Value& schema: kb["schemes"])
             {
-                //printf("entro\n");
-                float permatch = match(context,schema["context"]);
-                if(permatch>maxMatch)
-                {
-                    maxMatch = permatch;
+                //printf("matching %s\n",schema["id"].asString().c_str());
+
+                float matchper = match(context,schema["context"]);
+                int specificity = schema["context"][0].size()+schema["context"][0].size();
+
+                std::cout << "schema [ " << schema["id"] <<"% ] matches "<< matchper <<"%\n";
+if(matchper<100 && allowPartialMatch && schema["equilibrated"]=="-1"){
+printf("Skiping non equilibrated schema [%s]",schema["id"].asString().c_str());
+    continue;
+}
+                if(matchper==100 || allowPartialMatch){
+                if(matchper>maxMatch || (matchper==maxMatch && specificity>maxSpecificity))
+                {//priority to most specific schema
+                    maxMatch = matchper;
+                    maxSpecificity = specificity;
                     matchedSchema = schema;
                 }
 
+               }
+
             }
 
-        }
+        //}
 
         std::cout << "Engagement: matched schema [ " << maxMatch <<"% ]"<< matchedSchema.toStyledString() <<'\n';
         return matchedSchema;
@@ -230,28 +287,72 @@ string remote = "/"+robotName+"/bodyController:ir";
 
         if(context2[1].size()==0)  // if tactile context is empty then it matches anything
         {
-            match+=50;
+            match+=50.0;
+        }
+        else
+        {
+            Json::Value::Members contenxtMembers = context1[1].getMemberNames();
+            int membersSize = contenxtMembers.size();
+
+            for(string memberName: contenxtMembers)
+            {
+                //std::cout << "chekin [ " << memberName <<" ]"<<'\n';
+                if(context2[1][memberName].empty() || context1[1][memberName]==context2[1][memberName])
+                {
+                    match+=50.0/membersSize;
+                }
+            }
+
+            contenxtMembers = context2[1].getMemberNames();
+            membersSize = contenxtMembers.size();
+            //std::cout << "camate [  ]"<<'\n';
+            for(string memberName: contenxtMembers)
+            {
+                //std::cout << "chekin [ " << memberName <<" ]"<<'\n';
+                if(context1[1][memberName].empty())
+                {
+                    match-=50.0/membersSize;
+                }
+            }
         }
 
         if(context2[0].size()==0)  // if visual context is empty then it matches anything
         {
-            match+=50;
+            match+=50.0;
         }
         else
         {
             //printf("cisual contest not empty\n");
 
-            Json::Value::Members contenxtMembers = context1[0].getMemberNames();
+            Json::Value::Members contenxtMembers = context2[0].getMemberNames();
             int membersSize = contenxtMembers.size();
+
+            //printf("Miembros => %s",contenxtMembers.toStyledString())
+            /*std::cout << "size "<<membersSize<<'\n';
+float r = (50.0/membersSize);
+printf("rate %f\n",r);*/
+
+            //std::cout << "camate [  ]"<<'\n';
+            for(string memberName: contenxtMembers)
+            {
+                //printf( " match [ %f ]\n",match);
+                if(!context1[0][memberName].empty() && context1[0][memberName]==context2[0][memberName])
+                {
+                    match+=50.0/membersSize;
+                }
+            }
+/*
+            contenxtMembers = context2[0].getMemberNames();
+            membersSize = contenxtMembers.size();
             //std::cout << "camate [  ]"<<'\n';
             for(string memberName: contenxtMembers)
             {
                 //std::cout << "chekin [ " << memberName <<" ]"<<'\n';
-                if(context2[0][memberName].empty() || context1[0][memberName]==context2[0][memberName])
+                if(context1[0][memberName].empty())
                 {
-                    match+=50/membersSize;
+                    match-=50.0/membersSize;
                 }
-            }
+            }*/
 
         }
         return match;
@@ -268,11 +369,12 @@ string remote = "/"+robotName+"/bodyController:ir";
 
     }
 
-    bool loadKB(string kb_file){
-            // Load jacub's knowledge base (schemes)
+    bool loadKB(string kb_file)
+    {
+        // Load jacub's knowledge base (schemes)
         //std::ifstream ifs { R"("++")" };
         std::ifstream ifs;
- ifs.open(kb_file);
+        ifs.open(kb_file);
         //std::ifstream ifs("("+kb_file+")" );
         if ( !ifs.is_open() )
         {
@@ -304,7 +406,7 @@ public:
     virtual bool configure(ResourceFinder &rf)
     {
 
-    string robotName = rf.check("robot",Value("jacub")).asString();
+        string robotName = rf.check("robot",Value("jacub")).asString();
         //string robotName = rf.find("robot").asString();
         printf("Encontró nombre de robot: %s\n",robotName.c_str());
 
@@ -355,28 +457,28 @@ int main(int argc, char *argv[])
     DevER idever;
 
     ResourceFinder rf;
-rf.setVerbose(); //logs searched directories
-rf.setDefaultConfigFile("config.ini"); //specifies a default configuration file
-rf.configure(argc,argv);
+    rf.setVerbose(); //logs searched directories
+    rf.setDefaultConfigFile("config.ini"); //specifies a default configuration file
+    rf.configure(argc,argv);
 //idever.configure(rf);
 
 //string robotName = rf.check("robot",Value("jacub")).asString();
 
-/*
-string  local = "/"+robotName+"/DevER:or";
-string remote = "/"+robotName+"/bodyController:ir";
+    /*
+    string  local = "/"+robotName+"/DevER:or";
+    string remote = "/"+robotName+"/bodyController:ir";
 
-    if(Network::connect(local,remote))
-    {
-        yError(" Yarp server does not seem available\n");
-        yInfo(" Stablished  port connection between %s and /%s",local.c_str(),remote.c_str());
-    }
-    else
-    {
-        yWarning(" Failed stablishing connection between %s and %s. Is the bodyController module running?\n",local.c_str(),remote.c_str());
+        if(Network::connect(local,remote))
+        {
+            yError(" Yarp server does not seem available\n");
+            yInfo(" Stablished  port connection between %s and /%s",local.c_str(),remote.c_str());
+        }
+        else
+        {
+            yWarning(" Failed stablishing connection between %s and %s. Is the bodyController module running?\n",local.c_str(),remote.c_str());
 
-    }
-    */
+        }
+        */
 
     idever.runModule(rf);
     //return Network::connect("/perception/context/out","/memory/in");

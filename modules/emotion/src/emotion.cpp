@@ -31,6 +31,9 @@ using namespace yarp::os;
         Port inputContextPort;
         Port outputEmotionalContextPort;
         Port outputEmotionPort;
+        bool bored;
+        bool interested;
+        bool surprised;
      // the event callback attached to the "motion-ongoing"
 
  public:
@@ -40,6 +43,9 @@ using namespace yarp::os;
          // of the trajectory (or 80% far from the target)
          //cartesianEventParameters.type="motion-ongoing";
          //cartesianEventParameters.motionOngoingCheckPoint=0.2;
+        bored = false;
+        interested = false;
+        surprised = false;
      }
 
      virtual bool threadInit()
@@ -69,7 +75,7 @@ using namespace yarp::os;
             return false;
        }
 
-       if(!outputEmotionalContextPort.open("/jacub/emotion/context/out")){
+       if(!outputEmotionalContextPort.open("/jacub/emotion/emotionalContext:o")){
             printf("Failed creating output port for emotion module");
             return false;
        }
@@ -140,34 +146,30 @@ using namespace yarp::os;
 
 	std::cout << "EM: received attended context "<< strbuf.GetString() << std::endl;
 */
-	string gemotion =  "hap";
+	//int gemotion =  1;
+	int pleasure = 1;
 	if(attendedContext[0].empty()){
 	printf("entro1\n");
        // ((Json::objectValue) attendedContext[0]).append("sad");
-        gemotion = "sad";
-                std::cout << "Got context2: " << '\n' << attendedContext[0].type() << '\n';
-        attendedContext[0]["sad"] = -1;// = -1;
-                        std::cout << "Got context3: " << '\n' << attendedContext[0].toStyledString() << '\n';
+        //gemotion = "sad";
+                pleasure = -1;
 
-    }else if(!attendedContext[0]["color"].empty()){
-printf("entro2/n");
-            if(strcmp(attendedContext[0]["color"].asString().c_str(), "c1")==0){
-                attendedContext[0]["hap"] = 1;
-        //attendedContext[0]["hap"] = 1;
-            }else{
-            gemotion = "sad";
-            }
-
-
-    } printf("saltó/n");
-
-
-          if(attendedContext[1].empty()){
-        attendedContext[1]["sad"]=-1;
-       // attendedContext[1] = -1;
+    }else if(!attendedContext[0]["sector"].empty() && attendedContext[0]["sector"]==5){//if the object is centered
+            printf("Object centered entro2\n");
+            pleasure = 2;
     }
 
+        attendedContext[0]["pleasure"] = pleasure;// = -1;
+        std::cout << "Got context3: " << '\n' << attendedContext[0].toStyledString() << '\n';
 
+       if(attendedContext[1].empty()){
+            attendedContext[1]["pleasure"]=-1;
+       // attendedContext[1] = -1;
+       }else{
+               attendedContext[1]["pleasure"]=1;
+       }
+
+string gemotion = "hap";
         Bottle emotioncmd;
 Bottle response;
         emotioncmd.addString("set");
@@ -182,7 +184,11 @@ Bottle response;
 
         //Send generated emotion to  perseption module
        // Bottle response;
-        response.addString(attendedContext.toStyledString());
+
+       Json::FastWriter fastWriter;
+std::string output = fastWriter.write(attendedContext);
+
+        response.addString(output);
         outputEmotionalContextPort.write(response);
    // _emotioncmd.addString("set");
     }
