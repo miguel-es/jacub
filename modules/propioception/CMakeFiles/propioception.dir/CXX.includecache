@@ -31,6 +31,8 @@ yarp/dev/PolyDriver.h
 -
 yarp/dev/IVelocityControl.h
 -
+vector
+-
 
 /usr/local/src/robot/yarp/build/src/libYARP_conf/include/yarp/conf/api.h
 yarp/conf/compiler.h

@@ -68,8 +68,9 @@ string robotName;
 
     Port inputEmotionalContextPort;
     Port outputAttendedContextPort;
-    Port inputDonePort;
+    Port inputExpectationPort;
     Json::Value perceptualMemory;
+    Json::Value expectation;
 
             Json::Reader jreader;
 
@@ -191,11 +192,11 @@ public:
 
         }
 
-        local = "/"+robotName+"/perception/done:i";
-         remote = "/"+robotName+"/iDevER/done:o";
+        local = "/"+robotName+"/perception/expectation:i";
+         remote = "/"+robotName+"/iDevER/expectation:o";
 
 
-             inputDonePort.open(local);
+             inputExpectationPort.open(local);
 
         if(Network::connect(remote, local))
         {
@@ -255,6 +256,7 @@ public:
                 printf("Detecting objects of color:%s and size:%s\n",color["name"].asString().c_str(),area["name"].asString().c_str());
 //
 
+printf("area => %s\n",area.toStyledString().c_str());
                 SimpleBlobDetector::Params params;
 
                 // Change thresholds
@@ -262,10 +264,10 @@ public:
                 params.maxThreshold = 200;
 
                 // Filter by Area.
-               /* params.filterByArea = true;
-                //printf("area between %d - %d" ,area.from,area.to);
-                params.minArea = area["from"].asDouble();
-                params.maxArea = area["to"].asDouble();;*/
+                params.filterByArea = true;
+                printf("area between %d - %d\n" ,area["from"].asInt(),area["to"].asInt());
+                params.minArea = area["from"].asInt();
+                params.maxArea = area["to"].asInt();
 
                 // Filter by Circularity
                 //params.filterByCircularity = true;
@@ -443,10 +445,23 @@ std::string output = fastWriter.write(attendedContext);
             /*outpuEmotionalContextPort.write(outputToIDevER);
 */
             printf("Waiting for DevER to finish\n");
-            Bottle done;
-            inputDonePort.read(done);
+            Bottle expectationBottle;
+            inputExpectationPort.read(expectationBottle);
 
-            printf("Got %s\n",done.toString().c_str());
+            printf("got input %s ----- \n",expectationBottle.toString().c_str());
+        string expectationString = expectationBottle.toString();
+        prepareInput(expectationString);
+
+                    //Json::Reader reader;
+        //Json::Value expectation;
+
+        reader.parse(expectationString.c_str(),  expectation);
+
+
+        std::cout << "Got expectation: " << '\n' << expectation.toStyledString() << '\n';
+
+
+            //printf("Got %s\n",done.toString().c_str());
 
         }
 

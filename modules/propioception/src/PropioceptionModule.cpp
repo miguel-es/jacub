@@ -1,9 +1,9 @@
 // -*- mode:C++; tab-width:4; c-basic-offset:4; indent-tabs-mode:nil -*-
 //
 // A tutorial on how to use the Cartesian Interface to control a limb
-// in the operational space.
+// 5.251 25.727 5.850 83.259 64.800 29.700 0.000 59.000 20.000 20.000 20.000 10.000 10.000 10.000 10.000 10.000
 //
-// Author: Ugo Pattacini - <ugo.pattacini@iit.it>
+// Author: Miguel Estrada - <luism@unam.mx>
 
 #include <cstdio>
 #include <cmath>
@@ -20,6 +20,8 @@
 #include <yarp/dev/CartesianControl.h>
 #include <yarp/dev/PolyDriver.h>
 #include <yarp/dev/IVelocityControl.h>
+
+#include <vector>
 
 #define CTRL_THREAD_PER     0.02    // [s]
 #define PRINT_STATUS_PER    1.0     // [s]
@@ -200,78 +202,81 @@ public:
         string action = input.toString();
         bool done = false;
 
-        string actions[] = {"headUp","headDown","headLeft","headRight",
-                   "headLeftUp","headLeftDown","headRightUp",
-                   "headRightDown","handUp","handDown","handLeft",
-                   "handRight","handBackward","handForward","closeHand","openHand"
-                  };
+        vector<std::string> actions {"headUp","headDown","headLeft","headRight",
+                                     "headLeftUp","headLeftDown","headRightUp",
+                                     "headRightDown","handUp","handDown","handLeft",
+                                     "handRight","handBackward","handForward","closeHand","openHand"
+                                    };
 
 
         if(action=="random")
         {
-            printf("Random action ...\n");
+
+            int randomi = rand() % actions.size();
+            printf("Random action ...%d\n",randomi);
             /*for(int i = 0; i < action.size(); i++)
             {*/
-                action = actions[rand() % action.size()];
+            action = actions[rand() % actions.size()];
             //}
         }
 
         if(action=="headUp")
         {
             printf("Moving head up ...\n");
-            done = moveHeadUp(headRotAngle);
+            done = moveHead(headRotAngle,0,0);
         }
         else if(action=="headDown")
         {
             printf("Moving head down ...\n");
-            done = moveHeadDown(6*headRotAngle);
+            done = moveHead(-headRotAngle,0,0);
         }
         else if(action=="headLeft")
         {
             printf("Moving head left ...\n");
-            done = moveHeadLeft(headRotAngle);
+            done = moveHead(0,0,headRotAngle);
         }
         else if(action=="headRight")
         {
             printf("Moving head right ...\n");
-            done = moveHeadRight(headRotAngle);
+            done = moveHead(0,0,-headRotAngle);
         }
         else if(action=="headLeftUp")
         {
             printf("Moving head left ...\n");
-            if(moveHeadLeft(headRotAngle))
+            done = moveHead(headRotAngle,0,headRotAngle);
+            /*if(done)
             {
                 printf("Moving head up ...\n");
                 done = moveHeadUp(headRotAngle);
-            }
+            }*/
         }
 
         else if(action=="headLeftDown")
         {
-            printf("Moving head left ...\n");
-            if(moveHeadLeft(headRotAngle))
+            printf("Moving head left and down...\n");
+            done = moveHead(-headRotAngle,0,headRotAngle);
+            /*if(moveHeadLeft(headRotAngle))
             {
                 printf("Moving head down ...\n");
                 done = moveHeadDown(headRotAngle);
-            }
+            }*/
         }
         else if(action=="headRightUp")
         {
-            printf("Moving head right ...\n");
-            if(moveHeadRight(headRotAngle))
+            printf("Moving head right and up ...\n");
+            done = moveHead(headRotAngle,0,-1*headRotAngle);
+
+
+            /*if(moveHeadRight(headRotAngle))
             {
                 printf("Moving head up ...\n");
                 done = moveHeadUp(headRotAngle);
-            }
+            }**/
         }
         else if(action=="headRightDown")
         {
-            printf("Moving head right ...\n");
-            if(moveHeadRight(headRotAngle))
-            {
-                printf("Moving head down ...\n");
-                done = moveHeadDown(headRotAngle);
-            }
+            printf("Moving head right and down ...\n");
+            done = moveHead(-headRotAngle,0,-headRotAngle);
         }
         else if(action=="handRight")
         {
@@ -312,7 +317,7 @@ public:
         }
         else
         {
-            yWarning("Unknown action :'%s'\n",action);
+            yWarning("Unknown action :'%s'\n",action.c_str());
         }
 
 
@@ -395,7 +400,7 @@ public:
 
     bool moveHeadRight(int angle)
     {
-        return moveHead(axe0_pos,axe1_pos,-1*angle);
+        return moveHead(0,0,-1*angle);
     }
 
     bool moveHeadLeft(int angle)
@@ -413,19 +418,27 @@ public:
         head.view(vel);
         int njoints=0;
         enc->getAxes(&njoints);
-        Vector v;
+        /*Vector v;
         Vector command;
         command.resize(njoints);
-        v.resize(njoints);
-        command[0]=angle0;
-        command[1]=angle1;
-        command[2]=angle2;
+        printf("joints %s",njoints);
+        v.resize(njoints);*/
+
+        Vector command;
+        command.resize(njoints);
+        enc->getEncoders(command.data());
+
+        //printf("\ncommando => %s\n\n\n",command.toString().c_str());
+
+        command[0]=command[0]+angle0;
+        command[1]=command[1]+angle1;
+        command[2]=command[2]+angle2;
 
         bool done = head_ctrl->positionMove(command.data());
 
-        axe0_pos = angle0;
-        axe1_pos=angle1;
-        axe2_pos=angle2;
+        /* axe0_pos = 0;
+         axe1_pos=0;
+         axe2_pos=0;*/
         return done;
     }
 
