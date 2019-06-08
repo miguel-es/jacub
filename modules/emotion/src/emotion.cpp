@@ -206,7 +206,7 @@ Bottle response;
  public:
      virtual bool configure(ResourceFinder &rf)
      {
-         Time::turboBoost();
+         //Time::turboBoost();
 
          thr=new EmotionThread(CTRL_THREAD_PER);
          if (!thr->start())

@@ -6,6 +6,9 @@ project(${PROJECTNAME})
 
 find_package(YARP REQUIRED)
 
+#find_package(JSONCPP jsoncpp)
+#link_libraries(${JSONCPP_LIBRARIES})
+
 # Search for source code.
 set(doc_files ${PROJECTNAME}.xml)
 source_group("DOC Files"    FILES ${doc_files})
@@ -19,9 +22,11 @@ include_directories(${PROJECT_SOURCE_DIR}/include
                     ${YARP_INCLUDE_DIRS}
                     ${OpenCV_INCLUDE_DIRS}
 		    ../../src/utils/)
-	    set (CMAKE_EXE_LINKER_FLAGS -ljsoncpp)
+	    #set (CMAKE_EXE_LINKER_FLAGS -ljsoncpp)
 add_executable(${PROJECTNAME} ${folder_header} ${folder_source})
-target_link_libraries(${PROJECTNAME} ${YARP_LIBRARIES} ${OpenCV_LIBRARIES})
+#link_libraries( -ljsoncpp)
+target_link_libraries(${PROJECTNAME} ${YARP_LIBRARIES} ${OpenCV_LIBRARIES} ${JSONCPP_LIBRARIES} -ljsoncpp)
+
 install(TARGETS ${PROJECTNAME} DESTINATION bin)
 
 yarp_install(FILES ${doc_files} DESTINATION "share/iCub/modules")
