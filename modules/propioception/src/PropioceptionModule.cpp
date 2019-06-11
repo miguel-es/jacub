@@ -749,7 +749,7 @@ public:
     virtual bool configure(ResourceFinder &rf)
     {
 
-        Time::turboBoost();
+        //Time::turboBoost();
 
         string robotName = rf.check("robot",Value("jacub")).asString();
 

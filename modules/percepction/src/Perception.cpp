@@ -518,7 +518,7 @@ public:
         //string robotName = rf.find("robot").asString();
         printf("Encontró nombre de robot: %s\n",robotName.c_str());
 
-        Time::turboBoost();
+        //Time::turboBoost();
         perceptionThr=new PerceptionThread(robotName, CTRL_THREAD_PER);
                 perceptionThr->loadPerceptualMemory(rf.check("perceptual_memory_path",Value("../../schemas/perceptualMemory.json")).toString());
 

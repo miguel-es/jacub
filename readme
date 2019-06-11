@@ -1,3 +1,7 @@
+
+requiere:
+apt-get install libjsoncpp-dev qml-module-qt-labs-folderlistmodel qml-module-qt-labs-settings
+
 Comandos iCubSim:
 
 yarpmotorgui (consola de controles)

@@ -123,7 +123,7 @@ void import3DModel(string xmodel,string texture,float x,float y, float z){
  public:
      virtual bool configure(ResourceFinder &rf)
      {
-         Time::turboBoost();
+         //Time::turboBoost();
 
          thr=new WorldCtrlThread(CTRL_THREAD_PER);
          if (!thr->start())

@@ -410,7 +410,7 @@ public:
         //string robotName = rf.find("robot").asString();
         printf("Encontró nombre de robot: %s\n",robotName.c_str());
 
-        Time::turboBoost();
+        //Time::turboBoost();
         devERthr=new DevERThread(robotName, CTRL_THREAD_PER);
         if (!devERthr->start())
         {
