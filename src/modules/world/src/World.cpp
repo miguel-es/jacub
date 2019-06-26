@@ -115,7 +115,7 @@ void import3DModel(string xmodel,string texture,float x,float y, float z){
 
 
 
- class JWorld: public RFModule
+ class World: public RFModule
  {
  protected:
      WorldCtrlThread *thr;
@@ -159,7 +159,7 @@ void import3DModel(string xmodel,string texture,float x,float y, float z){
          return 1;
      }
 
-     JWorld world;
+     World world;
 
      ResourceFinder rf;
 

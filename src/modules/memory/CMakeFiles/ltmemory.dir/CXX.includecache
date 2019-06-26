@@ -1,0 +1,34 @@
+#IncludeRegexLine: ^[ 	]*[#%][ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+../../../src/utils/jutils.cpp
+string
+-
+
+/home/miguel/jacub/src/modules/memory/src/LTMemory.cpp
+cstdio
+-
+cmath
+-
+jutils.cpp
+-
+yarp/os/Network.h
+-
+yarp/os/RFModule.h
+-
+yarp/os/all.h
+-
+jsoncpp/json/json.h
+-
+yarp/os/impl/Logger.h
+-
+fstream
+-
+iostream
+-
+

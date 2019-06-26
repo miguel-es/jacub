@@ -1,259 +1,259 @@
 {"schemes":[
 			{
 				"id":"1",
-				"equilibrated":-1,
+				"equilibrated":false,
 				"context":[{}, {}],
 				"actions":["random"]
 			},
 			{
 				"id":"2",
-				"equilibrated":-1,
-				"context":[{}, {"contentment":1, "hand":"handOpen"}],
-				"actions":["handClose"]
+				"equilibrated":false,
+				"context":[{}, {"contentment":1, "hand":"open"}],
+				"actions":["closeHand"]
 			},
 			{
 				"id":"3",
-				"equilibrated":-1,
+				"equilibrated":false,
 
 				"context":[{"contentment":1},{}],
 				"actions":["showInterestInV"]
 			},
 			{
 				"id":"4",
-				"equilibrated":-1,
+				"equilibrated":false,
 				"context":[{}, {"contentment":1}],
 				"actions":["showInterestInT"]
 			},
 			{
 				"id":"5",
-				"equilibrated":-1,
+				"equilibrated":false,
 				"context":[{"contentment":2},{}],
 				"actions":["changeAttentionV"]
 			},
 			{
 				"id":"6",
-				"equilibrated":-1,
+				"equilibrated":false,
 				"context":[{}, {"contentment":2}],
 				"actions":["changeAttentionT"]
 			},
 			{
 				"id":"7",
-				"equilibrated":-1,
+				"equilibrated":false,
 				"context":[{"contentment":2}, {}],
 				"actions":["showInterestInV"]
 			},
 			{
 				"id":"8",
-				"equilibrated":1,
+				"equilibrated":true,
 				"context":[{"distress":1,"sector":1}, {}],
 				"actions":["headLeftUp"],
 				"expected":[{"contentment":1}, {}]
 			},
 			{
 				"id":"9",
-				"equilibrated":1,
+				"equilibrated":true,
 				"context":[{"distress":1,"sector":2}, {}],
 				"actions":["headUp"],
 				"expected":[{"contentment":1}, {}]
 			},
 			{
 				"id":"10",
-				"equilibrated":1,
+				"equilibrated":true,
 				"context":[{"distress":1,"sector":3}, {}],
 				"actions":["headRightUp"],
 				"expected":[{"contentment":1}, {}]
 			},
 			{
 				"id":"11",
-				"equilibrated":1,
+				"equilibrated":true,
 				"context":[{"distress":1,"sector":4}, {}],
 				"actions":["headLeft"],
 				"expected":[{"contentment":1}, {}]
 			},
 			{
 				"id":"12",
-				"equilibrated":1,
+				"equilibrated":true,
 				"context":[{"distress":1,"sector":6}, {}],
 				"actions":["headRight"],
 				"expected":[{"contentment":1}, {}]
 			},
 			{
 				"id":"13",
-				"equilibrated":1,
+				"equilibrated":true,
 				"context":[{"distress":1,"sector":7}, {}],
 				"actions":["headLeftDown"],
 				"expected":[{"contentment":1}, {}]
 			},
 			{
 				"id":"14",
-				"equilibrated":1,
+				"equilibrated":true,
 				"context":[{"distress":1,"sector":8}, {}],
 				"actions":["headDown"],
 				"expected":[{"contentment":1}, {}]
 			},
 			{
 				"id":"15",
-				"equilibrated":1,
+				"equilibrated":true,
 				"context":[{"distress":1,"sector":9}, {}],
 				"actions":["headRightDown"],
 				"expected":[{"contentment":1}, {}]
 			},
 			{
 				"id":"16",
-				"equilibrated":1,
+				"equilibrated":true,
 				"context":[{"distress":1,"color":"c1","sector":8}, {}],
 				"actions":["headUp"],
 				"expected":[{"contentment":1}, {}]
 			},
 			{
 				"id":"17",
-				"equilibrated":1,
+				"equilibrated":true,
 				"context":[{"distress":1,"color":"c1","sector":2}, {}],
 				"actions":["handDown"],
 				"expected":[{"contentment":1}, {}]
 			},
 			{
 				"id":"18",
-				"equilibrated":1,
+				"equilibrated":true,
 				"context":[{"distress":1,"color":"c1","sector":4}, {}],
 				"actions":["handRight"],
 				"expected":[{"contentment":1}, {}]
 			},
 			{
 				"id":"19",
-				"equilibrated":1,
+				"equilibrated":true,
 				"context":[{"distress":1,"color":"c1","sector":6}, {}],
 				"actions":["handLeft"],
 				"expected":[{"contentment":1}, {}]
 			},
 			{
 				"id":"20",
-				"equilibrated":1,
+				"equilibrated":true,
 				"context":[{"distress":1,"sector":9}, {"contentment":1}],
 				"actions":["showInterestInT", "headRightDown"],
 				"expected":[{"contentment":1}, {"contentment":1}]
 			},
 			{
 				"id":"21",
-				"equilibrated":1,
+				"equilibrated":true,
 				"context":[{"distress":1,"sector":8}, {"contentment":1}],
 				"actions":["showInterestInT", "headRightDown"],
 				"expected":[{"contentment":1}, {"contentment":1}]
 			},
 			{
 				"id":"22",
-				"equilibrated":1,
+				"equilibrated":true,
 				"context":[{"contentment":2}, {"contentment":1}],
 				"actions":["changeAttentionToV", "closeHand"],
 				"expected":[{"contentment":2}, {"contentment":2}]
 			},
 			{
 				"id":"23",
-				"equilibrated":1,
+				"equilibrated":true,
 				"context":[{"contentment":2}, {"contentment":1}],
 				"actions":["showIntetestInV", "closeHand"],
 				"expected":[{"contentment":2}, {"contentment":2}]
 			},
 			{
 				"id":"24",
-				"equilibrated":1,
+				"equilibrated":true,
 				"context":[{"contentment":1}, {"contentment":1}],
 				"actions":["showIntetestInV", "closeHand"],
 				"expected":[{"contentment":1}, {"contentment":2}]
 			},
 			{
 				"id":"25",
-				"equilibrated":1,
+				"equilibrated":true,
 				"context":[{"contentment":1,"sector":1}, {}],
 				"actions":["headLeftUp"],
 				"expected":[{"contentment":2}, {}]
 			},
 			{
 				"id":"26",
-				"equilibrated":1,
+				"equilibrated":true,
 				"context":[{"contentment":1,"sector":2}, {}],
 				"actions":["headUp"],
 				"expected":[{"contentment":2}, {}]
 			},
 			{
 				"id":"27",
-				"equilibrated":1,
+				"equilibrated":true,
 				"context":[{"contentment":1,"sector":3}, {}],
 				"actions":["headRightUp"],
 				"expected":[{"contentment":2}, {}]
 			},
 			{
 				"id":"28",
-				"equilibrated":1,
+				"equilibrated":true,
 				"context":[{"contentment":1,"sector":4}, {}],
 				"actions":["headLeft"],
 				"expected":[{"contentment":2}, {}]
 			},
 			{
 				"id":"29",
-				"equilibrated":1,
+				"equilibrated":true,
 				"context":[{"contentment":1,"sector":6}, {}],
 				"actions":["headRight"],
 				"expected":[{"contentment":2}, {}]
 			},
 			{
 				"id":"30",
-				"equilibrated":1,
+				"equilibrated":true,
 				"context":[{"contentment":1,"sector":7}, {}],
 				"actions":["headLeftDown"],
 				"expected":[{"contentment":2}, {}]
 			},
 			{
 				"id":"31",
-				"equilibrated":1,
+				"equilibrated":true,
 				"context":[{"contentment":1,"sector":8}, {}],
 				"actions":["headDown"],
 				"expected":[{"contentment":2}, {}]
 			},
 			{
 				"id":"32",
-				"equilibrated":1,
+				"equilibrated":true,
 				"context":[{"contentment":1,"sector":9}, {}],
 				"actions":["headRightDown"],
 				"expected":[{"contentment":2}, {}]
 			},
 			{
 				"id":"33",
-				"equilibrated":1,
+				"equilibrated":true,
 				"context":[{"contentment":1,"color":"c1","sector":4}, {}],
 				"actions":["handLeft"],
 				"expected":[{"contentment":2}, {}]
 			},
 			{
 				"id":"34",
-				"equilibrated":1,
+				"equilibrated":true,
 				"context":[{"contentment":1,"color":"c1","sector":6}, {}],
 				"actions":["handRight"],
 				"expected":[{"contentment":2}, {}]
 			},
 			{
 				"id":"35",
-				"equilibrated":1,
+				"equilibrated":true,
 				"context":[{"contentment":1,"color":"c1","sector":8}, {}],
 				"actions":["handUp"],
 				"expected":[{"contentment":2}, {}]
 			},
 			{
 				"id":"36",
-				"equilibrated":1,
+				"equilibrated":true,
 				"context":[{"contentment":1,"color":"c1","sector":2}, {}],
 				"actions":["handDown"],
 				"expected":[{"contentment":2}, {}]
 			},
 			{
 				"id":"37",
-				"equilibrated":1,
+				"equilibrated":true,
 				"context":[{"contentment":1,"sector":9}, {}],
 				"actions":["headRightDown"],
 				"expected":[{"contentment":2}, {}],
 				"children":[{
 					"id":"38",
-					"equilibrated":1,
+					"equilibrated":true,
 					"context":[{"distress":1,"sector":9}, {}],
 					"actions":["headRightDown"],
 					"expected":[{"contentment":1}, {}]
@@ -261,13 +261,13 @@
 			},
 			{
 				"id":"39",
-				"equilibrated":1,
+				"equilibrated":true,
 				"context":[{"contentment":1,"sector":4}, {}],
 				"actions":["headLeft"],
 				"expected":[{"contentment":2}, {}],
 				"children":[{
 					"id":"40",
-					"equilibrated":1,
+					"equilibrated":true,
 					"context":[{"distress":1,"sector":4}, {}],
 					"actions":["headLeft"],
 					"expected":[{"contentment":1}, {}]
@@ -275,13 +275,13 @@
 			},
 			{
 				"id":"41",
-				"equilibrated":1,
+				"equilibrated":true,
 				"context":[{"contentment":1,"sector":8}, {}],
 				"actions":["handUp"],
 				"expected":[{"contentment":2}, {}],
 				"children":[{
 					"id":"42",
-					"equilibrated":1,
+					"equilibrated":true,
 					"context":[{"distress":1,"sector":8}, {}],
 					"actions":["handUp"],
 					"expected":[{"contentment":1}, {}]
@@ -289,13 +289,13 @@
 			},
 			{
 				"id":"42",
-				"equilibrated":1,
+				"equilibrated":true,
 				"context":[{"contentment":1,"sector":4}, {}],
 				"actions":["handLeft"],
 				"expected":[{"contentment":2}, {}],
 				"children":[{
 					"id":"43",
-					"equilibrated":1,
+					"equilibrated":true,
 					"context":[{"distress":1,"sector":4}, {}],
 					"actions":["handLeft"],
 					"expected":[{"contentment":1}, {}]
@@ -303,13 +303,13 @@
 			},
 			{
 				"id":"43",
-				"equilibrated":1,
+				"equilibrated":true,
 				"context":[{"contentment":1,"color":"c1"}, {}],
 				"actions":["handDown"],
 				"expected":[{"contentment":2}, {}],
 				"children":[{
 					"id":"44",
-					"equilibrated":1,
+					"equilibrated":true,
 					"context":[{"distress":1,"sector":2}, {}],
 					"actions":["headUp"],
 					"expected":[{"contentment":1}, {}]
@@ -317,13 +317,13 @@
 			},
 			{
 				"id":"45",
-				"equilibrated":1,
+				"equilibrated":true,
 				"context":[{"contentment":1}, {}],
 				"actions":["headRight"],
 				"expected":[{"contentment":2}, {}],
 				"children":[{
 					"id":"46",
-					"equilibrated":1,
+					"equilibrated":true,
 					"context":[{"distress":1,"color":"c1","sector":4}, {}],
 					"actions":["handLeft"],
 					"expected":[{"contentment":1}, {}]
@@ -331,19 +331,19 @@
 			},
 			{
 				"id":"47",
-				"equilibrated":1,
+				"equilibrated":true,
 				"context":[{"contentment":1,"sector":6}, {}],
 				"actions":["headRight"],
 				"expected":[{"contentment":2}, {}],
 				"children":[{
 					"id":"48",
-					"equilibrated":1,
+					"equilibrated":true,
 					"context":[{"distress":1,"sector":6}, {}],
 					"actions":["headRight"],
 					"expected":[{"contentment":1}, {}],
 					"children":[{
 						"id":"49",
-						"equilibrated":1,
+						"equilibrated":true,
 						"context":[{"distress":1,"color":"c1","sector":6}, {}],
 						"actions":["handLeft"],
 						"expected":[{"contentment":1}, {}]
@@ -352,19 +352,19 @@
 			},
 			{
 				"id":"50",
-				"equilibrated":1,
+				"equilibrated":true,
 				"context":[{"contentment":1,"sector":9}, {"contentment":2}],
 				"actions":["showInterestInT","headRightDown"],
 				"expected":[{"contentment":2}, {"contentment":2}],
 				"children":[{
 					"id":"51",
-					"equilibrated":1,
+					"equilibrated":true,
 					"context":[{"contentment":1}, {"contentment":1}],
-					"actions":["showInterestInV","handClose"],
+					"actions":["showInterestInV","closeHand"],
 					"expected":[{"contentment":1}, {"contentment":2}],
 					"children":[{
 						"id":"52",
-						"equilibrated":1,
+						"equilibrated":true,
 						"context":[{"distress":1,"sector":9}, {"contentment":1}],
 						"actions":["showInterestInT", "headRightDown"],
 						"expected":[{"contentment":1}, {"contentment":1}]

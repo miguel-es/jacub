@@ -4,14 +4,14 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/usr/local/src/robot/jacub/modules/memory/src/MemoryModule.cpp" "/usr/local/src/robot/jacub/modules/memory/CMakeFiles/memory.dir/src/MemoryModule.o"
+  "/home/miguel/jacub/src/modules/memory/src/Memory.cpp" "/home/miguel/jacub/src/modules/memory/CMakeFiles/memory.dir/src/Memory.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
 # The include file search paths:
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "include"
-  "/usr/local/include"
+  "../../../src/utils"
   )
 
 # Targets to which this target links.

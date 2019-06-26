@@ -1,0 +1,7 @@
+/home/miguel/eclipse-workspace/jacub/src/modules/attention/CMakeFiles/install/strip.dir
+/home/miguel/eclipse-workspace/jacub/src/modules/attention/CMakeFiles/edit_cache.dir
+/home/miguel/eclipse-workspace/jacub/src/modules/attention/CMakeFiles/rebuild_cache.dir
+/home/miguel/eclipse-workspace/jacub/src/modules/attention/CMakeFiles/attention.dir
+/home/miguel/eclipse-workspace/jacub/src/modules/attention/CMakeFiles/list_install_components.dir
+/home/miguel/eclipse-workspace/jacub/src/modules/attention/CMakeFiles/install/local.dir
+/home/miguel/eclipse-workspace/jacub/src/modules/attention/CMakeFiles/install.dir

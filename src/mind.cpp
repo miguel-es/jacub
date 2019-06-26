@@ -13,7 +13,8 @@
 
 #include <fstream>
 #include <iostream>
-#include <emotion.cpp>
+
+#include "modules/emotion/src/EmotionModule.cpp"
 
 using namespace std;
 using namespace yarp::os;

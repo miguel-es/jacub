@@ -1,7 +1,7 @@
 # Copyright: (C) 2011 Department of Robotics Brain and Cognitive Sciences - Istituto Italiano di Tecnologia
 # Authors: Vadim Tikhanoff
 # CopyPolicy: Released under the terms of the GNU GPL v2.0.
-set(PROJECTNAME jworld)
+set(PROJECTNAME world)
 project(${PROJECTNAME})
 
 find_package(YARP REQUIRED)

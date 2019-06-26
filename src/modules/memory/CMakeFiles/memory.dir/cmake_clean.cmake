@@ -1,5 +1,5 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/memory.dir/src/MemoryModule.o"
+  "CMakeFiles/memory.dir/src/Memory.o"
   "memory.pdb"
   "memory"
 )
