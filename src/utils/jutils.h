@@ -2,16 +2,18 @@
 * Cleans scape chars from input string to get a well-formed json string
 */
 
-void prepareInput(string* input){
-input.erase(0,1);
-            input.erase(input.size()-1,input.size());
-            size_t pos;
-            //string "\\";
+/*#ifndef prepareInput
+#define prepareInput*/
+#include <string.h>
+using namespace std;
+#ifndef FUNCTIONS_H_INCLUDED
+#define FUNCTIONS_H_INCLUDED
 
-            	while ((pos = input.find("\\n")) != std::string::npos) {
-		input.replace(pos, 2, ",");
-	}
-	while ((pos = input.find("\\")) != std::string::npos) {
-		input.replace(pos, 1, "");
-	}
-}
+void prepareInput(string &input);
+
+#endif
+
+
+
+
+//#endif

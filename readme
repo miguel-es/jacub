@@ -2,6 +2,12 @@
 requiere:
 apt-get install libjsoncpp-dev qml-module-qt-labs-folderlistmodel qml-module-qt-labs-settings
 
+Despues de installar los precompilados en ubuntu :
+sudo cp /usr/lib/iCub/cartesiancontrollerclient.so /usr/lib/x86_64-linux-gnu/yarp/
+sudo cp /usr/lib/iCub/cartesiancontrollerserver.so /usr/lib/x86_64-linux-gnu/yarp/
+
+ln -s jacub/contexts/ ~/.config/yarp
+
 Comandos iCubSim:
 
 yarpmotorgui (consola de controles)
@@ -9,7 +15,8 @@ iCub_SIM (simulador)
 yarpmanager (consola de modulos)
 yarp server (servidor de yarp)
 
-1
+yarprobotinterface --context simCartesianControl
+iKinCartesianSolver --context simCartesianControl --part left_arm
 Directorio de código:
 /usr/local/src/robot/
 

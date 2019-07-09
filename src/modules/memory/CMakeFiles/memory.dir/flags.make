@@ -6,5 +6,5 @@ CXX_FLAGS =   -std=gnu++11
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/miguel/jacub/src/modules/memory/include -I/home/miguel/jacub/src/modules/memory/../../../src/utils 
+CXX_INCLUDES = -I/home/miguel/eclipse-workspace/jacub/src/modules/memory/include -I/home/miguel/eclipse-workspace/jacub/src/modules/memory/../../../src/utils -I/home/miguel/eclipse-workspace/jacub/src/modules/memory/src 
 

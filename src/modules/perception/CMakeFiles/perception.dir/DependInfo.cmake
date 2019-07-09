@@ -4,7 +4,8 @@ set(CMAKE_DEPENDS_LANGUAGES
   )
 # The set of files for implicit dependencies of each language:
 set(CMAKE_DEPENDS_CHECK_CXX
-  "/home/miguel/eclipse-workspace/jacub/src/modules/perception/src/Perception.cpp" "/home/miguel/eclipse-workspace/jacub/src/modules/perception/CMakeFiles/perception.dir/src/Perception.o"
+  "/home/miguel/eclipse-workspace/jacub/src/modules/perception/src/PerceptionModule.cpp" "/home/miguel/eclipse-workspace/jacub/src/modules/perception/CMakeFiles/perception.dir/src/PerceptionModule.o"
+  "/home/miguel/eclipse-workspace/jacub/src/modules/perception/src/main.cpp" "/home/miguel/eclipse-workspace/jacub/src/modules/perception/CMakeFiles/perception.dir/src/main.o"
   )
 set(CMAKE_CXX_COMPILER_ID "GNU")
 
@@ -12,6 +13,7 @@ set(CMAKE_CXX_COMPILER_ID "GNU")
 set(CMAKE_CXX_TARGET_INCLUDE_PATH
   "include"
   "../../../src/utils"
+  "src"
   )
 
 # Targets to which this target links.

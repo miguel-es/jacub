@@ -1,1 +1,12 @@
 /jacub/iDevER/matchedSchemas:i <= "[\{\"id\":\"2\",\"equilibrated\":-1,\"context\":[\{\}, \{\"contentment\":1,\"hand\":\"handOpen\"\}],\"actions\":[\"handClose\"]\}]"
+
+"[\{\"obj1\":\{\"color\":\"c1\",\"size\":\"s1\"\}\},\{\"obj2\":\{\"color\":\"c2\",\"size\":\"s2\"\}\}]"
+
+"[[\{\"color\":\"c1\",\"size\":\"s1\",\"sector\":2\},\{\"color\":\"c2\",\"size\":\"s2\",\"sector\":5\}],\{\}]"
+
+"[\{\"color\":\"c2\",\"size\":\"s2\",\"sector\":5\},\{\}]"
+
+"[\{\"color\":\"c2\",\"contentment\":1,\"size\":\"s2\",\"sector\":5\},\{\}]"
+
+/jacub/locomotion/actions:i <= "[\"random\",\"headLeft\"]"
+/jacub/DevER/memoryMode:o

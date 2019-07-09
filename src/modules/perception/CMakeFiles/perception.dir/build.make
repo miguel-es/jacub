@@ -57,38 +57,64 @@ include CMakeFiles/perception.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/perception.dir/flags.make
 
-CMakeFiles/perception.dir/src/Perception.o: CMakeFiles/perception.dir/flags.make
-CMakeFiles/perception.dir/src/Perception.o: src/Perception.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/miguel/eclipse-workspace/jacub/src/modules/perception/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/perception.dir/src/Perception.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/perception.dir/src/Perception.o -c /home/miguel/eclipse-workspace/jacub/src/modules/perception/src/Perception.cpp
+CMakeFiles/perception.dir/src/PerceptionModule.o: CMakeFiles/perception.dir/flags.make
+CMakeFiles/perception.dir/src/PerceptionModule.o: src/PerceptionModule.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/miguel/eclipse-workspace/jacub/src/modules/perception/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/perception.dir/src/PerceptionModule.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/perception.dir/src/PerceptionModule.o -c /home/miguel/eclipse-workspace/jacub/src/modules/perception/src/PerceptionModule.cpp
 
-CMakeFiles/perception.dir/src/Perception.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/perception.dir/src/Perception.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/miguel/eclipse-workspace/jacub/src/modules/perception/src/Perception.cpp > CMakeFiles/perception.dir/src/Perception.i
+CMakeFiles/perception.dir/src/PerceptionModule.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/perception.dir/src/PerceptionModule.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/miguel/eclipse-workspace/jacub/src/modules/perception/src/PerceptionModule.cpp > CMakeFiles/perception.dir/src/PerceptionModule.i
 
-CMakeFiles/perception.dir/src/Perception.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/perception.dir/src/Perception.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/miguel/eclipse-workspace/jacub/src/modules/perception/src/Perception.cpp -o CMakeFiles/perception.dir/src/Perception.s
+CMakeFiles/perception.dir/src/PerceptionModule.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/perception.dir/src/PerceptionModule.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/miguel/eclipse-workspace/jacub/src/modules/perception/src/PerceptionModule.cpp -o CMakeFiles/perception.dir/src/PerceptionModule.s
 
-CMakeFiles/perception.dir/src/Perception.o.requires:
+CMakeFiles/perception.dir/src/PerceptionModule.o.requires:
 
-.PHONY : CMakeFiles/perception.dir/src/Perception.o.requires
+.PHONY : CMakeFiles/perception.dir/src/PerceptionModule.o.requires
 
-CMakeFiles/perception.dir/src/Perception.o.provides: CMakeFiles/perception.dir/src/Perception.o.requires
-	$(MAKE) -f CMakeFiles/perception.dir/build.make CMakeFiles/perception.dir/src/Perception.o.provides.build
-.PHONY : CMakeFiles/perception.dir/src/Perception.o.provides
+CMakeFiles/perception.dir/src/PerceptionModule.o.provides: CMakeFiles/perception.dir/src/PerceptionModule.o.requires
+	$(MAKE) -f CMakeFiles/perception.dir/build.make CMakeFiles/perception.dir/src/PerceptionModule.o.provides.build
+.PHONY : CMakeFiles/perception.dir/src/PerceptionModule.o.provides
 
-CMakeFiles/perception.dir/src/Perception.o.provides.build: CMakeFiles/perception.dir/src/Perception.o
+CMakeFiles/perception.dir/src/PerceptionModule.o.provides.build: CMakeFiles/perception.dir/src/PerceptionModule.o
+
+
+CMakeFiles/perception.dir/src/main.o: CMakeFiles/perception.dir/flags.make
+CMakeFiles/perception.dir/src/main.o: src/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/miguel/eclipse-workspace/jacub/src/modules/perception/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/perception.dir/src/main.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/perception.dir/src/main.o -c /home/miguel/eclipse-workspace/jacub/src/modules/perception/src/main.cpp
+
+CMakeFiles/perception.dir/src/main.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/perception.dir/src/main.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/miguel/eclipse-workspace/jacub/src/modules/perception/src/main.cpp > CMakeFiles/perception.dir/src/main.i
+
+CMakeFiles/perception.dir/src/main.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/perception.dir/src/main.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/miguel/eclipse-workspace/jacub/src/modules/perception/src/main.cpp -o CMakeFiles/perception.dir/src/main.s
+
+CMakeFiles/perception.dir/src/main.o.requires:
+
+.PHONY : CMakeFiles/perception.dir/src/main.o.requires
+
+CMakeFiles/perception.dir/src/main.o.provides: CMakeFiles/perception.dir/src/main.o.requires
+	$(MAKE) -f CMakeFiles/perception.dir/build.make CMakeFiles/perception.dir/src/main.o.provides.build
+.PHONY : CMakeFiles/perception.dir/src/main.o.provides
+
+CMakeFiles/perception.dir/src/main.o.provides.build: CMakeFiles/perception.dir/src/main.o
 
 
 # Object files for target perception
 perception_OBJECTS = \
-"CMakeFiles/perception.dir/src/Perception.o"
+"CMakeFiles/perception.dir/src/PerceptionModule.o" \
+"CMakeFiles/perception.dir/src/main.o"
 
 # External object files for target perception
 perception_EXTERNAL_OBJECTS =
 
-perception: CMakeFiles/perception.dir/src/Perception.o
+perception: CMakeFiles/perception.dir/src/PerceptionModule.o
+perception: CMakeFiles/perception.dir/src/main.o
 perception: CMakeFiles/perception.dir/build.make
 perception: /usr/lib/x86_64-linux-gnu/libYARP_init.so.3.1.0
 perception: /usr/lib/x86_64-linux-gnu/libYARP_dev.so.3.1.0
@@ -96,7 +122,7 @@ perception: /usr/lib/x86_64-linux-gnu/libYARP_math.so.3.1.0
 perception: /usr/lib/x86_64-linux-gnu/libYARP_sig.so.3.1.0
 perception: /usr/lib/x86_64-linux-gnu/libYARP_OS.so.3.1.0
 perception: CMakeFiles/perception.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/miguel/eclipse-workspace/jacub/src/modules/perception/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable perception"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/miguel/eclipse-workspace/jacub/src/modules/perception/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Linking CXX executable perception"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/perception.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -104,7 +130,8 @@ CMakeFiles/perception.dir/build: perception
 
 .PHONY : CMakeFiles/perception.dir/build
 
-CMakeFiles/perception.dir/requires: CMakeFiles/perception.dir/src/Perception.o.requires
+CMakeFiles/perception.dir/requires: CMakeFiles/perception.dir/src/PerceptionModule.o.requires
+CMakeFiles/perception.dir/requires: CMakeFiles/perception.dir/src/main.o.requires
 
 .PHONY : CMakeFiles/perception.dir/requires
 

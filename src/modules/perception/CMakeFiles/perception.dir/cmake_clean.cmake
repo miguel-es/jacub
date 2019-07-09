@@ -1,5 +1,6 @@
 file(REMOVE_RECURSE
-  "CMakeFiles/perception.dir/src/Perception.o"
+  "CMakeFiles/perception.dir/src/PerceptionModule.o"
+  "CMakeFiles/perception.dir/src/main.o"
   "perception.pdb"
   "perception"
 )

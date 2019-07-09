@@ -4,6 +4,7 @@ install_manifest.txt
 share/
 share/**
 Makefile
+CMakeFiles/
 CMakeFiles/**
 CMakeFiles/**
 jworld
@@ -14,6 +15,9 @@ propioception
 .cproject
 .project
 .settings/
+log/*.log
+*.o
+*.out
 
 
 

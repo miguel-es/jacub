@@ -6,5 +6,5 @@ CXX_FLAGS =   -std=gnu++11
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/miguel/eclipse-workspace/jacub/src/modules/perception/include -I/home/miguel/eclipse-workspace/jacub/src/modules/perception/../../../src/utils 
+CXX_INCLUDES = -I/home/miguel/eclipse-workspace/jacub/src/modules/perception/include -I/home/miguel/eclipse-workspace/jacub/src/modules/perception/../../../src/utils -I/home/miguel/eclipse-workspace/jacub/src/modules/perception/src 
 

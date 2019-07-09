@@ -43,10 +43,10 @@ RM = /usr/bin/cmake -E remove -f
 EQUALS = =
 
 # The top-level source directory on which CMake was run.
-CMAKE_SOURCE_DIR = /home/miguel/jacub/src/modules/memory
+CMAKE_SOURCE_DIR = /home/miguel/eclipse-workspace/jacub/src/modules/memory
 
 # The top-level build directory on which CMake was run.
-CMAKE_BINARY_DIR = /home/miguel/jacub/src/modules/memory
+CMAKE_BINARY_DIR = /home/miguel/eclipse-workspace/jacub/src/modules/memory
 
 # Include any dependencies generated for this target.
 include CMakeFiles/memory.dir/depend.make
@@ -57,38 +57,116 @@ include CMakeFiles/memory.dir/progress.make
 # Include the compile flags for this target's objects.
 include CMakeFiles/memory.dir/flags.make
 
-CMakeFiles/memory.dir/src/Memory.o: CMakeFiles/memory.dir/flags.make
-CMakeFiles/memory.dir/src/Memory.o: src/Memory.cpp
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/miguel/jacub/src/modules/memory/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/memory.dir/src/Memory.o"
-	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/memory.dir/src/Memory.o -c /home/miguel/jacub/src/modules/memory/src/Memory.cpp
+CMakeFiles/memory.dir/src/LTMemory.o: CMakeFiles/memory.dir/flags.make
+CMakeFiles/memory.dir/src/LTMemory.o: src/LTMemory.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/miguel/eclipse-workspace/jacub/src/modules/memory/CMakeFiles --progress-num=$(CMAKE_PROGRESS_1) "Building CXX object CMakeFiles/memory.dir/src/LTMemory.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/memory.dir/src/LTMemory.o -c /home/miguel/eclipse-workspace/jacub/src/modules/memory/src/LTMemory.cpp
 
-CMakeFiles/memory.dir/src/Memory.i: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/memory.dir/src/Memory.i"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/miguel/jacub/src/modules/memory/src/Memory.cpp > CMakeFiles/memory.dir/src/Memory.i
+CMakeFiles/memory.dir/src/LTMemory.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/memory.dir/src/LTMemory.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/miguel/eclipse-workspace/jacub/src/modules/memory/src/LTMemory.cpp > CMakeFiles/memory.dir/src/LTMemory.i
 
-CMakeFiles/memory.dir/src/Memory.s: cmake_force
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/memory.dir/src/Memory.s"
-	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/miguel/jacub/src/modules/memory/src/Memory.cpp -o CMakeFiles/memory.dir/src/Memory.s
+CMakeFiles/memory.dir/src/LTMemory.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/memory.dir/src/LTMemory.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/miguel/eclipse-workspace/jacub/src/modules/memory/src/LTMemory.cpp -o CMakeFiles/memory.dir/src/LTMemory.s
 
-CMakeFiles/memory.dir/src/Memory.o.requires:
+CMakeFiles/memory.dir/src/LTMemory.o.requires:
 
-.PHONY : CMakeFiles/memory.dir/src/Memory.o.requires
+.PHONY : CMakeFiles/memory.dir/src/LTMemory.o.requires
 
-CMakeFiles/memory.dir/src/Memory.o.provides: CMakeFiles/memory.dir/src/Memory.o.requires
-	$(MAKE) -f CMakeFiles/memory.dir/build.make CMakeFiles/memory.dir/src/Memory.o.provides.build
-.PHONY : CMakeFiles/memory.dir/src/Memory.o.provides
+CMakeFiles/memory.dir/src/LTMemory.o.provides: CMakeFiles/memory.dir/src/LTMemory.o.requires
+	$(MAKE) -f CMakeFiles/memory.dir/build.make CMakeFiles/memory.dir/src/LTMemory.o.provides.build
+.PHONY : CMakeFiles/memory.dir/src/LTMemory.o.provides
 
-CMakeFiles/memory.dir/src/Memory.o.provides.build: CMakeFiles/memory.dir/src/Memory.o
+CMakeFiles/memory.dir/src/LTMemory.o.provides.build: CMakeFiles/memory.dir/src/LTMemory.o
+
+
+CMakeFiles/memory.dir/src/WMemory.o: CMakeFiles/memory.dir/flags.make
+CMakeFiles/memory.dir/src/WMemory.o: src/WMemory.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/miguel/eclipse-workspace/jacub/src/modules/memory/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Building CXX object CMakeFiles/memory.dir/src/WMemory.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/memory.dir/src/WMemory.o -c /home/miguel/eclipse-workspace/jacub/src/modules/memory/src/WMemory.cpp
+
+CMakeFiles/memory.dir/src/WMemory.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/memory.dir/src/WMemory.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/miguel/eclipse-workspace/jacub/src/modules/memory/src/WMemory.cpp > CMakeFiles/memory.dir/src/WMemory.i
+
+CMakeFiles/memory.dir/src/WMemory.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/memory.dir/src/WMemory.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/miguel/eclipse-workspace/jacub/src/modules/memory/src/WMemory.cpp -o CMakeFiles/memory.dir/src/WMemory.s
+
+CMakeFiles/memory.dir/src/WMemory.o.requires:
+
+.PHONY : CMakeFiles/memory.dir/src/WMemory.o.requires
+
+CMakeFiles/memory.dir/src/WMemory.o.provides: CMakeFiles/memory.dir/src/WMemory.o.requires
+	$(MAKE) -f CMakeFiles/memory.dir/build.make CMakeFiles/memory.dir/src/WMemory.o.provides.build
+.PHONY : CMakeFiles/memory.dir/src/WMemory.o.provides
+
+CMakeFiles/memory.dir/src/WMemory.o.provides.build: CMakeFiles/memory.dir/src/WMemory.o
+
+
+CMakeFiles/memory.dir/src/main.o: CMakeFiles/memory.dir/flags.make
+CMakeFiles/memory.dir/src/main.o: src/main.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/miguel/eclipse-workspace/jacub/src/modules/memory/CMakeFiles --progress-num=$(CMAKE_PROGRESS_3) "Building CXX object CMakeFiles/memory.dir/src/main.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/memory.dir/src/main.o -c /home/miguel/eclipse-workspace/jacub/src/modules/memory/src/main.cpp
+
+CMakeFiles/memory.dir/src/main.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/memory.dir/src/main.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/miguel/eclipse-workspace/jacub/src/modules/memory/src/main.cpp > CMakeFiles/memory.dir/src/main.i
+
+CMakeFiles/memory.dir/src/main.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/memory.dir/src/main.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/miguel/eclipse-workspace/jacub/src/modules/memory/src/main.cpp -o CMakeFiles/memory.dir/src/main.s
+
+CMakeFiles/memory.dir/src/main.o.requires:
+
+.PHONY : CMakeFiles/memory.dir/src/main.o.requires
+
+CMakeFiles/memory.dir/src/main.o.provides: CMakeFiles/memory.dir/src/main.o.requires
+	$(MAKE) -f CMakeFiles/memory.dir/build.make CMakeFiles/memory.dir/src/main.o.provides.build
+.PHONY : CMakeFiles/memory.dir/src/main.o.provides
+
+CMakeFiles/memory.dir/src/main.o.provides.build: CMakeFiles/memory.dir/src/main.o
+
+
+CMakeFiles/memory.dir/home/miguel/eclipse-workspace/jacub/src/utils/jutils.o: CMakeFiles/memory.dir/flags.make
+CMakeFiles/memory.dir/home/miguel/eclipse-workspace/jacub/src/utils/jutils.o: /home/miguel/eclipse-workspace/jacub/src/utils/jutils.cpp
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --progress-dir=/home/miguel/eclipse-workspace/jacub/src/modules/memory/CMakeFiles --progress-num=$(CMAKE_PROGRESS_4) "Building CXX object CMakeFiles/memory.dir/home/miguel/eclipse-workspace/jacub/src/utils/jutils.o"
+	/usr/bin/c++  $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -o CMakeFiles/memory.dir/home/miguel/eclipse-workspace/jacub/src/utils/jutils.o -c /home/miguel/eclipse-workspace/jacub/src/utils/jutils.cpp
+
+CMakeFiles/memory.dir/home/miguel/eclipse-workspace/jacub/src/utils/jutils.i: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Preprocessing CXX source to CMakeFiles/memory.dir/home/miguel/eclipse-workspace/jacub/src/utils/jutils.i"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -E /home/miguel/eclipse-workspace/jacub/src/utils/jutils.cpp > CMakeFiles/memory.dir/home/miguel/eclipse-workspace/jacub/src/utils/jutils.i
+
+CMakeFiles/memory.dir/home/miguel/eclipse-workspace/jacub/src/utils/jutils.s: cmake_force
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green "Compiling CXX source to assembly CMakeFiles/memory.dir/home/miguel/eclipse-workspace/jacub/src/utils/jutils.s"
+	/usr/bin/c++ $(CXX_DEFINES) $(CXX_INCLUDES) $(CXX_FLAGS) -S /home/miguel/eclipse-workspace/jacub/src/utils/jutils.cpp -o CMakeFiles/memory.dir/home/miguel/eclipse-workspace/jacub/src/utils/jutils.s
+
+CMakeFiles/memory.dir/home/miguel/eclipse-workspace/jacub/src/utils/jutils.o.requires:
+
+.PHONY : CMakeFiles/memory.dir/home/miguel/eclipse-workspace/jacub/src/utils/jutils.o.requires
+
+CMakeFiles/memory.dir/home/miguel/eclipse-workspace/jacub/src/utils/jutils.o.provides: CMakeFiles/memory.dir/home/miguel/eclipse-workspace/jacub/src/utils/jutils.o.requires
+	$(MAKE) -f CMakeFiles/memory.dir/build.make CMakeFiles/memory.dir/home/miguel/eclipse-workspace/jacub/src/utils/jutils.o.provides.build
+.PHONY : CMakeFiles/memory.dir/home/miguel/eclipse-workspace/jacub/src/utils/jutils.o.provides
+
+CMakeFiles/memory.dir/home/miguel/eclipse-workspace/jacub/src/utils/jutils.o.provides.build: CMakeFiles/memory.dir/home/miguel/eclipse-workspace/jacub/src/utils/jutils.o
 
 
 # Object files for target memory
 memory_OBJECTS = \
-"CMakeFiles/memory.dir/src/Memory.o"
+"CMakeFiles/memory.dir/src/LTMemory.o" \
+"CMakeFiles/memory.dir/src/WMemory.o" \
+"CMakeFiles/memory.dir/src/main.o" \
+"CMakeFiles/memory.dir/home/miguel/eclipse-workspace/jacub/src/utils/jutils.o"
 
 # External object files for target memory
 memory_EXTERNAL_OBJECTS =
 
-memory: CMakeFiles/memory.dir/src/Memory.o
+memory: CMakeFiles/memory.dir/src/LTMemory.o
+memory: CMakeFiles/memory.dir/src/WMemory.o
+memory: CMakeFiles/memory.dir/src/main.o
+memory: CMakeFiles/memory.dir/home/miguel/eclipse-workspace/jacub/src/utils/jutils.o
 memory: CMakeFiles/memory.dir/build.make
 memory: /usr/lib/x86_64-linux-gnu/libYARP_init.so.3.1.0
 memory: /usr/lib/x86_64-linux-gnu/libYARP_dev.so.3.1.0
@@ -96,7 +174,7 @@ memory: /usr/lib/x86_64-linux-gnu/libYARP_math.so.3.1.0
 memory: /usr/lib/x86_64-linux-gnu/libYARP_sig.so.3.1.0
 memory: /usr/lib/x86_64-linux-gnu/libYARP_OS.so.3.1.0
 memory: CMakeFiles/memory.dir/link.txt
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/miguel/jacub/src/modules/memory/CMakeFiles --progress-num=$(CMAKE_PROGRESS_2) "Linking CXX executable memory"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --green --bold --progress-dir=/home/miguel/eclipse-workspace/jacub/src/modules/memory/CMakeFiles --progress-num=$(CMAKE_PROGRESS_5) "Linking CXX executable memory"
 	$(CMAKE_COMMAND) -E cmake_link_script CMakeFiles/memory.dir/link.txt --verbose=$(VERBOSE)
 
 # Rule to build all files generated by this target.
@@ -104,7 +182,10 @@ CMakeFiles/memory.dir/build: memory
 
 .PHONY : CMakeFiles/memory.dir/build
 
-CMakeFiles/memory.dir/requires: CMakeFiles/memory.dir/src/Memory.o.requires
+CMakeFiles/memory.dir/requires: CMakeFiles/memory.dir/src/LTMemory.o.requires
+CMakeFiles/memory.dir/requires: CMakeFiles/memory.dir/src/WMemory.o.requires
+CMakeFiles/memory.dir/requires: CMakeFiles/memory.dir/src/main.o.requires
+CMakeFiles/memory.dir/requires: CMakeFiles/memory.dir/home/miguel/eclipse-workspace/jacub/src/utils/jutils.o.requires
 
 .PHONY : CMakeFiles/memory.dir/requires
 
@@ -113,6 +194,6 @@ CMakeFiles/memory.dir/clean:
 .PHONY : CMakeFiles/memory.dir/clean
 
 CMakeFiles/memory.dir/depend:
-	cd /home/miguel/jacub/src/modules/memory && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/miguel/jacub/src/modules/memory /home/miguel/jacub/src/modules/memory /home/miguel/jacub/src/modules/memory /home/miguel/jacub/src/modules/memory /home/miguel/jacub/src/modules/memory/CMakeFiles/memory.dir/DependInfo.cmake --color=$(COLOR)
+	cd /home/miguel/eclipse-workspace/jacub/src/modules/memory && $(CMAKE_COMMAND) -E cmake_depends "Unix Makefiles" /home/miguel/eclipse-workspace/jacub/src/modules/memory /home/miguel/eclipse-workspace/jacub/src/modules/memory /home/miguel/eclipse-workspace/jacub/src/modules/memory /home/miguel/eclipse-workspace/jacub/src/modules/memory /home/miguel/eclipse-workspace/jacub/src/modules/memory/CMakeFiles/memory.dir/DependInfo.cmake --color=$(COLOR)
 .PHONY : CMakeFiles/memory.dir/depend
 

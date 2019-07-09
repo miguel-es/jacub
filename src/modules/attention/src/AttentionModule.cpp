@@ -16,7 +16,7 @@
 #include <fstream>
 #include <jsoncpp/json/json.h>
 #include <yarp/os/impl/Logger.h>
-#include <jutils.cpp>
+#include <jutils.h>
 
 #define SWITCH_TO_V "changeAttentionToV"
 #define SWITCH_TO_T "changeAttentionToT"
@@ -31,8 +31,14 @@ private:
 	Port attendedContextOutputPort;
 	Json::Reader jsonReader;
 	Json::FastWriter jsonWriter;
+	Json::Value attendedContext;
+
 
 public:
+	AttentionModule(){
+		jsonReader.parse("[]", attendedContext);
+	}
+
 	virtual bool configure(ResourceFinder &rf) {
 
 		robotName = rf.check("robot", Value("jacub")).asString();
@@ -45,14 +51,14 @@ public:
 		}
 
 		if (!attentionSwitchInputPort.open(
-				"/" + robotName + "/perception/attentionSwitch:i")) {
+				"/" + robotName + "/attention/attentionSwitch:i")) {
 
 			yError("Failed creating input port for attention switch");
 			return false;
 		}
 
 		if (!attendedContextOutputPort.open(
-				"/" + robotName + "/perception/attendedContext:o")) {
+				"/" + robotName + "/attention/attendedContext:o")) {
 			yError("Failed creating output port for attended context");
 			return false;
 		}
@@ -96,28 +102,22 @@ input.clear();
 
 								std::cout << "Got sensorial context: " << '\n' << sensorialContext.toStyledString()
 										<< '\n';
+								Json::Value attendedVisual;
+								for (Json::Value obj : sensorialContext[0]) {
+									if(obj["color"]=="c1"){
+										attendedVisual = obj;
+									}
+								}
+							attendedContext[0] = attendedVisual;
+							attendedContext[1] = sensorialContext[1];
+							std::cout << "Attended context: " << '\n' << attendedContext.toStyledString()
+									<< '\n';
+
+							Bottle output;
+							output.addString(jsonWriter.write(attendedContext));
+							yDebug(" Writing out attended context");
+							attendedContextOutputPort.write(output);
 		return true;
 	}
 };
-
-int main(int argc, char *argv[]) {
-
-	Network yarp;
-
-	if (!yarp.checkNetwork()) {
-		yError("Yarp server does not seem available\n");
-		return 1;
-	}
-
-	AttentionModule attention;
-
-	ResourceFinder rf;
-	rf.setVerbose(); //logs searched directories
-	rf.setDefaultConfigFile("config.ini"); //specifies a default configuration file
-	rf.configure(argc, argv);
-
-	string robotName = rf.check("robot", Value("jacub")).asString();
-
-	attention.runModule(rf);
-}
 

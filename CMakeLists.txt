@@ -11,7 +11,7 @@ find_package(YARP REQUIRED)
 set(doc_files ${PROJECTNAME}.xml)
 #source_group("DOC Files"    FILES ${doc_files})
 
-file(GLOB folder_source src/*.cpp modules/*/src/*.cpp)
+file(GLOB folder_source src/*.cpp modules/*/src/*.cpp src/utils/*)
 file(GLOB folder_header include/*.h)
 #source_group("Source Files" FILES ${folder_source})
 #source_group("Header Files" FILES ${folder_header})
@@ -21,6 +21,7 @@ include_directories(${PROJECT_SOURCE_DIR}/include
                     ${OpenCV_INCLUDE_DIRS}
 		    src/utils/
 		    ${PROJECT_SOURCE_DIR}/modules/emotion/src
+		    ${PROJECT_SOURCE_DIR}/modules/attention/src
 		)
 #set (CMAKE_EXE_LINKER_FLAGS -ljsoncpp)
 add_executable(${PROJECTNAME} ${folder_header} ${folder_source})

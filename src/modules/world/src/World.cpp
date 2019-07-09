@@ -92,7 +92,7 @@
 	printf("Adding %s to the world",obj.c_str());
 	Bottle response;
 	world_port.write(cmd,response);
-	printf("World por response: %s",response.toString());
+	printf("World por response: %s",response.toString().c_str());
     }
 
 void import3DModel(string xmodel,string texture,float x,float y, float z){

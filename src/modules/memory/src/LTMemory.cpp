@@ -1,12 +1,6 @@
 // Author: Miguel Estrada - <luism@unam.mx>
 
 #include <cstdio>
-#include <cmath>
-
-#include <jutils.cpp>
-
-#include <yarp/os/Network.h>
-#include <yarp/os/RFModule.h>
 #include <yarp/os/all.h>
 
 #include <jsoncpp/json/json.h>
@@ -19,14 +13,14 @@
 #define CTRL_THREAD_PER     0.02 // [s]
 #define MATCH_MODE     "match"
 #define UPDATE_MODE     "update"
+#include <jutils.h>
 
 using namespace std;
 using namespace yarp::os;
 using namespace yarp::os::impl;
 
-class LTMemoryModule: public RFModule {
-protected:
-	//LTMemoryThread *ltMemoryThr;
+class LTMemoryThread: public RateThread {
+
 	Port modeInputPort;
 	Port contextInputPort;
 	Port matchThresholdInputPort;
@@ -45,12 +39,20 @@ protected:
 	string robotName;
 
 public:
-	virtual bool configure(ResourceFinder &rf) {
-
-		robotName = rf.check("robot", Value("jacub")).asString();
-		printf("robot name: %s\n", robotName.c_str());
+	LTMemoryThread(string robotName, string kb_path, const double period) :
+			RateThread(int(period * 1000.0)) {
+		this->robotName = robotName;
 		matchThreshold = 100.0;
-		jsonReader.parse("{\"schemes\":[]}", kb);
+		allowPartialMatch = false;
+		totalSchemes = 0;
+		loadKB(kb_path);
+		//jsonReader.parse("{\"schemes\":[]}", kb);
+	}
+
+	virtual bool threadInit() {
+
+		printf("robot name: %s\n", robotName.c_str());
+
 
 		if (!modeInputPort.open("/" + robotName + "/memory/mode:i")) {
 			printf("Failed creating mode input port for Memory module");
@@ -64,9 +66,9 @@ public:
 		}
 
 		if (!matchThresholdInputPort.open(
-				"/" + robotName + "/memory/matchThreashold:i")) {
+				"/" + robotName + "/memory/matchThreshold:i")) {
 			printf(
-					"Failed creating match threashold input port for Memory module");
+					"Failed creating match threshold input port for Memory module");
 			return false;
 		}
 
@@ -80,33 +82,35 @@ public:
 		return true;
 	}
 
-	virtual bool close() {
+	virtual void afterStart(bool s) {
+		if (s)
+			printf("Long-Term Memory thread started successfully\n");
+		else
+			printf("Long-Term Memory thread did not start\n");
 
-		 modeInputPort.close();
-		 contextInputPort.close();
-		 matchThresholdInputPort.close();
-		 matchedSchemasOutputPort.close();
-		return true;
+		//t=t0=t1=Time::now();
 	}
 
-	virtual double getPeriod() {
-		return 1.0;
-	}
-	virtual bool updateModule() {
+	virtual void run() {
 
 		printf("waiting for mode selection...\n");
 
 		Bottle input;
 		modeInputPort.read(input);
+		string input_string;
 		if (input.toString() == MATCH_MODE) {
 			std::cout << "MATCH_MODE set\n";
 			std::cout << "waiting for match threshold...\n";
 			matchThresholdInputPort.read(input);
-			matchThreshold = std::stof(input.toString().c_str());
+			input_string = input.toString();
+			prepareInput(input_string);
+			yDebug("Read %s\n",input_string.c_str());
+
+			matchThreshold = std::stof(input_string.c_str());
 			std::cout << "got " << matchThreshold << '\n';
 			std::cout << "waiting for a context to match...\n";
 			contextInputPort.read(input);
-			string input_string = input.toString();
+			 input_string = input.toString();
 			prepareInput(input_string);
 			Json::Value context;
 			jsonReader.parse(input_string.c_str(), context);
@@ -122,8 +126,13 @@ public:
 			output.addString(fastWriter.write(matchedSchemas));
 			matchedSchemasOutputPort.write(output);
 		}
+	}
 
-		return true;
+	virtual void threadRelease() {
+		modeInputPort.close();
+		contextInputPort.close();
+		matchThresholdInputPort.close();
+		matchedSchemasOutputPort.close();
 	}
 
 private:
@@ -141,8 +150,8 @@ private:
 		totalSchemes = kb["schemes"].size();
 
 		std::cout << totalSchemes << " schemas loaded" << '\n';
+		return true;
 	}
-
 	/**
 	 * Compares two contexts
 	 *
@@ -232,23 +241,5 @@ private:
 		return match;
 
 	}
+
 };
-
-int main(int argc, char *argv[]) {
-	Network yarp;
-
-	if (!yarp.checkNetwork()) {
-		yError("Yarp server does not seem available\n");
-		return 1;
-	}
-
-	LTMemoryModule ltMemory;
-
-	ResourceFinder rf;
-	rf.setVerbose(); //logs searched directories
-	rf.setDefaultConfigFile("config.ini"); //specifies a default configuration file
-	rf.configure(argc, argv);
-
-	ltMemory.runModule(rf);
-}
-

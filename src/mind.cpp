@@ -11,38 +11,254 @@
 
 #include <yarp/os/impl/Logger.h>
 
+#include "modules/attention/src/AttentionModule.cpp"
+#include "modules/emotion/src/EmotionModule.cpp"
+#include "modules/DevER/src/DevERModule.cpp"
+#include "modules/perception/src/PerceptionModule.cpp"
 #include <fstream>
 #include <iostream>
 
-#include "modules/emotion/src/EmotionModule.cpp"
+#include "modules/locomotion/src/Locomotion.cpp"
+//#include "modules/memory/src/MemoryModule.cpp"
 
 using namespace std;
 using namespace yarp::os;
 using namespace yarp::os::impl;
 
+int main(int argc, char *argv[]) {
+	Network yarp;
 
-int main(int argc, char *argv[])
-{
-    Network yarp;
+	if (!yarp.checkNetwork()) {
+		yError("Yarp server does not seem available\n");
+		return 1;
+	}
 
-    if (!yarp.checkNetwork())
-    {
-        yError("Yarp server does not seem available\n");
-        return 1;
-    }
+	/*EmotionsModule emotions;
+	 AttentionModule attention;
+	 LTMemoryModule ltm;
+	 WorkingMemoryModule wm;
+	 DevERModule dever;
+	 PerceptionModule perception;
+	 LocomotionModule bodyController;*/
 
-    Emotions emotions;
-    Memory memory;
-    iDevER idever;
-    Perception perception;
-    bodyController bodyController;
+	ResourceFinder rf;
+	// rf.setVerbose(); //logs searched directories
+	rf.setDefaultConfigFile("config.ini"); //specifies a default configuration file
+	rf.configure(argc, argv);
 
-    ResourceFinder rf;
-    rf.setVerbose(); //logs searched directories
-    rf.setDefaultConfigFile("config.ini"); //specifies a default configuration file
-    rf.configure(argc,argv);
+	//perception.configure(rf);
 
-    memory.runModule(rf);
-    // return 0;
+	string robotName = rf.check("robot", Value("jacub")).asString();
+
+	//connect module ports
+
+	string from = "/" + robotName + "/perception/rawImage:i";
+	string to = "/icubSim/cam/left";
+
+	if (Network::connect(to, from)) {
+		yInfo(
+		"Established  port connection from %s to %s",to.c_str(),from.c_str());
+	}
+	else
+	{
+		yWarning(" Failed establishing connection from %s to %s. Is the iCubSim left cam running?\n",to.c_str(),from.c_str());
+
+	}
+
+	from = "/" + robotName + "/perception/rawImage:i";
+	to = "/icubSim/cam/left";
+
+	if (Network::connect(to, from)) {
+		yInfo(
+		"Established  port connection from %s to %s",to.c_str(),from.c_str());
+	}
+	else
+	{
+		yWarning(" Failed establishing connection from %s to %s. Is the iCubSim left cam running?\n",to.c_str(),from.c_str());
+
+	}
+
+	from = "/" + robotName + "/perception/processedImage:o";
+	to = "/yarpview/img:i";
+
+	if (Network::connect(from, to)) {
+		yInfo(
+		"Established  port connection from %s to %s",from.c_str(),to.c_str());
+	}
+	else
+	{
+		yWarning(" Failed establishing connection from %s to %s. Is the perception module and yarpview running?\n",from.c_str(),to.c_str());
+
+	}
+
+	from = "/" + robotName + "/perception/sensorialContext:o";
+	to = "/" + robotName + "/attention/sensorialContext:i";
+
+	if (Network::connect(from, to)) {
+		yInfo(
+		"Established  port connection from %s to %s",from.c_str(),to.c_str());
+	}
+	else
+	{
+		yWarning(" Failed establishing connection from %s to %s. Is the perception and attention modules running?\n",from.c_str(),to.c_str());
+
+	}
+
+	from = "/" + robotName + "/attention/attendedContext:o";
+	to = "/" + robotName + "/memory/attendedContext:i";
+
+	if (Network::connect(from, to)) {
+		yInfo(
+		" Established  port connection from %s to %s",from.c_str(),to.c_str());
+	}
+	else
+	{
+		yWarning(" Failed establishing connection from %s to %s. Is the attention and memory modules running?\n",from.c_str(),to.c_str());
+
+	}
+
+	from = "/" + robotName + "/memory/attendedContext:o";
+	to = "/" + robotName + "/emotion/attendedContext:i";
+
+	if (Network::connect(from, to)) {
+		yInfo(
+		" Established  port connection from %s to %s",from.c_str(),to.c_str());
+	}
+	else
+	{
+		yWarning(" Failed establishing connection from %s to %s. Is the attention and memory modules running?\n",from.c_str(),to.c_str());
+
+	}
+
+	from = "/" + robotName + "/emotion/emotionalContext:o";
+	to = "/" + robotName + "/memory/emotionalContext:i";
+
+	if (Network::connect(from, to)) {
+		yInfo(
+		" Established  port connection from %s to %s",from.c_str(),to.c_str());
+	}
+	else
+	{
+		yWarning(" Failed establishing connection from %s to %s. Are the attention and memory modules running?\n",from.c_str(),to.c_str());
+
+	}
+
+	from = "/" + robotName + "/emotion/facialExpression:o";
+	to = "/emotion/in";
+
+	if (Network::connect(from, to)) {
+		yInfo(
+		" Established  port connection from %s to %s",from.c_str(),to.c_str());
+	}
+	else
+	{
+		yWarning(" Failed establishing connection from %s to %s. Are the emotion interface and %s's emotion module running?\n",from.c_str(),to.c_str(),robotName.c_str());
+
+	}
+
+	from = "/" + robotName + "/memory/emotionalContext:o";
+	to = "/" + robotName + "/DevER/currentContext:i";
+
+	if (Network::connect(from, to)) {
+		yInfo(
+		" Established  port connection from %s to %s",from.c_str(),to.c_str());
+	}
+	else
+	{
+		yWarning(" Failed establishing connection from %s to %s. Are the memory and DevER modules running?\n",from.c_str(),to.c_str());
+
+	}
+
+	from = "/" + robotName + "/DevER/memoryMode:o";
+	to = "/" + robotName + "/memory/mode:i";
+
+	if (Network::connect(from, to)) {
+		yInfo(
+		" Established  port connection from %s to %s",from.c_str(),to.c_str());
+	}
+	else
+	{
+		yWarning(" Failed establishing connection from %s to %s. Are the memory and DevER modules running?\n",from.c_str(),to.c_str());
+
+	}
+
+	from = "/" + robotName + "/DevER/currentContext:o";
+	to = "/" + robotName + "/memory/context:i";
+
+	if (Network::connect(from, to)) {
+		yInfo(
+		" Established  port connection from %s to %s",from.c_str(),to.c_str());
+	}
+	else
+	{
+		yWarning(" Failed establishing connection from %s to %s. Are the memory and DevER modules running?\n",from.c_str(),to.c_str());
+
+	}
+
+	from = "/" + robotName + "/DevER/currentContext:o";
+	to = "/" + robotName + "/memory/context:i";
+
+	if (Network::connect(from, to)) {
+		yInfo(
+		" Established  port connection from %s to %s",from.c_str(),to.c_str());
+	}
+	else
+	{
+		yWarning(" Failed establishing connection from %s to %s. Are the memory and DevER modules running?\n",from.c_str(),to.c_str());
+
+	}
+
+	from = "/" + robotName + "/DevER/matchThreshold:o";
+	to = "/" + robotName + "/memory/matchThreshold:i";
+
+	if (Network::connect(from, to)) {
+		yInfo(
+		" Established  port connection from %s to %s",from.c_str(),to.c_str());
+	}
+	else
+	{
+		yWarning(" Failed establishing connection from %s to %s. Are the memory and DevER modules running?\n",from.c_str(),to.c_str());
+
+	}
+
+	to = "/" + robotName + "/DevER/matchedSchemas:i";
+	from = "/" + robotName + "/memory/matchedSchemas:o";
+
+	if (Network::connect(from, to)) {
+		yInfo(
+		" Established  port connection from %s to %s",from.c_str(),to.c_str());
+	}
+	else
+	{
+		yWarning(" Failed establishing connection from %s to %s. Are the memory and DevER modules running?\n",from.c_str(),to.c_str());
+
+	}
+
+	from = "/" + robotName + "/locomotion/done:o";
+	to = "/" + robotName + "/perception/continue:i";
+
+	if (Network::connect(from, to)) {
+		yInfo(
+		" Established  port connection from %s to %s",from.c_str(),to.c_str());
+	}
+	else
+	{
+		yWarning(" Failed establishing connection from %s to %s. Are the locomotion and perception modules running?\n",from.c_str(),to.c_str());
+
+	}
+
+	from = "/" + robotName + "/DevER/actions:o";
+	to = "/" + robotName + "/locomotion/actions:i";
+
+	if (Network::connect(from, to)) {
+		yInfo(
+		" Established  port connection from %s to %s",from.c_str(),to.c_str());
+	}
+	else
+	{
+		yWarning(" Failed establishing connection from %s to %s. Are the locomotion and DevER modules running?\n",from.c_str(),to.c_str());
+
+	}
+
 }
 

@@ -23,7 +23,7 @@
 #include <opencv2/opencv.hpp>
 
 #include <yarp/sig/all.h>
-#include <jutils.cpp>
+#include <jutils.h>
 
 using namespace std;
 using namespace cv;
@@ -38,6 +38,7 @@ private:
 	BufferedPort<ImageOf<PixelBgr> > rawImageInputPort;
 	BufferedPort<ImageOf<PixelBgr> > processedImageOutputPort;
 	Port sensorialContextOutputPort;
+	Port continueInputPort;
 	Json::Value perceptualMemory;
 
 	Json::Reader jsonReader;
@@ -46,6 +47,7 @@ private:
 public:
 	virtual bool configure(ResourceFinder &rf) {
 
+		printf("Configuring...");
 		robotName = rf.check("robot", Value("jacub")).asString();
 		printf("robot name: %s\n", robotName.c_str());
 
@@ -62,12 +64,23 @@ public:
 			return false;
 		}
 
+
 		if (!sensorialContextOutputPort.open(
 				"/" + robotName + "/perception/sensorialContext:o")) {
 			yError("Failed creating output port for sensorial context");
 
 		}
+
+		if (!continueInputPort.open(
+						"/" + robotName + "/perception/continue:i")) {
+					yError("Failed creating input port for continue command");
+
+				}
+
+		loadPerceptualMemory(rf.check("perceptual_memory", Value(".")).asString());
 		return true;
+
+
 		//TODO: load sensorial memory
 	}
 
@@ -75,6 +88,7 @@ public:
 		rawImageInputPort.close();
 		processedImageOutputPort.close();
 		sensorialContextOutputPort.close();
+		continueInputPort.close();
 		return true;
 	}
 
@@ -205,7 +219,7 @@ public:
 
 
 				IplImage blobedImage = IplImage(im_with_keypoints);
-				ImageOf<PixelBgr> outputProcessedImage = processedImageOutputPort.prepare();
+				ImageOf<PixelBgr> &outputProcessedImage = processedImageOutputPort.prepare();
 				outputProcessedImage.resize(inputRawImage->width(), inputRawImage->height());
 				outputProcessedImage.wrapIplImage(&blobedImage);
 
@@ -215,6 +229,8 @@ public:
 		        //outputProcessedImage.resize(inputRawImage->width(), inputRawImage->height());
 
 				//outputImage = yarpReturnImage;
+
+				std::cout << "Writing out processed image " << std::endl;
 
 				processedImageOutputPort.write();
 
@@ -246,25 +262,4 @@ private:
 		return true;
 	}
 };
-
-int main(int argc, char *argv[]) {
-
-	Network yarp;
-
-	if (!yarp.checkNetwork()) {
-		yError("Yarp server does not seem available\n");
-		return 1;
-	}
-
-	PerceptionModule perception;
-
-	ResourceFinder rf;
-	rf.setVerbose(); //logs searched directories
-	rf.setDefaultConfigFile("config.ini"); //specifies a default configuration file
-	rf.configure(argc, argv);
-
-	string robotName = rf.check("robot", Value("jacub")).asString();
-
-	perception.runModule(rf);
-}
 

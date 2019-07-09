@@ -1,4 +1,5 @@
 #include <string>
+#include <jutils.h>
 
 /*
 * Cleans scape chars from input string to get a well-formed json string

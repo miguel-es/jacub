@@ -6,5 +6,5 @@ CXX_FLAGS =   -std=gnu++11
 
 CXX_DEFINES = 
 
-CXX_INCLUDES = -I/home/miguel/eclipse-workspace/jacub/src/modules/attention/include -I/home/miguel/eclipse-workspace/jacub/src/modules/attention/../../../src/utils 
+CXX_INCLUDES = -I/home/miguel/eclipse-workspace/jacub/src/modules/attention/include -I/home/miguel/eclipse-workspace/jacub/src/modules/attention/../../../src/utils -I/home/miguel/eclipse-workspace/jacub/src/modules/attention/src 
 

@@ -1,5 +1,7 @@
 file(REMOVE_RECURSE
   "CMakeFiles/attention.dir/src/AttentionModule.o"
+  "CMakeFiles/attention.dir/src/main.o"
+  "CMakeFiles/attention.dir/home/miguel/eclipse-workspace/jacub/src/utils/jutils.o"
   "attention.pdb"
   "attention"
 )

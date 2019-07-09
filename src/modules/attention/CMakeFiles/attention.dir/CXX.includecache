@@ -6,8 +6,8 @@
 
 #IncludeRegexTransform: 
 
-../../../src/utils/jutils.cpp
-string
+../../../src/utils/jutils.h
+string.h
 -
 
 /home/miguel/eclipse-workspace/jacub/src/modules/attention/src/AttentionModule.cpp
@@ -33,6 +33,42 @@ jsoncpp/json/json.h
 -
 yarp/os/impl/Logger.h
 -
-jutils.cpp
+jutils.h
+-
+
+/home/miguel/eclipse-workspace/jacub/src/modules/attention/src/main.cpp
+AttentionModule.cpp
+-
+
+/home/miguel/eclipse-workspace/jacub/src/utils/jutils.cpp
+string
+-
+jutils.h
+-
+
+src/AttentionModule.cpp
+stdio.h
+-
+iostream
+-
+yarp/os/Network.h
+-
+yarp/os/Time.h
+-
+yarp/os/Network.h
+-
+yarp/os/RFModule.h
+-
+yarp/os/BufferedPort.h
+-
+string
+-
+fstream
+-
+jsoncpp/json/json.h
+-
+yarp/os/impl/Logger.h
+-
+jutils.h
 -
 
