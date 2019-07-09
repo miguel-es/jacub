@@ -1,12 +1,19 @@
 #!/bin/bash
 # Jacub startup scrip
 
+sudo cmake src/modules/memory
 sudo make --directory=src/modules/memory install
+sudo cmake src/modules/perception
 sudo make --directory=src/modules/perception install
+sudo cmake src/modules/attention
 sudo make --directory=src/modules/attention install
+sudo cmake src/modules/emotion
 sudo make --directory=src/modules/emotion install
+sudo cmake src/modules/DevER
 sudo make --directory=src/modules/DevER install
+sudo cmake src/modules/DevER
 sudo make --directory=src/modules/locomotion install
+sudo cmake .
 sudo make install 
 
 

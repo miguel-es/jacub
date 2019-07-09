@@ -26,6 +26,12 @@ iostream
 jutils.h
 -
 
+/home/miguel/eclipse-workspace/jacub/src/modules/memory/src/MemoryModule.cpp
+LTMemory.cpp
+-
+WMemory.cpp
+-
+
 /home/miguel/eclipse-workspace/jacub/src/modules/memory/src/WMemory.cpp
 cstdio
 -

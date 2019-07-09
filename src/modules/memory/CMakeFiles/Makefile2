@@ -66,7 +66,7 @@ CMAKE_BINARY_DIR = /home/miguel/eclipse-workspace/jacub/src/modules/memory
 CMakeFiles/memory.dir/all:
 	$(MAKE) -f CMakeFiles/memory.dir/build.make CMakeFiles/memory.dir/depend
 	$(MAKE) -f CMakeFiles/memory.dir/build.make CMakeFiles/memory.dir/build
-	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/miguel/eclipse-workspace/jacub/src/modules/memory/CMakeFiles --progress-num=1,2,3,4,5 "Built target memory"
+	@$(CMAKE_COMMAND) -E cmake_echo_color --switch=$(COLOR) --progress-dir=/home/miguel/eclipse-workspace/jacub/src/modules/memory/CMakeFiles --progress-num=1,2,3,4,5,6 "Built target memory"
 .PHONY : CMakeFiles/memory.dir/all
 
 # Include target in all.
@@ -76,7 +76,7 @@ all: CMakeFiles/memory.dir/all
 
 # Build rule for subdir invocation for target.
 CMakeFiles/memory.dir/rule: cmake_check_build_system
-	$(CMAKE_COMMAND) -E cmake_progress_start /home/miguel/eclipse-workspace/jacub/src/modules/memory/CMakeFiles 5
+	$(CMAKE_COMMAND) -E cmake_progress_start /home/miguel/eclipse-workspace/jacub/src/modules/memory/CMakeFiles 6
 	$(MAKE) -f CMakeFiles/Makefile2 CMakeFiles/memory.dir/all
 	$(CMAKE_COMMAND) -E cmake_progress_start /home/miguel/eclipse-workspace/jacub/src/modules/memory/CMakeFiles 0
 .PHONY : CMakeFiles/memory.dir/rule

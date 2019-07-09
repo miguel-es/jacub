@@ -12,12 +12,14 @@ emotion
 iDevER
 percepction
 propioception
+memory
 .cproject
 .project
 .settings/
 log/*.log
 *.o
 *.out
+*.dir/**
 
 
 

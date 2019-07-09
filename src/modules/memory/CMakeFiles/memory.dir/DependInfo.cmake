@@ -6,6 +6,7 @@ set(CMAKE_DEPENDS_LANGUAGES
 set(CMAKE_DEPENDS_CHECK_CXX
   "/home/miguel/eclipse-workspace/jacub/src/utils/jutils.cpp" "/home/miguel/eclipse-workspace/jacub/src/modules/memory/CMakeFiles/memory.dir/home/miguel/eclipse-workspace/jacub/src/utils/jutils.o"
   "/home/miguel/eclipse-workspace/jacub/src/modules/memory/src/LTMemory.cpp" "/home/miguel/eclipse-workspace/jacub/src/modules/memory/CMakeFiles/memory.dir/src/LTMemory.o"
+  "/home/miguel/eclipse-workspace/jacub/src/modules/memory/src/MemoryModule.cpp" "/home/miguel/eclipse-workspace/jacub/src/modules/memory/CMakeFiles/memory.dir/src/MemoryModule.o"
   "/home/miguel/eclipse-workspace/jacub/src/modules/memory/src/WMemory.cpp" "/home/miguel/eclipse-workspace/jacub/src/modules/memory/CMakeFiles/memory.dir/src/WMemory.o"
   "/home/miguel/eclipse-workspace/jacub/src/modules/memory/src/main.cpp" "/home/miguel/eclipse-workspace/jacub/src/modules/memory/CMakeFiles/memory.dir/src/main.o"
   )

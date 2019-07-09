@@ -7,6 +7,11 @@ CMakeFiles/memory.dir/home/miguel/eclipse-workspace/jacub/src/utils/jutils.o
 CMakeFiles/memory.dir/src/LTMemory.o
  ../../../src/utils/jutils.h
  /home/miguel/eclipse-workspace/jacub/src/modules/memory/src/LTMemory.cpp
+CMakeFiles/memory.dir/src/MemoryModule.o
+ ../../../src/utils/jutils.h
+ /home/miguel/eclipse-workspace/jacub/src/modules/memory/src/MemoryModule.cpp
+ src/LTMemory.cpp
+ src/WMemory.cpp
 CMakeFiles/memory.dir/src/WMemory.o
  ../../../src/utils/jutils.h
  /home/miguel/eclipse-workspace/jacub/src/modules/memory/src/WMemory.cpp
