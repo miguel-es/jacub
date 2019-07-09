@@ -1,6 +1,6 @@
 #!/bin/bash
 # Jacub startup scrip
-
+mkdir log
 sudo cmake src/modules/memory
 sudo make --directory=src/modules/memory install
 sudo cmake src/modules/perception
@@ -28,7 +28,7 @@ nohup yarprobotinterface --context simCartesianControl > log/yarprobotinterface.
 nohup iKinCartesianSolver --context simCartesianControl --part left_arm > log/iKinCartesianSolver.log 2>&1 &
 
 sleep 3
-world
+nohup world log/memory.log 2>&1 &
 nohup memory --context jacub > log/memory.log 2>&1 &
 nohup perception --context jacub > log/perception.log 2>&1 &
 nohup attention --context jacub > log/attention.log 2>&1 &
