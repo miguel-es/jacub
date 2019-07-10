@@ -24,6 +24,9 @@
 #include <vector>
 #include <jutils.h>
 
+#include <fstream>
+#include <iostream>
+
 #define CTRL_THREAD_PER     0.02    // [s]
 #define PRINT_STATUS_PER    1.0     // [s]
 #define MAX_TORSO_PITCH     30.0    // [deg]
@@ -138,6 +141,7 @@ public:
 			//return false;
 		}
 
+		printf("returned -1\n");
 		left_arm.view(left_arm_ctrl);
 		left_hand.view(left_hand_ctrl);
 		// latch the controller context in order to preserve
@@ -179,13 +183,14 @@ public:
 		options.put("device", "remote_controlboard");
 		options.put("local", headCtrPortName);
 		options.put("remote", "/icubSim/head");
-
+		printf("returned0 \n");
 		if (!head.open(options)) {
 			yError("Couldn't get head controller. Is the iCub_SIM running?");
 			return false;
 		}
-
+		printf("returned\n");
 		head.view(head_ctrl);
+		printf("returned\n");
 		return true;
 	}
 
@@ -210,7 +215,7 @@ public:
 	virtual bool updateModule() {
 		//moveHeadDown(60);
 		//moveLeftArm(-0.35,-0.1,-0.034,0.0,0.0,4.0);
-		printf("Locomotion Module: waiting for actions \n");
+		std::cout << "Locomotion Module: waiting for actions \n" << '\n';
 		Bottle input;
 		actionsInputPort.read(input);
 		//if (input!=NULL) {
@@ -219,7 +224,7 @@ public:
 		prepareInput(input_string);
 		Json::Value commandedActions;
 		jsonReader.parse(input_string.c_str(), commandedActions);
-		printf("Got %s\n", input_string.c_str());
+		std::cout << "Got "<< input_string << '\n';
 
 		//string action = input.toString();
 		bool done = false;
@@ -234,7 +239,7 @@ public:
 			if (action == "random") {
 
 				int randomi = rand() % actions.size();
-				printf("Random action ...%d\n", randomi);
+				std::cout << "Random action"<< '\n';
 				/*for(int i = 0; i < action.size(); i++)
 				 {*/
 				action = actions[rand() % actions.size()];
@@ -242,19 +247,19 @@ public:
 			}
 
 			if (action == "headUp") {
-				printf("Moving head up ...\n");
+				std::cout << "Moving head up ...\n";
 				done = moveHead(headRotAngle, 0, 0);
 			} else if (action == "headDown") {
-				printf("Moving head down ...\n");
+				std::cout << "Moving head down ...\n";
 				done = moveHead(-headRotAngle, 0, 0);
 			} else if (action == "headLeft") {
-				printf("Moving head left ...\n");
+				std::cout << "Moving head left ...\n";
 				done = moveHead(0, 0, headRotAngle);
 			} else if (action == "headRight") {
-				printf("Moving head right ...\n");
+				std::cout << "Moving head right ...\n";
 				done = moveHead(0, 0, -headRotAngle);
 			} else if (action == "headLeftUp") {
-				printf("Moving head left ...\n");
+				std::cout << "Moving head left and up ...\n";
 				done = moveHead(headRotAngle, 0, headRotAngle);
 				/*if(done)
 				 {
@@ -264,7 +269,7 @@ public:
 			}
 
 			else if (action == "headLeftDown") {
-				printf("Moving head left and down...\n");
+				std::cout << "Moving head left and down ...\n";
 				done = moveHead(-headRotAngle, 0, headRotAngle);
 				/*if(moveHeadLeft(headRotAngle))
 				 {
@@ -272,7 +277,7 @@ public:
 				 done = moveHeadDown(headRotAngle);
 				 }*/
 			} else if (action == "headRightUp") {
-				printf("Moving head right and up ...\n");
+				std::cout << "Moving head right and up ...\n";
 				done = moveHead(headRotAngle, 0, -1 * headRotAngle);
 
 				/*if(moveHeadRight(headRotAngle))
@@ -281,52 +286,38 @@ public:
 				 done = moveHeadUp(headRotAngle);
 				 }**/
 			} else if (action == "headRightDown") {
-				printf("Moving head right and down ...\n");
+				std::cout << "Moving head right and down ...\n";
 				done = moveHead(-headRotAngle, 0, -headRotAngle);
 			} else if (action == "handRight") {
-				printf("Moving left hand to the right ...\n");
+				std::cout << "Moving hand right ...\n";
 				done = moveLeftArm(-0.35, -0.05, 0.1, 0.0, 0.0, 4.0);
 			} else if (action == "handLeft") {
-				printf("Moving left hand to the right ...\n");
+				std::cout << "Moving hand left ...\n";
 				done = moveLeftArm(-0.35, 0.03, 0.1, 0.0, 0.0, 4.0);
 			} else if (action == "handUp") {
-				printf("Moving left hand up ...\n");
+				std::cout << "Moving hand up ...\n";
 				done = moveLeftArm(-0.35, 0.03, 0.2, 0.0, 0.0, 4.0);
 			} else if (action == "handDown") {
-				printf("Moving left hand down ...\n");
+				std::cout << "Moving hand down ...\n";
 				done = moveLeftArm(-0.35, 0.03, -0.1, 0.0, 0.0, 4.0);
 			} else if (action == "handBackward") {
 			} else if (action == "handForward") {
 			} else if (action == "closeHand") {
-				printf("Closing left hand ...\n");
+				std::cout << "Closing left hand ...\n";
 				done = closeHand();
 				//closeHand();
 			} else if (action == "openHand") {
-				printf("Opening left hand ...\n");
+				std::cout << "Opening left hand ...\n";
 				done = openHand();
 			} else {
 				yWarning("Unknown action :'%s'\n",action.toStyledString().c_str());
 			}
+			//std::cout << "Action performed \n";
 		}
 
-		/*
-		 if(action=="mv lhnd r")
-		 {
-		 printf("Moving left hand to the right...\n");
-		 done  = moveLeftArm(-0.35,-0.05,0.1,0.0,0.0,4.0);
-		 printf("Done\n");
+		std::cout << "Actions performed, writing out done \n";
 
-		 }
-		 else if(strcmp(action.toString().c_str(),"mv lhnd l")==0)
-		 {
-		 printf("Moving left hand to the right...\n");
-		 done  =  moveLeftArm(-0.35,0.03,0.1,0.0,0.0,4.0);
-		 printf("Done\n");
-		 }*/
-
-		//if(done){
 		Bottle output;
-		//string response = done ? "true" : "false";
 		output.addString(done ? "true" : "false");
 		doneOutputPort.write(output);
 		return true;
@@ -359,12 +350,12 @@ private:
 		command[1] = command[1] + angle1;
 		command[2] = command[2] + angle2;
 
-		bool done = head_ctrl->positionMove(command.data());
+		return head_ctrl->positionMove(command.data());
 
 		/* axe0_pos = 0;
 		 axe1_pos=0;
 		 axe2_pos=0;*/
-		return true;
+		//return true;
 	}
 
 	/**

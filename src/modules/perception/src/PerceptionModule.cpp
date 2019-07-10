@@ -241,6 +241,9 @@ public:
 Bottle output;
 output.addString(fastWriter.write(sensorialContext));
 				sensorialContextOutputPort.write(output);
+				std::cout << "Waiting for continue signal\n";
+Bottle input;
+				continueInputPort.read(input);
 		return true;
 	}
 

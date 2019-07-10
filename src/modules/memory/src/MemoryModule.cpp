@@ -9,7 +9,7 @@ protected:
 public:
 	virtual bool configure(ResourceFinder &rf) {
    	 string robotName = rf.check("robot", Value("jacub")).asString();
-   	string kb_path = rf.check("kb_path", Value("../../../schemas/kb.json")).asString();
+   	string kb_path = rf.check("kb", Value("")).asString();
 		ltmThread = new LTMemoryThread(robotName,kb_path,CTRL_THREAD_PER);
 		if (!ltmThread->start()) {
 			delete ltmThread;

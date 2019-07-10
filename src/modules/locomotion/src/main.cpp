@@ -16,13 +16,14 @@ int main(int argc, char *argv[])
         return 1;
     }
 
+    LocomotionModule locomotion;
+
     ResourceFinder rf;
     rf.setVerbose();
     rf.setDefaultConfigFile("config.ini");
     rf.configure(argc,argv);
 
-    string robotName = rf.check("robot",Value("jacub")).asString();
-    LocomotionModule locomotion;
 
-    return locomotion.runModule(rf);
+
+     locomotion.runModule(rf);
 }

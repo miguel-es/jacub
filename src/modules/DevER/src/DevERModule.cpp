@@ -185,7 +185,7 @@ private:
 
 		input_string = input.toString();
 		prepareInput(input_string);
-		yDebug(" read %s ",input.toString().c_str());
+		yDebug(" read %s ",input_string.c_str());
 
 		jsonReader.parse(input_string.c_str(), matchedSchemas);
 

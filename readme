@@ -1,3 +1,24 @@
+PARA DESCARGAR EL PROYECTO:
+
+git clone https://github.com/miguel-es/jacub.git
+git checkout origin alt_development
+
+FIN DE INSTRUCCIONES PARA DESCARGAR PROYECTO 
+
+PARA EJECUTAR EL AGENTE JACUB EJECUTE LOS SIGUIENTES COMANDOS EN TERMINALES INDEPENDIENTES (TABS):
+
+yarpserver
+yarpview
+./jacub.sh (script en la raiz del proyecto)
+
+FIN DE PASOS PARA EJECUTAR AGENTE JACUB
+
+
+
+
+
+
+
 
 requiere:
 apt-get install libjsoncpp-dev qml-module-qt-labs-folderlistmodel qml-module-qt-labs-settings

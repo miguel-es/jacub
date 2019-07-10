@@ -36,7 +36,7 @@
      {
 
        inited = false;
-	   if(!world_port.open("/jacques/world")){
+	   if(!world_port.open("/jacub/world")){
             printf("Failed creating port");
             return false;
        }
@@ -94,7 +94,6 @@
 	world_port.write(cmd,response);
 	printf("World por response: %s",response.toString().c_str());
     }
-
 void import3DModel(string xmodel,string texture,float x,float y, float z){
     printf("Importing %s\n",xmodel.c_str());
 	Bottle cmd;

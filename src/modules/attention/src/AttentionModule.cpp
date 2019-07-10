@@ -97,8 +97,10 @@ input.clear();
 								yDebug("read %s\n",input.toString().c_str());
 								input_string = input.toString();
 								prepareInput(input_string);
-
+								yDebug("read cleaned%s\n",input.toString().c_str());
 								jsonReader.parse(input_string.c_str(), sensorialContext);
+if(sensorialContext[0].size()!=0){
+
 
 								std::cout << "Got sensorial context: " << '\n' << sensorialContext.toStyledString()
 										<< '\n';
@@ -108,8 +110,12 @@ input.clear();
 										attendedVisual = obj;
 									}
 								}
-							attendedContext[0] = attendedVisual;
+								attendedContext[0] = attendedVisual;
+}else{
+	attendedContext[0] = sensorialContext[0];}
+
 							attendedContext[1] = sensorialContext[1];
+//}else{attendedContext = sensorialContext;}
 							std::cout << "Attended context: " << '\n' << attendedContext.toStyledString()
 									<< '\n';
 
