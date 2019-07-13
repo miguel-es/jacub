@@ -8,5 +8,455 @@
 
 "[\{\"color\":\"c2\",\"contentment\":1,\"size\":\"s2\",\"sector\":5\},\{\}]"
 
+"[\{\"distress\":1,\"color\":\"c1\",\"size\":\"s1\",\"sector\":4}, \{\"contentment\":1,\"hand\":\"open\"}\}]" (parcial match)
+
+"[\{\"distress\":1,\"color\":\"c1\",\"size\":\"s1\",\"sector\":5}, \{\}]"
+
 /jacub/locomotion/actions:i <= "[\"random\",\"headLeft\"]"
 /jacub/DevER/memoryMode:o
+
+
+Ejemplo match exacto
+
+Entrada:[{"color":"c2","contentment":1,"size":"s2","sector":5},{}]
+
+Salida:
+
+Matched schemas
+[
+   {
+      "actions" : [ "showInterestInV" ],
+      "context" : [
+         {
+            "color" : "*",
+            "contentment" : 1,
+            "sector" : "*",
+            "size" : "*"
+         },
+         {}
+      ],
+      "equilibrated" : true,
+      "id" : "3"
+   }
+]
+
+1 schemas matched 
+
+Ejemplo match parcial 100 en visual y 100 en tactil
+
+Entrada: "[{"distress":1,"color":"c1","size":"s1","sector":4}, {"contentment":1,"hand":"open"}}]"
+
+Salida (lista de dos listas, la primera tiene el match para visual y la segunda el match tactil):
+Matched schemas
+[
+   [
+      {
+         "actions" : [ "headLeft" ],
+         "context" : [
+            {
+               "color" : "*",
+               "distress" : 1,
+               "sector" : 4,
+               "size" : "*"
+            },
+            {}
+         ],
+         "equilibrated" : true,
+         "expected" : [
+            {
+               "color" : "*",
+               "contentment" : 1,
+               "sector" : "*",
+               "size" : "*"
+            },
+            {}
+         ],
+         "id" : "11"
+      },
+      {
+         "actions" : [ "handRight" ],
+         "context" : [
+            {
+               "color" : "c1",
+               "distress" : 1,
+               "sector" : 4,
+               "size" : "*"
+            },
+            {}
+         ],
+         "equilibrated" : true,
+         "expected" : [
+            {
+               "color" : "*",
+               "contentment" : 1,
+               "sector" : "*",
+               "size" : "*"
+            },
+            {}
+         ],
+         "id" : "18"
+      },
+      {
+         "actions" : [ "headLeft" ],
+         "children" : [
+            {
+               "actions" : [ "headLeft" ],
+               "context" : [
+                  {
+                     "color" : "*",
+                     "distress" : 1,
+                     "sector" : 4,
+                     "size" : "*"
+                  },
+                  {}
+               ],
+               "equilibrated" : true,
+               "expected" : [
+                  {
+                     "color" : "*",
+                     "contentment" : 1,
+                     "sector" : "*",
+                     "size" : "*"
+                  },
+                  {}
+               ],
+               "id" : "40"
+            }
+         ],
+         "context" : [
+            {
+               "color" : "*",
+               "contentment" : 1,
+               "sector" : 4,
+               "size" : "*"
+            },
+            {}
+         ],
+         "equilibrated" : true,
+         "expected" : [
+            {
+               "color" : "*",
+               "contentment" : 2,
+               "sector" : "*",
+               "size" : "*"
+            },
+            {}
+         ],
+         "id" : "39"
+      },
+      {
+         "actions" : [ "headRight" ],
+         "children" : [
+            {
+               "actions" : [ "handLeft" ],
+               "context" : [
+                  {
+                     "color" : "c1",
+                     "distress" : 1,
+                     "sector" : 4,
+                     "size" : "*"
+                  },
+                  {}
+               ],
+               "equilibrated" : true,
+               "expected" : [
+                  {
+                     "color" : "*",
+                     "contentment" : 1,
+                     "sector" : "*",
+                     "size" : "*"
+                  },
+                  {}
+               ],
+               "id" : "46"
+            }
+         ],
+         "context" : [
+            {
+               "color" : "*",
+               "contentment" : 1,
+               "sector" : "*",
+               "size" : "*"
+            },
+            {}
+         ],
+         "equilibrated" : true,
+         "expected" : [
+            {
+               "color" : "*",
+               "contentment" : 2,
+               "sector" : "*",
+               "size" : "*"
+            },
+            {}
+         ],
+         "id" : "45"
+      }
+   ],
+   [
+      {
+         "actions" : [ "showInterestInT" ],
+         "context" : [
+            {},
+            {
+               "contentment" : 1,
+               "hand" : "*"
+            }
+         ],
+         "equilibrated" : true,
+         "id" : "4"
+      }
+   ]
+]
+
+4 schemas matched visual context and 1 matched tactile context
+
+Ejemplo match parcial con discrepancia en un aspecto del contexto.
+
+Entrada: [{"distress":1,"color":"c1","size":"s1","sector":5}, {}]
+
+Matched schemas
+[
+   [
+      {
+         "actions" : [ "showInterestInT", "headRightDown" ],
+         "context" : [
+            {
+               "color" : "*",
+               "distress" : 1,
+               "sector" : 9,
+               "size" : "*"
+            },
+            {
+               "contentment" : 1,
+               "hand" : "*"
+            }
+         ],
+         "equilibrated" : true,
+         "expected" : [
+            {
+               "color" : "*",
+               "contentment" : 1,
+               "sector" : "*",
+               "size" : "*"
+            },
+            {
+               "contentment" : 1,
+               "hand" : "*"
+            }
+         ],
+         "id" : "20"
+      },
+      {
+         "actions" : [ "showInterestInT", "headRightDown" ],
+         "context" : [
+            {
+               "color" : "*",
+               "distress" : 1,
+               "sector" : 8,
+               "size" : "*"
+            },
+            {
+               "contentment" : 1,
+               "hand" : "*"
+            }
+         ],
+         "equilibrated" : true,
+         "expected" : [
+            {
+               "color" : "*",
+               "contentment" : 1,
+               "sector" : "*",
+               "size" : "*"
+            },
+            {
+               "contentment" : 1,
+               "hand" : "*"
+            }
+         ],
+         "id" : "21"
+      },
+      {
+         "actions" : [ "changeAttentionToV", "closeHand" ],
+         "context" : [
+            {
+               "color" : "*",
+               "contentment" : 2,
+               "sector" : "*",
+               "size" : "*"
+            },
+            {
+               "contentment" : 1,
+               "hand" : "*"
+            }
+         ],
+         "equilibrated" : true,
+         "expected" : [
+            {
+               "color" : "*",
+               "contentment" : 2,
+               "sector" : "*",
+               "size" : "*"
+            },
+            {
+               "contentment" : 2,
+               "hand" : "*"
+            }
+         ],
+         "id" : "22"
+      },
+      {
+         "actions" : [ "showIntetestInV", "closeHand" ],
+         "context" : [
+            {
+               "color" : "*",
+               "contentment" : 2,
+               "sector" : "*",
+               "size" : "*"
+            },
+            {
+               "contentment" : 1,
+               "hand" : "*"
+            }
+         ],
+         "equilibrated" : true,
+         "expected" : [
+            {
+               "color" : "*",
+               "contentment" : 2,
+               "sector" : "*",
+               "size" : "*"
+            },
+            {
+               "contentment" : 2,
+               "hand" : "*"
+            }
+         ],
+         "id" : "23"
+      },
+      {
+         "actions" : [ "showIntetestInV", "closeHand" ],
+         "context" : [
+            {
+               "color" : "*",
+               "contentment" : 1,
+               "sector" : "*",
+               "size" : "*"
+            },
+            {
+               "contentment" : 1,
+               "hand" : "*"
+            }
+         ],
+         "equilibrated" : true,
+         "expected" : [
+            {
+               "color" : "*",
+               "contentment" : 1,
+               "sector" : "*",
+               "size" : "*"
+            },
+            {
+               "contentment" : 2,
+               "hand" : "*"
+            }
+         ],
+         "id" : "24"
+      },
+      {
+         "actions" : [ "showInterestInT", "headRightDown" ],
+         "children" : [
+            {
+               "actions" : [ "showInterestInV", "closeHand" ],
+               "children" : [
+                  {
+                     "actions" : [ "showInterestInT", "headRightDown" ],
+                     "context" : [
+                        {
+                           "color" : "*",
+                           "distress" : 1,
+                           "sector" : 9,
+                           "size" : "*"
+                        },
+                        {
+                           "contentment" : 1,
+                           "hand" : "*"
+                        }
+                     ],
+                     "equilibrated" : true,
+                     "expected" : [
+                        {
+                           "color" : "*",
+                           "contentment" : 1,
+                           "sector" : "*",
+                           "size" : "*"
+                        },
+                        {
+                           "contentment" : 1,
+                           "hand" : "*"
+                        }
+                     ],
+                     "id" : "52"
+                  }
+               ],
+               "context" : [
+                  {
+                     "color" : "*",
+                     "contentment" : 1,
+                     "sector" : "*",
+                     "size" : "*"
+                  },
+                  {
+                     "contentment" : 1,
+                     "hand" : "*"
+                  }
+               ],
+               "equilibrated" : true,
+               "expected" : [
+                  {
+                     "color" : "*",
+                     "contentment" : 1,
+                     "sector" : "*",
+                     "size" : "*"
+                  },
+                  {
+                     "contentment" : 2,
+                     "hand" : "*"
+                  }
+               ],
+               "id" : "51"
+            }
+         ],
+         "context" : [
+            {
+               "color" : "*",
+               "contentment" : 1,
+               "sector" : 9,
+               "size" : "*"
+            },
+            {
+               "contentment" : 2,
+               "hand" : "*"
+            }
+         ],
+         "equilibrated" : true,
+         "expected" : [
+            {
+               "color" : "*",
+               "contentment" : 2,
+               "sector" : "*",
+               "size" : "*"
+            },
+            {
+               "contentment" : 2,
+               "hand" : "*"
+            }
+         ],
+         "id" : "50"
+      }
+   ],
+   []
+]
+
+6 schemas matched visual context and 0 matched tactile context
+

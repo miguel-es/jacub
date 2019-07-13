@@ -32,7 +32,7 @@ private:
 	Port currentContextOutputPort;
 	Port matchedSchemasInputPort;
 	Port actionsOutputPort;
-	Port matchThresholdOutputPort;
+	Port matchModeOutputPort;
 
 	int totalSchemes;
 	bool allowPartialMatch;
@@ -50,7 +50,7 @@ public:
 
 		robotName = rf.check("robot", Value("jacub")).asString();
 		//string robotName = rf.find("robot").asString();
-		allowPartialMatch = true;
+		allowPartialMatch = true; //TODO: check if kb has stabilished schemas
 		jsonReader.parse("{\"schemes\":[]}", kb);
 
 		if (!currentContextInputPort.open(
@@ -93,14 +93,15 @@ public:
 			return false;
 		}
 
-		if (!matchThresholdOutputPort.open(
-				"/" + robotName + "/DevER/matchThreshold:o")) {
+		if (!matchModeOutputPort.open(
+				"/" + robotName + "/DevER/matchMode:o")) {
 			yError(
-			"Failed creating match threshold output port for DevER module");
+			"Failed creating match mode output port for DevER module");
 			return false;
 		}
 
-		loadKB(rf.check("kb_file", Value("../../schemas/kb.json")).toString());
+		//loadKB(rf.check("kb_file", Value("../../schemas/kb.json")).toString());
+
 
 		return true;
 	}
@@ -169,9 +170,17 @@ private:
 		ltMemoryModeOutputPort.write(output);
 		output.clear();
 		yDebug(
-				" Writing out match threshold to %s\n",matchThresholdOutputPort.getName().c_str());
-		output.addString("100");
-		matchThresholdOutputPort.write(output);
+				" Writing out match mode to %s\n",matchModeOutputPort.getName().c_str());
+		string matchMode = "exact";
+		srand(time(NULL));
+		int r = rand();
+		if(allowPartialMatch &&  r ==0){
+			matchMode = "partial";
+		}
+		yDebug(
+						" Match mode %s random = %d\n",matchMode.c_str(),r);
+		output.addString(matchMode);
+		matchModeOutputPort.write(output);
 		yDebug(
 				" Writing current context to %s \n",currentContextOutputPort.getName().c_str());
 		output.clear();

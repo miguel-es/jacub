@@ -23,9 +23,9 @@ class LTMemoryThread: public RateThread {
 
 	Port modeInputPort;
 	Port contextInputPort;
-	Port matchThresholdInputPort;
+	Port matchModeInputPort;
 	Port matchedSchemasOutputPort;
-	float matchThreshold;
+	string matchMode;
 
 	int totalSchemes;
 	bool allowPartialMatch;
@@ -42,7 +42,7 @@ public:
 	LTMemoryThread(string robotName, string kb_path, const double period) :
 			RateThread(int(period * 1000.0)) {
 		this->robotName = robotName;
-		matchThreshold = 100.0;
+		matchMode = 100.0;
 		allowPartialMatch = false;
 		totalSchemes = 0;
 		loadKB(kb_path);
@@ -52,7 +52,6 @@ public:
 	virtual bool threadInit() {
 
 		printf("robot name: %s\n", robotName.c_str());
-
 
 		if (!modeInputPort.open("/" + robotName + "/memory/mode:i")) {
 			printf("Failed creating mode input port for Memory module");
@@ -65,8 +64,7 @@ public:
 			return false;
 		}
 
-		if (!matchThresholdInputPort.open(
-				"/" + robotName + "/memory/matchThreshold:i")) {
+		if (!matchModeInputPort.open("/" + robotName + "/memory/matchMode:i")) {
 			printf(
 					"Failed creating match threshold input port for Memory module");
 			return false;
@@ -100,25 +98,30 @@ public:
 		string input_string;
 		if (input.toString() == MATCH_MODE) {
 			std::cout << "MATCH_MODE set\n";
-			std::cout << "waiting for match threshold...\n";
-			matchThresholdInputPort.read(input);
+			std::cout << "waiting for match mode...\n";
+			matchModeInputPort.read(input);
 			input_string = input.toString();
-			prepareInput(input_string);
+			//prepareInput(input_string);
 			yDebug("Read %s\n",input_string.c_str());
 
-			matchThreshold = std::stof(input_string.c_str());
-			std::cout << "got " << matchThreshold << '\n';
+			matchMode = input_string.c_str();
+			std::cout << "got " << matchMode << '\n';
 			std::cout << "waiting for a context to match...\n";
 			contextInputPort.read(input);
-			 input_string = input.toString();
+			input_string = input.toString();
 			prepareInput(input_string);
 			Json::Value context;
 			jsonReader.parse(input_string.c_str(), context);
 			std::cout << "Got context: " << '\n' << context.toStyledString()
 					<< '\n';
 			Json::Value matchedSchemas = match(context);
-			std::cout << "Matched schemas" << '\n'
+			std::cout << " Matched schemas" << '\n'
 					<< matchedSchemas.toStyledString() << '\n';
+
+			if(matchMode=="exact")
+			std::cout << matchedSchemas.size() << " schemas matched \n";
+			else
+				std::cout << matchedSchemas[0].size() << " schemas matched visual context and "<< matchedSchemas[1].size()<< " matched tactile context\n";
 
 			std::cout << "writing matched schemas to matchedSchemas:o ...\n";
 			Bottle output;
@@ -131,7 +134,7 @@ public:
 	virtual void threadRelease() {
 		modeInputPort.close();
 		contextInputPort.close();
-		matchThresholdInputPort.close();
+		matchModeInputPort.close();
 		matchedSchemasOutputPort.close();
 	}
 
@@ -152,6 +155,30 @@ private:
 		std::cout << totalSchemes << " schemas loaded" << '\n';
 		return true;
 	}
+
+	/**
+	 * Gets all the leafs in the schema tree
+	 *
+	 * @param schema to be explored
+	 * @return json list containing the leafs
+	 */
+
+	Json::Value getLeafs(Json::Value schema){
+		Json::Value leafs;
+		jsonReader.parse("[]", leafs);
+		if(!schema.isMember("children")){
+			leafs.append(schema);
+			return leafs;
+		}
+
+		for (Json::Value& child : schema["children"]) {
+			Json::Value childLeafs = getLeafs(child);
+			for (Json::Value& leaf : childLeafs) {
+				leafs.append(leaf);
+		}
+		}
+		return leafs;
+	}
 	/**
 	 * Compares two contexts
 	 *
@@ -162,18 +189,129 @@ private:
 	Json::Value match(Json::Value context) {
 
 		Json::Value matchedSchemas;
+		if(matchMode=="exact")
 		jsonReader.parse("[]", matchedSchemas);
-		printf("Probing knowledge base...\n");
+		else
+			jsonReader.parse("[[],[]]", matchedSchemas);
+		// if partial match is set, the result is a list of two lists
+		// one for schemas matching visual and one for tactile
+		bool only100 = false;
+		printf("Probing knowledge base with match mode set to %s...\n",
+				matchMode.c_str());
+
 		for (Json::Value& schema : kb["schemes"]) {
-			if (match(context, schema["context"]) == matchThreshold) {
+			if(matchMode=="partial" && !schema["equilibrated"]) continue;
+			Json::Value leafs = getLeafs(schema);
+			printf("LEAFS \n %s",leafs.toStyledString().c_str());
+			bool foundMatch = false;
+			for (Json::Value& leaf : leafs) {
+			int visualContextSize = leaf["context"][0].size();
+			int tactileContextSize = leaf["context"][1].size();
+
+			float visualMatch = match(context[0], leaf["context"][0]);
+			float tactilMatch = match(context[1], leaf["context"][1]);
+
+
+			float vPer = 0;
+			float tPer = 0;
+if(visualContextSize>0){
+	  vPer = (((float)visualContextSize-1)/(float)visualContextSize)*100;
+}
+
+			if(tactileContextSize>0){
+				  tPer = (((float)tactileContextSize-1)/(float)tactileContextSize)*100;
+			}
+
+
+			if(matchMode=="exact" && visualMatch==100 && tactilMatch==100){
 				matchedSchemas.append(schema);
+				break;
+			}else if (matchMode=="partial"){
+				if(leaf["context"][0].size()>0 && visualMatch==100 && tactilMatch==0){ //visual context matches exactly
+					matchedSchemas[0].append(schema);
+					printf("Trying schema %s\n",schema["context"].toStyledString().c_str());
+					printf("Matches %f visual and %f tactil \n",visualMatch, tactilMatch);
+
+					if(!only100){
+						jsonReader.parse("[[],[]]", matchedSchemas);
+						only100 = true;
+					}
+
+break;
+				}else if(!only100  && vPer>0 && visualMatch==vPer && tactilMatch==0){//visual context differs in one aspect
+					printf("Trying schema %s\n",schema["context"].toStyledString().c_str());
+					printf("Matches %f visual and %f tactil \n",visualMatch, tactilMatch);
+					matchedSchemas[0].append(schema);
+					break;
+				}
+
+				else if(leaf["context"][1].size()>0 && visualMatch==0 && tactilMatch==100){ //tactile context matches exactly
+					matchedSchemas[1].append(schema);
+					printf("Trying schema %s\n",schema["context"].toStyledString().c_str());
+					printf("Matches %f visual and %f tactil \n",visualMatch, tactilMatch);
+					if(!only100){
+						jsonReader.parse("[[],[]]", matchedSchemas);
+						only100 = true;
+					}
+
+					break;
+
+				}else if(!only100 && tPer>0 && visualMatch==0 && tactilMatch==tPer){//visual context matches exactly
+					printf("Trying schema %s\n",schema["context"].toStyledString().c_str());
+					printf("Matches %f visual and %f tactil \n",visualMatch, tactilMatch);
+					matchedSchemas[1].append(schema);
+					break;
+				}
+			}
 			}
 		}
 		return matchedSchemas;
 	}
 
-	float match(Json::Value context1, Json::Value context2) {
-		//printf("matching...\n");
+	float match(Json::Value context1, Json::Value context2){
+		if(context1.size()==0 and context2.size()==0) return 100;
+		Json::Value::Members contextMembers = context2.getMemberNames();
+		int membersSize = contextMembers.size();
+		float match = 0;
+		for (string memberName : contextMembers) {
+						if ((!context1[memberName].empty()
+								&& context2[memberName] == "*")
+								|| context1[memberName] == context2[memberName]) {
+							match += 100.0 / membersSize;
+						}
+					}
+		return match;
+
+	}
+
+	/*float match(Json::Value context1, Json::Value context2) {
+			bool matchesVisual = true;
+			bool matchesTactile = true;
+			Json::Value::Members contextMembers = context2[0].getMemberNames();
+			for (string memberName : contextMembers) {
+				if ((context2[0][memberName].empty()
+						&& context2[0][memberName] == "*")
+						|| context1[0][memberName] != context2[0][memberName]) {
+					matchesVisual = false;
+				}
+			}
+
+			Json::Value::Members contextMembers = context2[1].getMemberNames();
+			for (string memberName : contextMembers) {
+				if ((context2[1][memberName].empty()
+						&& context2[1][memberName] == "*")
+						|| context1[1][memberName] != context2[1][memberName]) {
+					matchesTactile = false;
+				}
+			}
+
+
+		//}
+			if(matchMode=="partial"){
+				return (matchesVisual && !matchesTactile) || (!matchesVisual && matchesTactile);
+			}else{
+				return matchesVisual && matchesTactile;
+			}
 		float match = 0;
 
 		if (context2[1].size() == 0) // if tactile context is empty then it matches anything
@@ -217,7 +355,7 @@ private:
 			 printf("rate %f\n",r);*/
 
 			//std::cout << "camate [  ]"<<'\n';
-			for (string memberName : contenxtMembers) {
+			/*for (string memberName : contenxtMembers) {
 				//printf( " match [ %f ]\n",match);
 				if (!context1[0][memberName].empty()
 						&& context1[0][memberName] == context2[0][memberName]) {
@@ -237,9 +375,9 @@ private:
 			 }
 			 }*/
 
-		}
-		return match;
+		//}
+		//return match;
 
-	}
+	//}
 
 };

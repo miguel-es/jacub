@@ -208,8 +208,8 @@ int main(int argc, char *argv[]) {
 
 	}
 
-	from = "/" + robotName + "/DevER/matchThreshold:o";
-	to = "/" + robotName + "/memory/matchThreshold:i";
+	from = "/" + robotName + "/DevER/matchMode:o";
+	to = "/" + robotName + "/memory/matchMode:i";
 
 	if (Network::connect(from, to)) {
 		yInfo(
