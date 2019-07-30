@@ -4,6 +4,7 @@ file(REMOVE_RECURSE
   "CMakeFiles/memory.dir/src/WMemory.o"
   "CMakeFiles/memory.dir/src/main.o"
   "CMakeFiles/memory.dir/home/miguel/eclipse-workspace/jacub/src/utils/jutils.o"
+  "CMakeFiles/memory.dir/home/miguel/eclipse-workspace/jacub/src/utils/schemaUtils.o"
   "memory.pdb"
   "memory"
 )

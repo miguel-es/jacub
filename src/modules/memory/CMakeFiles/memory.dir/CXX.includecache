@@ -10,6 +10,10 @@
 string.h
 -
 
+../../../src/utils/schemaUtils.h
+jsoncpp/json/json.h
+-
+
 /home/miguel/eclipse-workspace/jacub/src/modules/memory/src/LTMemory.cpp
 cstdio
 -
@@ -24,6 +28,8 @@ fstream
 iostream
 -
 jutils.h
+-
+schemaUtils.h
 -
 
 /home/miguel/eclipse-workspace/jacub/src/modules/memory/src/MemoryModule.cpp
@@ -58,6 +64,14 @@ string
 jutils.h
 -
 
+/home/miguel/eclipse-workspace/jacub/src/utils/schemaUtils.cpp
+string
+-
+schemaUtils.h
+-
+jsoncpp/json/json.h
+-
+
 src/LTMemory.cpp
 cstdio
 -
@@ -72,6 +86,8 @@ fstream
 iostream
 -
 jutils.h
+-
+schemaUtils.h
 -
 
 src/MemoryModule.cpp

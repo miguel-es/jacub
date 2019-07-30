@@ -13,7 +13,9 @@
 #define CTRL_THREAD_PER     0.02 // [s]
 #define MATCH_MODE     "match"
 #define UPDATE_MODE     "update"
+
 #include <jutils.h>
+#include <schemaUtils.h>
 
 using namespace std;
 using namespace yarp::os;
@@ -157,29 +159,6 @@ private:
 	}
 
 	/**
-	 * Gets all the leafs in the schema tree
-	 *
-	 * @param schema to be explored
-	 * @return json list containing the leafs
-	 */
-
-	Json::Value getLeafs(Json::Value schema){
-		Json::Value leafs;
-		jsonReader.parse("[]", leafs);
-		if(!schema.isMember("children")){
-			leafs.append(schema);
-			return leafs;
-		}
-
-		for (Json::Value& child : schema["children"]) {
-			Json::Value childLeafs = getLeafs(child);
-			for (Json::Value& leaf : childLeafs) {
-				leafs.append(leaf);
-		}
-		}
-		return leafs;
-	}
-	/**
 	 * Compares two contexts
 	 *
 	 * @param contexts to be compared, the first will be compared agains the second
@@ -208,8 +187,8 @@ private:
 			int visualContextSize = leaf["context"][0].size();
 			int tactileContextSize = leaf["context"][1].size();
 
-			float visualMatch = match(context[0], leaf["context"][0]);
-			float tactilMatch = match(context[1], leaf["context"][1]);
+			float visualMatch = utils::match(context[0], leaf["context"][0]);
+			float tactilMatch = utils::match(context[1], leaf["context"][1]);
 
 
 			float vPer = 0;
@@ -268,21 +247,7 @@ break;
 		return matchedSchemas;
 	}
 
-	float match(Json::Value context1, Json::Value context2){
-		if(context1.size()==0 and context2.size()==0) return 100;
-		Json::Value::Members contextMembers = context2.getMemberNames();
-		int membersSize = contextMembers.size();
-		float match = 0;
-		for (string memberName : contextMembers) {
-						if ((!context1[memberName].empty()
-								&& context2[memberName] == "*")
-								|| context1[memberName] == context2[memberName]) {
-							match += 100.0 / membersSize;
-						}
-					}
-		return match;
 
-	}
 
 	/*float match(Json::Value context1, Json::Value context2) {
 			bool matchesVisual = true;

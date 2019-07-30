@@ -6,6 +6,7 @@
 #include <yarp/os/impl/Logger.h>
 
 #include <fstream>
+#include <list>
 #include <iostream>
 #include <jutils.h>
 
@@ -18,10 +19,15 @@ class WMemoryThread: public RateThread {
 	Port attendedContextOutputPort;
 	Port emotionalContextInputPort;
 	Port emotionalContextOutputPort;
+	Port expectationsInputPort;
+	Port expectationsOutputPort;
 
 	Json::Reader jsonReader;
 	Json::FastWriter fastWriter;
 	Json::Value context;
+	Json::Value expectations;
+	Json::Value actions;
+	list<Json::Value> stm;
 
 	string robotName;
 public:
@@ -29,6 +35,7 @@ public:
 			RateThread(int(period * 1000.0)) {
 		this->robotName = robotName;
 		jsonReader.parse("{\"schemes\":[]}", context);
+		jsonReader.parse("[{},{}]", expectations);
 
 	}
 
@@ -57,6 +64,21 @@ public:
 			return false;
 		}
 
+		if (!expectationsInputPort.open(
+						"/" + robotName + "/memory/expectations:i")) {
+					printf("Failed creating input port for expectations");
+					return false;
+
+		}
+
+		if (!expectationsOutputPort.open(
+						"/" + robotName + "/memory/expectations:o")) {
+					printf("Failed creating output port for expectations");
+					return false;
+
+
+		}
+
 		return true;
 
 	}
@@ -68,11 +90,15 @@ public:
 	}
 
 	virtual void run() {
-		printf("waiting for attended context...\n");
+
 
 		Bottle input;
 		Bottle output;
 		string input_string;
+
+
+
+		printf("waiting for attended context...\n");
 		attendedContextInputPort.read(input);
 		input_string = input.toString();
 		prepareInput(input_string);
@@ -97,6 +123,28 @@ public:
 				output.addString(fastWriter.write(context));
 				emotionalContextOutputPort.write(output);
 
+				printf("waiting for expectations...\n");
+				input.clear();
+				expectationsInputPort.read(input);
+				input_string = input.toString();
+				prepareInput(input_string);
+				jsonReader.parse(input_string.c_str(), expectations);
+				std::cout << "Got expectations: " << '\n' << expectations.toStyledString()
+						<< '\n';
+				printf("writing out expectations...\n");
+				output.addString(fastWriter.write(expectations));
+				expectationsOutputPort.write(output);
+				Json::Value timeStep;
+				jsonReader.parse("[]", timeStep);
+				timeStep.append(context);
+				timeStep.append(actions);
+				timeStep.append(expectations);
+				stm.push_back(timeStep);
+				/*output.clear();
+				printf("writing out emotional context...\n");
+						output.addString(fastWriter.write(context));
+						emotionalContextOutputPort.write(output);*/
+
 	}
 
 	virtual void threadRelease() {
@@ -104,6 +152,7 @@ public:
 		attendedContextOutputPort.close();
 		emotionalContextInputPort.close();
 		emotionalContextOutputPort.close();
+		expectationsInputPort.close();
 	}
 };
 

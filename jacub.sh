@@ -33,7 +33,7 @@ sudo make install
 
 echo "Starting modules..."
 
-pid=$(pidof world memory perception attention emotion DevER locomotion iCub_SIM yarprobotinterface iKinCartesianSolver)
+pid=$(pidof world perception memory  attention  DevER locomotion iCub_SIM yarprobotinterface iKinCartesianSolver)
 sudo kill -9 $pid
 
 #echo "Starting yarpserver..."
@@ -55,7 +55,7 @@ nohup perception --context jacub > log/perception.log 2>&1 &
 echo "Starting attention module..."
 nohup attention --context jacub > log/attention.log 2>&1 &
 echo "Starting emotion module..."
-nohup emotion --context jacub > log/emotion.log 2>&1 &
+#nohup emotion --context jacub > log/emotion.log 2>&1 &
 echo "Starting DevER module..."
 nohup DevER --context jacub > log/DevER.log 2>&1 &
 echo "Starting locomotion module..."

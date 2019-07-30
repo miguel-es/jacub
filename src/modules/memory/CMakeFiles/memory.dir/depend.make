@@ -4,10 +4,15 @@
 CMakeFiles/memory.dir/home/miguel/eclipse-workspace/jacub/src/utils/jutils.o: ../../../src/utils/jutils.h
 CMakeFiles/memory.dir/home/miguel/eclipse-workspace/jacub/src/utils/jutils.o: /home/miguel/eclipse-workspace/jacub/src/utils/jutils.cpp
 
+CMakeFiles/memory.dir/home/miguel/eclipse-workspace/jacub/src/utils/schemaUtils.o: ../../../src/utils/schemaUtils.h
+CMakeFiles/memory.dir/home/miguel/eclipse-workspace/jacub/src/utils/schemaUtils.o: /home/miguel/eclipse-workspace/jacub/src/utils/schemaUtils.cpp
+
 CMakeFiles/memory.dir/src/LTMemory.o: ../../../src/utils/jutils.h
+CMakeFiles/memory.dir/src/LTMemory.o: ../../../src/utils/schemaUtils.h
 CMakeFiles/memory.dir/src/LTMemory.o: src/LTMemory.cpp
 
 CMakeFiles/memory.dir/src/MemoryModule.o: ../../../src/utils/jutils.h
+CMakeFiles/memory.dir/src/MemoryModule.o: ../../../src/utils/schemaUtils.h
 CMakeFiles/memory.dir/src/MemoryModule.o: src/MemoryModule.cpp
 CMakeFiles/memory.dir/src/MemoryModule.o: src/LTMemory.cpp
 CMakeFiles/memory.dir/src/MemoryModule.o: src/WMemory.cpp
@@ -16,6 +21,7 @@ CMakeFiles/memory.dir/src/WMemory.o: ../../../src/utils/jutils.h
 CMakeFiles/memory.dir/src/WMemory.o: src/WMemory.cpp
 
 CMakeFiles/memory.dir/src/main.o: ../../../src/utils/jutils.h
+CMakeFiles/memory.dir/src/main.o: ../../../src/utils/schemaUtils.h
 CMakeFiles/memory.dir/src/main.o: src/main.cpp
 CMakeFiles/memory.dir/src/main.o: src/LTMemory.cpp
 CMakeFiles/memory.dir/src/main.o: src/MemoryModule.cpp

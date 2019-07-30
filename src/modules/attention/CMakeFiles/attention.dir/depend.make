@@ -4,10 +4,15 @@
 CMakeFiles/attention.dir/home/miguel/eclipse-workspace/jacub/src/utils/jutils.o: ../../../src/utils/jutils.h
 CMakeFiles/attention.dir/home/miguel/eclipse-workspace/jacub/src/utils/jutils.o: /home/miguel/eclipse-workspace/jacub/src/utils/jutils.cpp
 
+CMakeFiles/attention.dir/home/miguel/eclipse-workspace/jacub/src/utils/schemaUtils.o: ../../../src/utils/schemaUtils.h
+CMakeFiles/attention.dir/home/miguel/eclipse-workspace/jacub/src/utils/schemaUtils.o: /home/miguel/eclipse-workspace/jacub/src/utils/schemaUtils.cpp
+
 CMakeFiles/attention.dir/src/AttentionModule.o: ../../../src/utils/jutils.h
+CMakeFiles/attention.dir/src/AttentionModule.o: ../../../src/utils/schemaUtils.h
 CMakeFiles/attention.dir/src/AttentionModule.o: src/AttentionModule.cpp
 
 CMakeFiles/attention.dir/src/main.o: ../../../src/utils/jutils.h
+CMakeFiles/attention.dir/src/main.o: ../../../src/utils/schemaUtils.h
 CMakeFiles/attention.dir/src/main.o: src/main.cpp
 CMakeFiles/attention.dir/src/main.o: src/AttentionModule.cpp
 

@@ -260,5 +260,44 @@ int main(int argc, char *argv[]) {
 
 	}
 
+	from = "/" + robotName + "/DevER/expectations:o";
+		to = "/" + robotName + "/memory/expectations:i";
+
+		if (Network::connect(from, to)) {
+			yInfo(
+			" Established  port connection from %s to %s",from.c_str(),to.c_str());
+		}
+		else
+		{
+			yWarning(" Failed establishing connection from %s to %s. Are the memory and DevER modules running?\n",from.c_str(),to.c_str());
+
+		}
+
+		from = "/" + robotName + "/memory/expectations:o";
+			to = "/" + robotName + "/emotion/expectations:i";
+
+			if (Network::connect(from, to)) {
+				yInfo(
+				" Established  port connection from %s to %s",from.c_str(),to.c_str());
+			}
+			else
+			{
+				yWarning(" Failed establishing connection from %s to %s. Are the memory and emotions modules running?\n",from.c_str(),to.c_str());
+
+			}
+
+			from = "/" + robotName + "/emotion/emotionalContext:o";
+				to = "/" + robotName + "/attention/emotionalContext:i";
+
+				if (Network::connect(from, to)) {
+					yInfo(
+					" Established  port connection from %s to %s",from.c_str(),to.c_str());
+				}
+				else
+				{
+					yWarning(" Failed establishing connection from %s to %s. Are the emotion and attention modules running?\n",from.c_str(),to.c_str());
+
+				}
+
 }
 

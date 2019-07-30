@@ -10,6 +10,10 @@
 string.h
 -
 
+../../../src/utils/schemaUtils.h
+jsoncpp/json/json.h
+-
+
 /home/miguel/eclipse-workspace/jacub/src/modules/attention/src/AttentionModule.cpp
 stdio.h
 -
@@ -35,6 +39,10 @@ yarp/os/impl/Logger.h
 -
 jutils.h
 -
+schemaUtils.h
+-
+cmath
+-
 
 /home/miguel/eclipse-workspace/jacub/src/modules/attention/src/main.cpp
 AttentionModule.cpp
@@ -44,6 +52,14 @@ AttentionModule.cpp
 string
 -
 jutils.h
+-
+
+/home/miguel/eclipse-workspace/jacub/src/utils/schemaUtils.cpp
+string
+-
+schemaUtils.h
+-
+jsoncpp/json/json.h
 -
 
 src/AttentionModule.cpp
@@ -70,5 +86,9 @@ jsoncpp/json/json.h
 yarp/os/impl/Logger.h
 -
 jutils.h
+-
+schemaUtils.h
+-
+cmath
 -
 
