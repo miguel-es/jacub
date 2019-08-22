@@ -27,6 +27,10 @@
      RpcClient world_port;
      bool inited;
 
+	 double x;
+	 double y;
+	 double z;
+
      // the event callback attached to the "motion-ongoing"
 
  public:
@@ -34,6 +38,10 @@
 
      virtual bool threadInit()
      {
+
+    	  x= 0.09f;
+    	  y = 0.55387995f;
+    	  z = 0.35f;
 
        inited = false;
 	   if(!world_port.open("/jacub/world")){
@@ -45,6 +53,19 @@
             printf("Failed adding output to /icubSim/word port. Is iCub_SIM running?");
             return false;
        }
+
+       Bottle cmd;
+       	  cmd.addString("world");
+       	  cmd.addString("del");
+       	  cmd.addString("all");
+
+       	printf("Cleaning world\n");
+       		Bottle response;
+       		world_port.write(cmd,response);
+       		printf("World  response: %s",response.toString().c_str());
+
+       		addObj("box",0.06f,0.06f,0.06f,0.09f,0.55387995f,0.35f,0,0,1);
+       		getPos("box",1);
        return true;
      }
 
@@ -59,14 +80,14 @@
 
      virtual void run()
      {
-         if(!inited){
-	        //import3DModel("pia/mesaes.x","woodred.bmp",0.0f,0.0f,-0.2f);
-            //addObj("box",0.05f,0.05f,0.05f,0.0f,0.6f,0.4f,0,0,1);
-            addObj("box",0.06f,0.06f,0.06f,0.09f,0.55387995f,0.35f,0,0,1);
-            addObj("box",0.07f,0.07f,0.07f,0.04f,0.7f,0.35f,1,0,0);
-            //world mk box 0.1 0.1 0.1 0 0.7 0.3 1 0 0
-            inited=true;
-        }
+    	// 0.0900000035762787
+         printf("X=%f ",x);
+         x+=0.001;
+         printf("X'=%f\n",x);
+         mvObj("box",x,y,z);
+
+         if(x>0.225000) x = 0.09;
+
      }
 
      virtual void threadRelease()
@@ -75,25 +96,60 @@
          world_port.close();
      }
 
-      void addObj(string obj,float size1,float size2,float size3,float x,float y,float z, int r, int g, int b){
+      void mvObj(string obj,float x,float y,float z){
 	  Bottle cmd;
 	  cmd.addString("world");
-	  cmd.addString("mk");
+	  cmd.addString("set");
 	  cmd.addString(obj);
-	  if(size1>=0) cmd.addDouble(size1);
-	  if(size2>=0) cmd.addDouble(size2);
-	  if(size3>=0) cmd.addDouble(size3);
+	  cmd.addInt(1);
+
 	  cmd.addDouble(x);
 	  cmd.addDouble(y);
 	  cmd.addDouble(z);
-	  cmd.addInt(r);
-	  cmd.addInt(g);
-	  cmd.addInt(b);
-	printf("Adding %s to the world",obj.c_str());
+	printf("Moving %s\n",obj.c_str());
 	Bottle response;
 	world_port.write(cmd,response);
-	printf("World por response: %s",response.toString().c_str());
+	printf("World  response: %s",response.toString().c_str());
     }
+
+      void addObj(string obj,float size1,float size2,float size3,float x,float y,float z, int r, int g, int b){
+      	  Bottle cmd;
+      	  cmd.addString("world");
+      	  cmd.addString("mk");
+      	  cmd.addString(obj);
+      	  if(size1>=0) cmd.addDouble(size1);
+      	  if(size2>=0) cmd.addDouble(size2);
+      	  if(size3>=0) cmd.addDouble(size3);
+      	  cmd.addDouble(x);
+      	  cmd.addDouble(y);
+      	  cmd.addDouble(z);
+      	  cmd.addInt(r);
+      	  cmd.addInt(g);
+      	  cmd.addInt(b);
+      	printf("Adding %s to the world\n",obj.c_str());
+      	Bottle response;
+      	world_port.write(cmd,response);
+      	printf("World port response: %s\n",response.toString().c_str());
+          }
+
+      void getPos(string obj,int id){
+    	  Bottle cmd;
+    	        	  cmd.addString("world");
+    	        	  cmd.addString("get");
+    	        	  cmd.addString(obj);
+    	        	  cmd.addInt(1);
+    	        	  printf("Getting position of %s %d\n",obj.c_str(),id);
+    	        	  Bottle response;
+    	        	        	world_port.write(cmd,response);
+    	        	        	printf("World port response: %s\n",response.toString().c_str());
+    	        	        	z = response.pop().asDouble();
+    	        	        	printf("GETTED Z = %f\n",z);
+    	        	        	y = response.pop().asDouble();
+    	        	        	printf("GETTED Y = %f\n",y);
+    	        	        	x = response.pop().asDouble();
+    	        	        	printf("GETTED X = %f\n",x);
+      }
+
 void import3DModel(string xmodel,string texture,float x,float y, float z){
     printf("Importing %s\n",xmodel.c_str());
 	Bottle cmd;

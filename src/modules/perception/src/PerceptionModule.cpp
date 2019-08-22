@@ -36,7 +36,10 @@ class PerceptionModule: public RFModule {
 private:
 	string robotName;
 	BufferedPort<ImageOf<PixelBgr> > rawImageInputPort;
+	BufferedPort<ImageOf<PixelBgr>> rawImageMotionCUTOutputPort;
+	BufferedPort<ImageOf<PixelBgr> >blobbedImageOutputPort;
 	BufferedPort<ImageOf<PixelBgr> > processedImageOutputPort;
+	BufferedPort<Bottle> movingBlobsInputPort;
 	Port sensorialContextOutputPort;
 	Port continueInputPort;
 	Json::Value perceptualMemory;
@@ -63,6 +66,27 @@ public:
 			yError("Failed creating output port for processed image");
 			return false;
 		}
+
+		if (!blobbedImageOutputPort.open(
+								"/" + robotName + "/perception/blobImage:o")) {
+
+							yError("Failed creating output port for blob image");
+							return false;
+						}
+		if (!movingBlobsInputPort.open(
+										"/" + robotName + "/perception/movingBlobs:i")) {
+
+									yError("Failed creating input port for moving blobs");
+									return false;
+								}
+
+		//movingBlobsInputPort.setTimeout(0.5);
+		if (!processedImageOutputPort.open(
+						"/" + robotName + "/perception/processedImage:o")) {
+
+					yError("Failed creating output port for processed image");
+					return false;
+				}
 
 
 		if (!sensorialContextOutputPort.open(
@@ -101,9 +125,20 @@ public:
 
 				ImageOf<PixelBgr> *inputRawImage = rawImageInputPort.read();
 				IplImage *tmp_ipl_image = (IplImage*) inputRawImage->getIplImage();
+				IplImage *cloned_image = cvCloneImage(tmp_ipl_image);
 				Mat imgMat = cvarrToMat(tmp_ipl_image);
 				Mat im_with_keypoints = imgMat;
+				//IplImage *blobImg;
+				//blobImg = cvCreateImageHeader(cvSize(tmp_ipl_image->width,tmp_ipl_image->height),8,3);
+				//cvZero(blobImg);
 
+				Mat blob_keypoints;
+				printf("TYPE => %d",imgMat.type());
+				cvZero(cloned_image);
+				// imgMat.copyTo(blob_keypoints);
+				blob_keypoints = cvarrToMat(cloned_image);
+
+				 //blob_keypoints = cv::Mat::zeros(tmp_ipl_image->height,tmp_ipl_image->width,CV_8UC3);
 				int nblobs = 0;
 				Json::Value sensorialContext;
 
@@ -195,16 +230,66 @@ public:
 
 							//perceivedObj.append("sector");
 							perceivedObj["sector"] = 3 * ypos + xpos + 1;
+							perceivedObj["x"] = i->pt.x;
+							perceivedObj["y"] = i->pt.y;
 							sensorialContext[0][objId] = perceivedObj;
 						}
 						drawKeypoints(im_with_keypoints, keypoints, im_with_keypoints,
 								Scalar(0, 255, 0),
 								DrawMatchesFlags::DRAW_RICH_KEYPOINTS);
 
+						drawKeypoints(blob_keypoints, keypoints, blob_keypoints,
+														Scalar(0, 255, 0),
+														DrawMatchesFlags::DEFAULT);
+
+
 					}
 
 				}
 
+				ImageOf<PixelBgr> &outputBlobImage = blobbedImageOutputPort.prepare();
+
+				IplImage blobbedImage = IplImage(blob_keypoints);
+				outputBlobImage.wrapIplImage(&blobbedImage);
+
+				std::cout << "Writing out blobbed image " << std::endl;
+
+				blobbedImageOutputPort.write();
+
+				std::cout << "Waiting for moving blobs " << std::endl;
+
+
+				//Bottle list_of_moving_blobs;
+				//movingBlobsInputPort.setTimeout(1.0);
+				Bottle *list_of_moving_blobs = movingBlobsInputPort.read();
+
+				std::cout << "Got blobs: " << list_of_moving_blobs->toString().c_str()<<"\n"<<std::endl;
+				for(int i=0;i<list_of_moving_blobs->size();i++){
+					Bottle * blob = list_of_moving_blobs->get(i).asList();
+					Point a(blob->get(0).asFloat32(), blob->get(1).asFloat32());
+					float minDist = std::numeric_limits<float>::max();
+					string closestblob = "";
+					std::cout <<" blob " << i << ": x="<<blob->get(0).asInt()<< ", y="<<blob->get(1).asInt()<<"\n"<<std::endl;
+					for(Json::Value key:sensorialContext[0].getMemberNames()){
+						Point b(sensorialContext[0][key.asString()]["x"].asFloat(), sensorialContext[0][key.asString()]["y"].asFloat());
+						//mb.
+						float dist = cv::norm(a-b);
+						std::cout << "Euclidian distance: " << cv::norm(a-b)<<"\n"<<std::endl;
+						if(dist<=minDist){
+							minDist = dist;
+							closestblob = key.asString();
+						}
+					}
+
+					if(closestblob!=""){
+						sensorialContext[0][closestblob]["moving"] = true;
+					}
+				}
+
+				for(Json::Value key:sensorialContext[0].getMemberNames()){
+					sensorialContext[0][key.asString()].removeMember("x");
+					sensorialContext[0][key.asString()].removeMember("y");
+				}
 				//Draw sector divisions over over the image with the objects identified
 
 				line(im_with_keypoints, Point(0, 80), Point(inputRawImage->width(), 80),
@@ -219,9 +304,14 @@ public:
 
 
 				IplImage blobedImage = IplImage(im_with_keypoints);
+
+
 				ImageOf<PixelBgr> &outputProcessedImage = processedImageOutputPort.prepare();
+
+
 				outputProcessedImage.resize(inputRawImage->width(), inputRawImage->height());
 				outputProcessedImage.wrapIplImage(&blobedImage);
+
 
 		        //ImageOf<PixelBgr> &outputProcessedImage = processedImageOutputPort.prepare(); //get an output image
 
@@ -229,6 +319,9 @@ public:
 		        //outputProcessedImage.resize(inputRawImage->width(), inputRawImage->height());
 
 				//outputImage = yarpReturnImage;
+
+
+
 
 				std::cout << "Writing out processed image " << std::endl;
 
@@ -243,7 +336,7 @@ output.addString(fastWriter.write(sensorialContext));
 				sensorialContextOutputPort.write(output);
 				std::cout << "Waiting for continue signal\n";
 Bottle input;
-				continueInputPort.read(input);
+				//continueInputPort.read(input);
 		return true;
 	}
 

@@ -58,12 +58,34 @@ int main(int argc, char *argv[]) {
 	if (Network::connect(to, from)) {
 		yInfo(
 		"Established  port connection from %s to %s",to.c_str(),from.c_str());
+
+
+
+
+
+
+
+
+
 	}
 	else
 	{
 		yWarning(" Failed establishing connection from %s to %s. Is the iCubSim left cam running?\n",to.c_str(),from.c_str());
 
 	}
+
+	string to = "/motionCUT/img:i";
+		string from = "/icubSim/cam/left";
+
+		if (Network::connect(from, to)) {
+			yInfo(
+			"Established  port connection from %s to %s",to.c_str(),from.c_str());
+		}
+		else
+		{
+			yWarning(" Failed establishing connection from %s to %s. Is the iCubSim left cam and motionCUT modules running?\n",to.c_str(),from.c_str());
+
+		}
 
 	from = "/" + robotName + "/perception/rawImage:i";
 	to = "/icubSim/cam/left";

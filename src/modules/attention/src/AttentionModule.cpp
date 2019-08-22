@@ -108,9 +108,11 @@ public:
 		string input_string;
 		std::cout << "getting attention switch...\n";
 		//attentionSwitchInputPort.read(false)
+		string attentionSwitch;
 		buffInput = attentionSwitchInputPort.read(false); // non blocking read
 		if (buffInput != NULL) {
 			std::cout << "Got: " << buffInput->toString() << '\n';
+			attentionSwitch = buffInput->toString();
 		} else {
 			std::cout << "attention switch not set \n";
 		}
@@ -141,7 +143,8 @@ public:
 					<< sensorialContext.toStyledString() << '\n';
 			float salencyBias = 0.0;
 			float saliency = 0.0;
-
+			Json::Value secondBest;
+			jsonReader.parse("[]", attendedContext);
 			for (Json::Value obj : sensorialContext[0]) {
 				float brightness = getColorBrightness(obj["color"].asString());
 				std::cout << "Brightness: " << brightness << '\n';
@@ -154,8 +157,22 @@ public:
 
 				if (saliency > salencyBias) {
 					salencyBias = saliency;
+					//std::cout << "Before changin\n"<<attendedContext[0].toStyledString();
+
+					secondBest = attendedContext[0];
+
 					attendedContext[0] = obj;
+					//std::cout << "After changin\n"<<attendedContext[0].toStyledString();
+				}else if(secondBest.size()==0){
+					secondBest = obj;
 				}
+
+				//std::cout << "Secondbest=\n"<<secondBest.toStyledString();
+			}
+
+			if(attentionSwitch=="changeAttentionV"){
+				std::cout << "Changing attention to second best\n";
+				attendedContext[0] = secondBest;
 			}
 		} else {
 			attendedContext[0] = sensorialContext[0];

@@ -112,4 +112,18 @@ cartecian reference-frame : -z -x y (-0.35 -0.09 0.55387995)
 -x = hacia adelante
 -y = hacia la izquierda
  z = hacia arriba
+ 
+ 
+yarp connect /icubSim/cam/left /yarpview/img:i
+yarp connect /icubSim/cam/left /motionCUT/img:i
+yarp disconnect /icubSim/cam/left /yarpview/img:i
+yarp connect /motionCUT/img:o /yarpview/img:i
+
+motionCUT --coverXratio 1 --coverYratio 1 --nodesStep 3 --verbosity on --winSize 3 --adjNodesThres 5 --blobMinSizeThres 1
+
+yarp connect /jacub/perception/blobImage:o /motionCUT/img:i
+yarp connect /motionCUT/img:o /yarpview/img:i
+
+yarp connect /motionCUT/blobs:o /jacub/perception/movingBlobs:i
+
 
