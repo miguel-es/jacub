@@ -61,6 +61,8 @@ schemaUtils.h
 -
 jsoncpp/json/json.h
 -
+yarp/os/impl/Logger.h
+-
 
 src/AttentionModule.cpp
 stdio.h

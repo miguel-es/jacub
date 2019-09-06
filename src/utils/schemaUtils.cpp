@@ -1,17 +1,20 @@
 #include <string>
 #include <schemaUtils.h>
 #include <jsoncpp/json/json.h>
+#include <yarp/os/impl/Logger.h>
+
 
 using namespace std;
 namespace utils{
 float match(Json::Value context1, Json::Value context2){
 	if(context1.size()==0 and context2.size()==0) return 100;
+	Json::Value::Members context1Members = context1.getMemberNames();
 	Json::Value::Members contextMembers = context2.getMemberNames();
 	int membersSize = contextMembers.size();
 	float match = 0;
 	for (string memberName : contextMembers) {
-					if ((!context1[memberName].empty()
-							&& context2[memberName] == "*")
+		if(context1[memberName].empty()) return 0;
+					if (context2[memberName] == "*"
 							|| context1[memberName] == context2[memberName]) {
 						match += 100.0 / membersSize;
 					}
@@ -24,9 +27,13 @@ float match(Json::Value context1, Json::Value context2){
  * Two objects are considered equal if both are of the same color and size
  */
 bool areAboutSameObject(Json::Value context1, Json::Value context2){
-	if(context1["color"] != context2["color"]) false;
-	if(context1["size"] != context2["size"]) false;
-	return match;
+	//yDebug("comparig obj1 %s y obj2 %s",context1.toStyledString().c_str(),context2.toStyledString().c_str());
+	int equiality = context1["color"].asString().compare(context2["color"].asString());
+
+
+	return equiality==0;
+	//if(context1["size"] != context2["size"]) false;
+	//return true;
 }
 
 /**

@@ -28,7 +28,7 @@ class AttentionModule: public RFModule {
 private:
 	string robotName;
 	Port sensorialContextInputPort;
-	BufferedPort<Bottle> attentionSwitchInputPort;
+	Port mentalActionsInputPort;
 	Port attendedContextOutputPort;
 	BufferedPort<Bottle> emotionalContextInputPort;
 	Json::Reader jsonReader;
@@ -38,22 +38,32 @@ private:
 	float emotionalAttatchmentWeight;
 	float movementSaliency;
 	float brightnessSaliency;
-
+	bool changeAttentionV,changeAttentionT;
+	//bool engagedObjIsPerceived;
+	Json::Value visualEngagement,tactilEngagement;
 	Json::Value colors;
+	bool lostObject;
+	int cycles;
 
 public:
 	AttentionModule() {
 		jsonReader.parse("[]", attendedContext);
 		jsonReader.parse("[]", emotionalContext);
+		jsonReader.parse("{}", tactilEngagement);
+		jsonReader.parse("{}", visualEngagement);
 		movementSaliency = 0.0;
 		brightnessSaliency = 0.0;
 		emotionalAttatchmentWeight=0.0;
+		changeAttentionV = false;
+		changeAttentionT = false;
+		lostObject = true;
+		cycles = 0;
 	}
 
 	virtual bool configure(ResourceFinder &rf) {
 
 		robotName = rf.check("robot", Value("jacub")).asString();
-		printf("robot name: %s\n", robotName.c_str());
+		yDebug(" Attention: robot name: %s\n", robotName.c_str());
 
 		movementSaliency =
 				rf.check("movement_saliency", Value("0.3")).asFloat32();
@@ -68,8 +78,8 @@ public:
 			return false;
 		}
 
-		if (!attentionSwitchInputPort.open(
-				"/" + robotName + "/attention/attentionSwitch:i")) {
+		if (!mentalActionsInputPort.open(
+				"/" + robotName + "/attention/mentalActions:i")) {
 
 			yError("Failed creating input port for attention switch");
 			return false;
@@ -83,18 +93,17 @@ public:
 
 		if (!emotionalContextInputPort.open(
 				"/" + robotName + "/attention/emotionalContext:i")) {
-			printf("Failed creating input port for emotional context");
+			yDebug(" Attention: Failed creating input port for emotional context");
 			return false;
 		}
 
 		loadColors(rf.check("perceptual_memory", Value(".")).asString());
-
 		return true;
 	}
 
 	virtual bool close() {
 		sensorialContextInputPort.close();
-		attentionSwitchInputPort.close();
+		mentalActionsInputPort.close();
 		attendedContextOutputPort.close();
 		return true;
 	}
@@ -103,96 +112,134 @@ public:
 		return 1.0;
 	}
 	virtual bool updateModule() {
+		yDebug(" Attention: cycle %d",++cycles);
 		Bottle input;
 		Bottle *buffInput;
 		string input_string;
-		std::cout << "getting attention switch...\n";
-		//attentionSwitchInputPort.read(false)
-		string attentionSwitch;
-		buffInput = attentionSwitchInputPort.read(false); // non blocking read
-		if (buffInput != NULL) {
-			std::cout << "Got: " << buffInput->toString() << '\n';
-			attentionSwitch = buffInput->toString();
-		} else {
-			std::cout << "attention switch not set \n";
-		}
+
 		//buffInput->clear();
 		buffInput = emotionalContextInputPort.read(false); // non blocking read
 		if (buffInput != NULL) {
-			std::cout << "Got: " << buffInput->toString() << '\n';
+			//yDebug(" Attention: Got: %s",buffInput->toString().c_str());
 			input_string = buffInput->toString();
 			prepareInput(input_string);
 			jsonReader.parse(input_string.c_str(), emotionalContext);
-			yDebug("Previous emotional context%s\n",emotionalContext.toStyledString().c_str());
+			//yDebug("Previous emotional context%s\n",emotionalContext.toStyledString().c_str());
 		} else {
-			std::cout << "There is no previous emotional context\n";
+			//yDebug(" Attention: There is no previous emotional context\n");
 		}
 
-		std::cout << "waiting for sensorial context...\n";
+		yDebug(" Attention: waiting for sensorial context...\n");
 		input.clear();
 		sensorialContextInputPort.read(input);
 		Json::Value sensorialContext;
-		yDebug("read %s\n",input.toString().c_str());
+		//yDebug(" Attention: read %s\n",input.toString().c_str());
 		input_string = input.toString();
 		prepareInput(input_string);
-		yDebug("read cleaned%s\n",input.toString().c_str());
+		//yDebug(" Attention: read cleaned%s\n",input.toString().c_str());
 		jsonReader.parse(input_string.c_str(), sensorialContext);
+		yDebug(" Attention: visually engaged to: %s",visualEngagement.toStyledString().c_str());
+		lostObject = true;
 		if (sensorialContext[0].size() != 0) {
 
-			std::cout << "Got sensorial context: " << '\n'
-					<< sensorialContext.toStyledString() << '\n';
+			yDebug(" Attention: Got sensorial context: %s",sensorialContext.toStyledString().c_str());
 			float salencyBias = 0.0;
 			float saliency = 0.0;
 			Json::Value secondBest;
 			jsonReader.parse("[]", attendedContext);
+
 			for (Json::Value obj : sensorialContext[0]) {
+				if(visualEngagement.size()!=0 && utils::areAboutSameObject(obj,visualEngagement)){
+					yDebug("found engaged to");
+					lostObject = false;
+				}
 				float brightness = getColorBrightness(obj["color"].asString());
-				std::cout << "Brightness: " << brightness << '\n';
+				//yDebug(" Attention: Brightness for %s = %f",obj["color"].asString().c_str(),brightness);
 				saliency = (
 						(obj.isMember("moving") && obj["moving"].asBool()) ?
 								1 : 0) * movementSaliency
-						+ (brightness * brightnessSaliency);
+						+ ((brightness/100)*brightnessSaliency);
 				if(emotionalContext[0].size()>0)
-				salencyBias+=(utils::areAboutSameObject(obj,emotionalContext[0])?1:0)*emotionalAttatchmentWeight;
-
+					saliency+=(utils::areAboutSameObject(obj,visualEngagement)?1:0)*emotionalAttatchmentWeight;
+				//yDebug("obj %s saliency=%f saliencyBias =%f",obj.toStyledString().c_str(),saliency,salencyBias);
 				if (saliency > salencyBias) {
+					//yDebug("saliency > salencyBias");
 					salencyBias = saliency;
-					//std::cout << "Before changin\n"<<attendedContext[0].toStyledString();
+					//yDebug(" Attention: Before changin\n"<<attendedContext[0].toStyledString();
 
 					secondBest = attendedContext[0];
 
 					attendedContext[0] = obj;
-					//std::cout << "After changin\n"<<attendedContext[0].toStyledString();
+					//yDebug(" Attention: After changin\n"<<attendedContext[0].toStyledString();
 				}else if(secondBest.size()==0){
 					secondBest = obj;
 				}
 
-				//std::cout << "Secondbest=\n"<<secondBest.toStyledString();
+				//yDebug(" Attention: Secondbest=\n"<<secondBest.toStyledString();
 			}
 
-			if(attentionSwitch=="changeAttentionV"){
-				std::cout << "Changing attention to second best\n";
+			if(changeAttentionV){
+				yDebug(" Attention: Changing attention to second best\n");
 				attendedContext[0] = secondBest;
+				changeAttentionV = false;
 			}
+
 		} else {
 			attendedContext[0] = sensorialContext[0];
+			//attendedContext[0]["engagedTo"] = visualEngagement;
 		}
 
+		yDebug(" Attention: lost object = %d",lostObject);
 		attendedContext[1] = sensorialContext[1];
-		std::cout << "Attended context: " << '\n'
-				<< attendedContext.toStyledString() << '\n';
+		yDebug(" Attention: Attended context: %s \n",attendedContext.toStyledString().c_str());
 
-		Bottle output;
-		output.addString(jsonWriter.write(attendedContext));
-		yDebug(" Writing out attended context");
+		Bottle output;// = attendedContextOutputPort.prepare();
+		Json::Value attendedOutput = attendedContext;
+
+		if(attendedOutput[0].size()!=0 && visualEngagement.size()!=0 && lostObject){
+			attendedOutput[0]["lostObject"] = true;
+		}
+
+		output.addString(jsonWriter.write(attendedOutput));
+		//yDebug(" Attention: Writing out attended context -- %s",output.toString().c_str());
 		attendedContextOutputPort.write(output);
+
+
+		yDebug(" Attention: waiting for mental actions...\n");
+		//input;
+		mentalActionsInputPort.read(input);
+		//if (input!=NULL) {
+		//contextInputPort.read(input);
+		input_string = input.toString();
+		prepareInput(input_string);
+		Json::Value commandedActions;
+		jsonReader.parse(input_string.c_str(), commandedActions);
+		yDebug(" Attention: got mental actions %s\n",commandedActions.toStyledString().c_str());
+		if(!lostObject){
+		visualEngagement = attendedContext[0];
+		}
+		for (Json::Value& action : commandedActions) {
+			yDebug(" Attention: ACTION %s\n",action.toStyledString().c_str());
+		if( action=="showInterestInV"){
+			visualEngagement = attendedContext[0];
+			yDebug(" Attention: Engaged to %s",visualEngagement.toStyledString().c_str());
+		}else if(action=="showInterestInT"){
+			tactilEngagement = attendedContext[1];
+			yDebug(" Attention: Engaged to %s",tactilEngagement.toStyledString().c_str());
+		}else if(action=="changeAttentionV"){
+			changeAttentionV = true;
+		}else if(action=="changeAttentionT"){
+			changeAttentionT = true;
+		}
+		}
+
 		return true;
 	}
 
 private:
 
 	bool loadColors(string colorsPath) {
-		printf("Loading %s\n", colorsPath.c_str());
+		yDebug(" Attention: Loading %s\n", colorsPath.c_str());
 		std::ifstream ifs;
 		ifs.open(colorsPath);
 		if (!ifs.is_open()) {
@@ -201,14 +248,14 @@ private:
 			return EXIT_FAILURE;
 		}
 		jsonReader.parse(ifs, colors);
-		std::cout << colors.toStyledString() << '\n';
+		yDebug(" Attention: %s \n",colors.toStyledString().c_str());
 
-		std::cout << " Perceptual memory loaded [ok]" << '\n';
+		yDebug(" Attention:  Perceptual memory loaded [ok]\n");
 		return true;
 	}
 
 	float getColorBrightness(string colorName) {
-		std::cout << " Calculating brightness for " << colorName << '\n';
+		//yDebug(" Attention:  Calculating brightness for %s \n",colorName.c_str());
 		float brightness = 0.0;
 		for (Json::Value color : colors["colors"]) {
 			if (color["name"].asString() == colorName) {

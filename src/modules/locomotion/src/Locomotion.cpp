@@ -50,7 +50,8 @@ protected:
 	IPositionControl *left_hand_ctrl;
 
 	Port actionsInputPort;
-	Port doneOutputPort;
+	BufferedPort<Bottle> doneOutputPort;
+	Port leftHandStateOutputPort;
 	Vector xd;
 	Vector od;
 	bool moved;
@@ -63,27 +64,38 @@ protected:
 	int axe0_pos;
 	int axe1_pos;
 	int axe2_pos;
-	int headRotAngle;
-
+	int deltaAngle;
+	//int clock;
+	float xhorigin,yhorigin, zhorigin,deltaCoord;
+	int cycles;
 	Json::Reader jsonReader;
+	string leftHandState;
+	int closed;
+//	int
 
 public:
+	/*Locomotion(){
+		leftHandState = "open";
+	}*/
 	virtual bool configure(ResourceFinder &rf) {
 
 		//Time::turboBoost();
-
+		leftHandState = "open";
+		closed = 0;
 		string robotName = rf.check("robot", Value("jacub")).asString();
 
-		int headRotAngle = rf.check("head_rot_angle", Value("10")).asInt();
+		 deltaAngle = rf.check("delta_angle", Value("10")).asInt();
+		 deltaCoord = rf.check("delta_coord", Value("0.05")).asFloat32();
 
-		/* actionThr=new BodyCtrlThread(robotName,headRotAngle, CTRL_THREAD_PER);
+		/* actionThr=new BodyCtrlThread(robotName,deltaAngle, CTRL_THREAD_PER);
 		 if (!actionThr->start())
 		 {
 		 delete actionThr;
 		 return false;
 		 }*/
 		this->robotName = robotName;
-		this->headRotAngle = 10;
+		this->deltaAngle = 10;
+		//clock = 0;
 		/* cartesianEventParameters.type="motion-ongoing";
 		 cartesianEventParameters.motionOngoingCheckPoint=0.2;*/
 
@@ -141,7 +153,7 @@ public:
 			//return false;
 		}
 
-		printf("returned -1\n");
+		//yDebug("returned -1\n");
 		left_arm.view(left_arm_ctrl);
 		left_hand.view(left_hand_ctrl);
 		// latch the controller context in order to preserve
@@ -183,14 +195,32 @@ public:
 		options.put("device", "remote_controlboard");
 		options.put("local", headCtrPortName);
 		options.put("remote", "/icubSim/head");
-		printf("returned0 \n");
+		//yDebug("returned0 \n");
 		if (!head.open(options)) {
 			yError("Couldn't get head controller. Is the iCub_SIM running?");
 			return false;
 		}
-		printf("returned\n");
+
+
+		outPortName = "/" + robotName + "/locomotion/leftHandState:o";
+				if (!leftHandStateOutputPort.open(outPortName)) {
+					yError(
+							"Failed creating continue command output port for left hand state (%s)",outPortName.c_str());
+					return false;
+				}
+
+		//yDebug("returned\n");
+
 		head.view(head_ctrl);
-		printf("returned\n");
+		cycles = 0;
+
+		xhorigin = -0.35;
+		yhorigin = -0.2;
+		zhorigin = -0.005;//-0.19//origin, zhorigin;
+		//yDebug("returned\n");
+		setInitialLeftHandPos();
+		//setInitialHeadPos();
+
 		return true;
 	}
 
@@ -214,8 +244,10 @@ public:
 	}
 	virtual bool updateModule() {
 		//moveHeadDown(60);
-		//moveLeftArm(-0.35,-0.1,-0.034,0.0,0.0,4.0);
-		std::cout << "Locomotion Module: waiting for actions \n" << '\n';
+		//
+		yDebug(" Locomotion: cycle %d",++cycles);
+
+		yDebug(" Locomotion: waiting for actions \n");
 		Bottle input;
 		actionsInputPort.read(input);
 		//if (input!=NULL) {
@@ -224,109 +256,163 @@ public:
 		prepareInput(input_string);
 		Json::Value commandedActions;
 		jsonReader.parse(input_string.c_str(), commandedActions);
-		std::cout << "Got "<< input_string << '\n';
+		yDebug(" Locomotion: Got %s\n",input_string.c_str());
 
 		//string action = input.toString();
 		bool done = false;
 
-		vector<std::string> actions { "headUp", "headDown", "headLeft",
+		/*vector<std::string> actions { "headUp", "headDown", "headLeft",
 				"headRight", "headLeftUp", "headLeftDown", "headRightUp",
 				"headRightDown", "handUp", "handDown", "handLeft", "handRight",
-				"handBackward", "handForward", "closeHand", "openHand" };
+				"handBackward", "handForward", "closeHand", "openHand" };*/
+		vector<std::string> actions { "headUp", "headDown", "headLeft",
+						"headRight", "headLeftUp", "headLeftDown", "headRightUp",
+						"headRightDown"};
+
 
 		for (Json::Value& action : commandedActions) {
-			printf("ACTION %s\n",action.toStyledString().c_str());
+			yDebug(" Locomotion: ACTION %s\n",action.toStyledString().c_str());
 			if (action == "random") {
-
+				srand(time(NULL));
 				int randomi = rand() % actions.size();
-				std::cout << "Random action"<< '\n';
+				yDebug(" Locomotion: Random action");
 				/*for(int i = 0; i < action.size(); i++)
 				 {*/
-				action = actions[rand() % actions.size()];
+				float random_index = rand() % actions.size();
+				yDebug(" Locomotion: random seed=%f",random_index);
+				action = actions[random_index];
 				//}
 			}
 
 			if (action == "headUp") {
-				std::cout << "Moving head up ...\n";
-				done = moveHead(headRotAngle, 0, 0);
+				yDebug(" Locomotion: Moving head up ...\n");
+				done = moveHead(deltaAngle, 0, 0);
 			} else if (action == "headDown") {
-				std::cout << "Moving head down ...\n";
-				done = moveHead(-headRotAngle, 0, 0);
+				yDebug(" Locomotion: Moving head down ...\n");
+				done = moveHead(-deltaAngle, 0, 0);
 			} else if (action == "headLeft") {
-				std::cout << "Moving head left ...\n";
-				done = moveHead(0, 0, headRotAngle);
+				yDebug(" Locomotion: Moving head left ...\n");
+				done = moveHead(0, 0, deltaAngle);
 			} else if (action == "headRight") {
-				std::cout << "Moving head right ...\n";
-				done = moveHead(0, 0, -headRotAngle);
+				yDebug(" Locomotion: Moving head right ...\n");
+				done = moveHead(0, 0, -deltaAngle);
 			} else if (action == "headLeftUp") {
-				std::cout << "Moving head left and up ...\n";
-				done = moveHead(headRotAngle, 0, headRotAngle);
+				yDebug(" Locomotion: Moving head left and up ...\n");
+				done = moveHead(deltaAngle, 0, deltaAngle);
 				/*if(done)
 				 {
-				 printf("Moving head up ...\n");
-				 done = moveHeadUp(headRotAngle);
+				 yDebug("Moving head up ...\n");
+				 done = moveHeadUp(deltaAngle);
 				 }*/
 			}
 
 			else if (action == "headLeftDown") {
-				std::cout << "Moving head left and down ...\n";
-				done = moveHead(-headRotAngle, 0, headRotAngle);
-				/*if(moveHeadLeft(headRotAngle))
+				yDebug(" Locomotion: Moving head left and down ...\n");
+				done = moveHead(-deltaAngle, 0, deltaAngle);
+				/*if(moveHeadLeft(deltaAngle))
 				 {
-				 printf("Moving head down ...\n");
-				 done = moveHeadDown(headRotAngle);
+				 yDebug("Moving head down ...\n");
+				 done = moveHeadDown(deltaAngle);
 				 }*/
 			} else if (action == "headRightUp") {
-				std::cout << "Moving head right and up ...\n";
-				done = moveHead(headRotAngle, 0, -1 * headRotAngle);
+				yDebug(" Locomotion: Moving head right and up ...\n");
+				done = moveHead(deltaAngle, 0, -1 * deltaAngle);
 
-				/*if(moveHeadRight(headRotAngle))
+				/*if(moveHeadRight(deltaAngle))
 				 {
-				 printf("Moving head up ...\n");
-				 done = moveHeadUp(headRotAngle);
+				 yDebug("Moving head up ...\n");
+				 done = moveHeadUp(deltaAngle);
 				 }**/
 			} else if (action == "headRightDown") {
-				std::cout << "Moving head right and down ...\n";
-				done = moveHead(-headRotAngle, 0, -headRotAngle);
+				yDebug(" Locomotion: Moving head right and down ...\n");
+				done = moveHead(-deltaAngle, 0, -deltaAngle);
 			} else if (action == "handRight") {
-				std::cout << "Moving hand right ...\n";
-				done = moveLeftArm(-0.35, -0.05, 0.1, 0.0, 0.0, 4.0);
+				yDebug(" Locomotion: Moving hand right ...\n");
+				done = moveLeftArm(xhorigin,yhorigin+deltaCoord,zhorigin, 0.0, 0.0, 4.0);
+												if(done) yhorigin+=deltaCoord;
+												done = moveHead(0, 0, deltaAngle);
+
 			} else if (action == "handLeft") {
-				std::cout << "Moving hand left ...\n";
-				done = moveLeftArm(-0.35, 0.03, 0.1, 0.0, 0.0, 4.0);
+				yDebug(" Locomotion: Moving hand left ...\n");
+				done = moveLeftArm(xhorigin,yhorigin-deltaCoord,zhorigin, 0.0, 0.0, 4.0);
+												if(done) yhorigin-=deltaCoord;
 			} else if (action == "handUp") {
-				std::cout << "Moving hand up ...\n";
-				done = moveLeftArm(-0.35, 0.03, 0.2, 0.0, 0.0, 4.0);
+				yDebug(" Locomotion: Moving hand up %f ...\n",deltaCoord);
+				done = moveLeftArm(xhorigin,yhorigin,zhorigin+2*deltaCoord, 0.0, 0.0, 4.0);
+								if(done) zhorigin+=2*deltaCoord;
 			} else if (action == "handDown") {
-				std::cout << "Moving hand down ...\n";
-				done = moveLeftArm(-0.35, 0.03, -0.1, 0.0, 0.0, 4.0);
+				yDebug(" Locomotion: Moving hand down ...\n");
+				done = moveLeftArm(xhorigin,yhorigin,zhorigin-deltaCoord, 0.0, 0.0, 4.0);
+				if(done) zhorigin-=deltaCoord;
 			} else if (action == "handBackward") {
+				yDebug(" Locomotion: Moving hand backwards ...\n");
+				done = moveLeftArm(xhorigin+deltaCoord,yhorigin,zhorigin, 0.0, 0.0, 4.0);
+								if(done)xhorigin+=deltaCoord;
+
 			} else if (action == "handForward") {
-			} else if (action == "closeHand") {
-				std::cout << "Closing left hand ...\n";
+			} else if (action == "closeHand" && leftHandState!="closed") {
+				yDebug(" Locomotion: Closing left hand ...\n");
 				done = closeHand();
+				//if(done){
+					leftHandState = "closed";
+				//}
+				done = moveLeftArm(xhorigin+deltaCoord,yhorigin,zhorigin+deltaCoord, 0.0, 0.0, 4.0);
+				if(done)zhorigin+=deltaCoord;
 				//closeHand();
 			} else if (action == "openHand") {
-				std::cout << "Opening left hand ...\n";
+				yDebug(" Locomotion: Opening left hand ...\n");
 				done = openHand();
+				if(done){
+									leftHandState = "open";
+								}
 			} else {
 				yWarning("Unknown action :'%s'\n",action.toStyledString().c_str());
 			}
-			//std::cout << "Action performed \n";
+			//yDebug(" Locomotion: Action performed \n";
 		}
 
-		std::cout << "Actions performed, writing out done \n";
+		yDebug(" Locomotion: writing out left hand state [%s]",leftHandState.c_str());
+		yDebug(" Locomotion: closed %d",closed);
+		if(leftHandState=="closed") closed++;
 
+		if(closed>5 && openHand()){
+			closed = 0;
+		}
+yDebug(" Locomotion: hand state %s",leftHandState.c_str());
 		Bottle output;
+		output.addString(leftHandState);
+		leftHandStateOutputPort.write(output);
+
+		yDebug(" Locomotion: Actions performed, writing out done \n");
+
+		 output = doneOutputPort.prepare();
 		output.addString(done ? "true" : "false");
-		doneOutputPort.write(output);
+		doneOutputPort.write();
+		//doneOutputPort.wr
 		return true;
 	}
 
 private:
 
+	void setInitialHeadPos(){
+		yInfo(" Setting initial head position for %s\n robot",robotName.c_str());
+
+		//moveHead(-60, 0, -15);
+		moveHead(-60, 0, 25);
+		//moveHead(int angle0, int angle1, int angle2) {
+	}
+
+	void setInitialLeftHandPos(){
+		yInfo(" Setting initial left hand position for %s\n robot",robotName.c_str());
+
+		moveLeftArm(xhorigin,yhorigin,zhorigin,0.0,0.0,4.0);
+	}
+
+
+
+
 	bool moveHead(int angle0, int angle1, int angle2) {
-		// printf("DENTRO %d %d %d\n",angle0, angle1, angle2);
+		// yDebug("DENTRO %d %d %d\n",angle0, angle1, angle2);
 		IEncoders *enc;
 		IVelocityControl *vel;
 
@@ -337,14 +423,14 @@ private:
 		/*Vector v;
 		 Vector command;
 		 command.resize(njoints);
-		 printf("joints %s",njoints);
+		 yDebug("joints %s",njoints);
 		 v.resize(njoints);*/
 
 		Vector command;
 		command.resize(njoints);
 		enc->getEncoders(command.data());
 
-		//printf("\ncommando => %s\n\n\n",command.toString().c_str());
+		//yDebug("\ncommando => %s\n\n\n",command.toString().c_str());
 
 		command[0] = command[0] + angle0;
 		command[1] = command[1] + angle1;
@@ -395,7 +481,7 @@ private:
 		left_arm_ctrl->goToPose(xd, od);
 		bool done = left_arm_ctrl->waitMotionDone(0.1, 4.0);
 		if (!done) {
-			printf("Left arm is taking to long to complete the movement\n");
+			yDebug("Locomotion: Left arm is taking to long to complete the movement\n");
 		}
 		return done;
 	}
@@ -478,16 +564,16 @@ private:
 		 command[13]=50.0; //dedo medio doblado +=mas doblado
 		 command[14]=81.0; //dedo medio doblas
 		 command[15]=137.0; //meñique doblar +=mas doblado*/
-		printf("\ncommando => %s\n\n\n", command.toString().c_str());
+		yDebug(" Locomotion: commando => %s\n\n\n", command.toString().c_str());
 
 		left_hand_ctrl->positionMove(command.data());
-		printf("wrist moving upwards...\n");
+		yDebug(" Locomotion: wrist moving upwards...\n");
 
 		bool done = left_arm_ctrl->waitMotionDone(0.1, 4.0);
 		if (!done) {
-			printf("Left arm is taking to long to complete the movement\n");
+			yDebug(" Locomotion: Left arm is taking to long to complete the movement\n");
 		}
-		printf("Done wrist %d\n", done);
+		yDebug(" Locomotion: Done wrist %d\n", done);
 		return done;
 
 	}
@@ -531,7 +617,7 @@ private:
 		 command[14]=0.0;
 		 command[15]=60.0;i/
 		 */
-		printf("\ncommandobe> %s\n\n\n", command.toString().c_str());
+		yDebug(" Locomotion: commandobe> %s\n\n\n", command.toString().c_str());
 		command[5] = -37.0;
 		command[7] = 0.0; //juntar dedos - = mas abiertos
 		command[8] = 88.0; //pulgar hacia palma
@@ -554,7 +640,7 @@ private:
 		 command[15]=137.0; //meñique doblar +=mas doblado*/
 
 		return left_hand_ctrl->positionMove(command.data());
-		//printf("closing hand...%d\n",done);
+		//yDebug("closing hand...%d\n",done);
 		//return done;
 
 	}
@@ -593,7 +679,7 @@ private:
 		command[14] = 9.999996; //meñique doblar +=mas doblado*/
 		command[15] = 9.999997;
 
-		printf("COMMAND");
+		yDebug("COMMAND");
 		bool done = left_hand_ctrl->positionMove(command.data());
  return true;
 	}

@@ -29,12 +29,14 @@ class LTMemoryThread: public RateThread {
 	Port matchedSchemasOutputPort;
 	string matchMode;
 
+	Bottle input;
 	int totalSchemes;
 	bool allowPartialMatch;
 
 	Json::Reader jsonReader;
 	//bool accommodated;
 	Json::Value kb;
+	int cycles;
 
 	//Json::Value matchedSchema;
 
@@ -47,34 +49,35 @@ public:
 		matchMode = 100.0;
 		allowPartialMatch = false;
 		totalSchemes = 0;
+		cycles = 0;
 		loadKB(kb_path);
 		//jsonReader.parse("{\"schemes\":[]}", kb);
 	}
 
 	virtual bool threadInit() {
 
-		printf("robot name: %s\n", robotName.c_str());
+		yInfo("robot name: %s\n", robotName.c_str());
 
 		if (!modeInputPort.open("/" + robotName + "/memory/mode:i")) {
-			printf("Failed creating mode input port for Memory module");
+			yInfo("Failed creating mode input port for Memory module");
 			return false;
 		}
 
 		if (!contextInputPort.open("/" + robotName + "/memory/context:i")) {
-			printf(
+			yInfo(
 					"Failed creating actual context input port for Memory module");
 			return false;
 		}
 
 		if (!matchModeInputPort.open("/" + robotName + "/memory/matchMode:i")) {
-			printf(
+			yInfo(
 					"Failed creating match threshold input port for Memory module");
 			return false;
 		}
 
 		if (!matchedSchemasOutputPort.open(
 				"/" + robotName + "/memory/matchedSchemas:o")) {
-			printf(
+			yInfo(
 					"Failed creating matched schemas output port for Memory module");
 			return false;
 		}
@@ -84,48 +87,48 @@ public:
 
 	virtual void afterStart(bool s) {
 		if (s)
-			printf("Long-Term Memory thread started successfully\n");
+			yInfo("Long-Term Memory thread started successfully\n");
 		else
-			printf("Long-Term Memory thread did not start\n");
+			yInfo("Long-Term Memory thread did not start\n");
 
 		//t=t0=t1=Time::now();
 	}
 
 	virtual void run() {
+		yDebug(" LTMemory: cycle %d",++cycles);
 
-		printf("waiting for mode selection...\n");
+		yDebug(" LTMemory: waiting for mode selection...\n");
 
-		Bottle input;
 		modeInputPort.read(input);
+		//yDebug(" LTMMemory: Read");
 		string input_string;
 		if (input.toString() == MATCH_MODE) {
-			std::cout << "MATCH_MODE set\n";
-			std::cout << "waiting for match mode...\n";
+			yDebug(" LTMemory: MATCH_MODE set\n");
+			yDebug(" LTMemory: waiting for match mode...\n");
+			Bottle input;
 			matchModeInputPort.read(input);
 			input_string = input.toString();
 			//prepareInput(input_string);
-			yDebug("Read %s\n",input_string.c_str());
+			//yDebug(" LTMemory:Read %s\n",input_string.c_str());
 
 			matchMode = input_string.c_str();
-			std::cout << "got " << matchMode << '\n';
-			std::cout << "waiting for a context to match...\n";
+			yDebug(" LTMemory: got %s",matchMode.c_str());
+			yDebug(" LTMemory: waiting for a context to match...\n");
 			contextInputPort.read(input);
 			input_string = input.toString();
 			prepareInput(input_string);
 			Json::Value context;
 			jsonReader.parse(input_string.c_str(), context);
-			std::cout << "Got context: " << '\n' << context.toStyledString()
-					<< '\n';
+			yDebug(" LTMemory: Got context: %s",context.toStyledString().c_str());
 			Json::Value matchedSchemas = match(context);
-			std::cout << " Matched schemas" << '\n'
-					<< matchedSchemas.toStyledString() << '\n';
+			yDebug(" LTMemory:  Matched schemas\n %s",matchedSchemas.toStyledString().c_str());
 
 			if(matchMode=="exact")
-			std::cout << matchedSchemas.size() << " schemas matched \n";
+			yDebug(" LTMemory: %d schemas matched",matchedSchemas.size());
 			else
-				std::cout << matchedSchemas[0].size() << " schemas matched visual context and "<< matchedSchemas[1].size()<< " matched tactile context\n";
+				yDebug(" LTMemory: %d schemas matched visual context and %d matched tactil context ",matchedSchemas[0].size(),matchedSchemas[1].size());
 
-			std::cout << "writing matched schemas to matchedSchemas:o ...\n";
+			yDebug(" LTMemory: writing matched schemas to matchedSchemas:o");
 			Bottle output;
 			Json::FastWriter fastWriter;
 			output.addString(fastWriter.write(matchedSchemas));
@@ -134,7 +137,7 @@ public:
 	}
 
 	virtual void threadRelease() {
-		modeInputPort.close();
+		//modeInputPort.close();
 		contextInputPort.close();
 		matchModeInputPort.close();
 		matchedSchemasOutputPort.close();
@@ -146,15 +149,27 @@ private:
 		std::ifstream ifs;
 		ifs.open(kb_file);
 		if (!ifs.is_open()) {
-			std::cerr << "Could not load knokledge base " << kb_file << "\n";
+			std::cerr << "Could not load knowledge base " << kb_file << "\n";
 			return EXIT_FAILURE;
 		}
 
 		jsonReader.parse(ifs, kb);
 
+		/*for (Json::Value& schema : kb["schemes"]) {
+					if(schema["equilibrated"]==true){
+						//allow partial patch only if there is at least one equilibrated schema
+						allowPartialMatch = true;
+					break;
+					}
+				}
+		yInfo("LTM: Allowing partialMatches %b",allowPartialMatch);
+		if(!allowPartialMatch){
+		yInfo("There are no equilibrated schemas\n");
+		}*/
+
 		totalSchemes = kb["schemes"].size();
 
-		std::cout << totalSchemes << " schemas loaded" << '\n';
+		yDebug(" LTMemory: %d schemas loaded",totalSchemes);
 		return true;
 	}
 
@@ -175,13 +190,13 @@ private:
 		// if partial match is set, the result is a list of two lists
 		// one for schemas matching visual and one for tactile
 		bool only100 = false;
-		printf("Probing knowledge base with match mode set to %s...\n",
+		yInfo("Probing knowledge base with match mode set to %s...\n",
 				matchMode.c_str());
 
 		for (Json::Value& schema : kb["schemes"]) {
-			if(matchMode=="partial" && !schema["equilibrated"]) continue;
-			Json::Value leafs = getLeafs(schema);
-			printf("LEAFS \n %s",leafs.toStyledString().c_str());
+			if(matchMode=="partial" && !schema["equilibrated"].asBool()) continue;
+			Json::Value leafs = utils::getLeafs(schema);
+			//yInfo("LEAFS \n %s",leafs.toStyledString().c_str());
 			bool foundMatch = false;
 			for (Json::Value& leaf : leafs) {
 			int visualContextSize = leaf["context"][0].size();
@@ -189,8 +204,8 @@ private:
 
 			float visualMatch = utils::match(context[0], leaf["context"][0]);
 			float tactilMatch = utils::match(context[1], leaf["context"][1]);
-
-
+			//yInfo("vMatch \n %f",visualMatch);
+			//yInfo("tMatch \n %f",tactilMatch);
 			float vPer = 0;
 			float tPer = 0;
 if(visualContextSize>0){
@@ -206,38 +221,39 @@ if(visualContextSize>0){
 				matchedSchemas.append(schema);
 				break;
 			}else if (matchMode=="partial"){
-				if(leaf["context"][0].size()>0 && visualMatch==100 && tactilMatch==0){ //visual context matches exactly
-					matchedSchemas[0].append(schema);
-					printf("Trying schema %s\n",schema["context"].toStyledString().c_str());
-					printf("Matches %f visual and %f tactil \n",visualMatch, tactilMatch);
+				yInfo("Trying schema %s %s\n",schema["id"].asCString(),schema["context"].toStyledString().c_str());
+				yInfo("Matches %f visual and %f tactil \n",visualMatch, tactilMatch);
 
-					if(!only100){
+				if(leaf["context"][0].size()>0 && visualMatch==100 && tactileContextSize==0){ //visual context matches exactly
+					matchedSchemas[0].append(schema);
+
+					/*if(!only100){
 						jsonReader.parse("[[],[]]", matchedSchemas);
 						only100 = true;
 					}
 
-break;
-				}else if(!only100  && vPer>0 && visualMatch==vPer && tactilMatch==0){//visual context differs in one aspect
-					printf("Trying schema %s\n",schema["context"].toStyledString().c_str());
-					printf("Matches %f visual and %f tactil \n",visualMatch, tactilMatch);
+break;*/
+				}else if(!only100  && vPer>0 && visualMatch==vPer && tactileContextSize==0){//visual context differs in one aspect
+					//yInfo("Trying schema %s %s\n",schema["id"].asCString(),schema["context"].toStyledString().c_str());
+					//yInfo("Matches %f visual and %f tactil \n",visualMatch, tactilMatch);
 					matchedSchemas[0].append(schema);
 					break;
 				}
 
-				else if(leaf["context"][1].size()>0 && visualMatch==0 && tactilMatch==100){ //tactile context matches exactly
+				else if(leaf["context"][1].size()>0 && visualContextSize==0 && tactilMatch==100){ //tactile context matches exactly
 					matchedSchemas[1].append(schema);
-					printf("Trying schema %s\n",schema["context"].toStyledString().c_str());
-					printf("Matches %f visual and %f tactil \n",visualMatch, tactilMatch);
-					if(!only100){
+					//yInfo("Trying schema %s %s\n",schema["id"].asCString(),schema["context"].toStyledString().c_str());
+					//yInfo("Matches %f visual and %f tactil \n",visualMatch, tactilMatch);
+					/*if(!only100){
 						jsonReader.parse("[[],[]]", matchedSchemas);
 						only100 = true;
 					}
 
-					break;
+					break;*/
 
-				}else if(!only100 && tPer>0 && visualMatch==0 && tactilMatch==tPer){//visual context matches exactly
-					printf("Trying schema %s\n",schema["context"].toStyledString().c_str());
-					printf("Matches %f visual and %f tactil \n",visualMatch, tactilMatch);
+				}else if(!only100 && tPer>0 && visualContextSize==0 && tactilMatch==tPer){//visual context matches exactly
+					//yInfo("Trying schema %s %s\n",schema["id"].asCString(),schema["context"].toStyledString().c_str());
+					//yInfo("Matches %f visual and %f tactil \n",visualMatch, tactilMatch);
 					matchedSchemas[1].append(schema);
 					break;
 				}
@@ -287,7 +303,7 @@ break;
 			int membersSize = contenxtMembers.size();
 
 			for (string memberName : contenxtMembers) {
-				//std::cout << "chekin [ " << memberName <<" ]"<<'\n';
+				//yDebug(" LTMemory: chekin [ " << memberName <<" ]"<<'\n';
 				if (context2[1][memberName].empty()
 						|| context1[1][memberName] == context2[1][memberName]) {
 					match += 50.0 / membersSize;
@@ -296,9 +312,9 @@ break;
 
 			contenxtMembers = context2[1].getMemberNames();
 			membersSize = contenxtMembers.size();
-			//std::cout << "camate [  ]"<<'\n';
+			//yDebug(" LTMemory: camate [  ]"<<'\n';
 			for (string memberName : contenxtMembers) {
-				//std::cout << "chekin [ " << memberName <<" ]"<<'\n';
+				//yDebug(" LTMemory: chekin [ " << memberName <<" ]"<<'\n';
 				if (context1[1][memberName].empty()) {
 					match -= 50.0 / membersSize;
 				}
@@ -309,19 +325,19 @@ break;
 				{
 			match += 50.0;
 		} else {
-			//printf("cisual contest not empty\n");
+			//yInfo("cisual contest not empty\n");
 
 			Json::Value::Members contenxtMembers = context2[0].getMemberNames();
 			int membersSize = contenxtMembers.size();
 
-			//printf("Miembros => %s",contenxtMembers.toStyledString())
-			/*std::cout << "size "<<membersSize<<'\n';
+			//yInfo("Miembros => %s",contenxtMembers.toStyledString())
+			/*yDebug(" LTMemory: size "<<membersSize<<'\n';
 			 float r = (50.0/membersSize);
-			 printf("rate %f\n",r);*/
+			 yInfo("rate %f\n",r);*/
 
-			//std::cout << "camate [  ]"<<'\n';
+			//yDebug(" LTMemory: camate [  ]"<<'\n';
 			/*for (string memberName : contenxtMembers) {
-				//printf( " match [ %f ]\n",match);
+				//yInfo( " match [ %f ]\n",match);
 				if (!context1[0][memberName].empty()
 						&& context1[0][memberName] == context2[0][memberName]) {
 					match += 50.0 / membersSize;
@@ -330,10 +346,10 @@ break;
 			/*
 			 contenxtMembers = context2[0].getMemberNames();
 			 membersSize = contenxtMembers.size();
-			 //std::cout << "camate [  ]"<<'\n';
+			 //yDebug(" LTMemory: camate [  ]"<<'\n';
 			 for(string memberName: contenxtMembers)
 			 {
-			 //std::cout << "chekin [ " << memberName <<" ]"<<'\n';
+			 //yDebug(" LTMemory: chekin [ " << memberName <<" ]"<<'\n';
 			 if(context1[0][memberName].empty())
 			 {
 			 match-=50.0/membersSize;

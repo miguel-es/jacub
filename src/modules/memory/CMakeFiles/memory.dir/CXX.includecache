@@ -49,6 +49,8 @@ yarp/os/impl/Logger.h
 -
 fstream
 -
+list
+-
 iostream
 -
 jutils.h
@@ -70,6 +72,8 @@ string
 schemaUtils.h
 -
 jsoncpp/json/json.h
+-
+yarp/os/impl/Logger.h
 -
 
 src/LTMemory.cpp
@@ -106,6 +110,8 @@ jsoncpp/json/json.h
 yarp/os/impl/Logger.h
 -
 fstream
+-
+list
 -
 iostream
 -

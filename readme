@@ -112,7 +112,8 @@ cartecian reference-frame : -z -x y (-0.35 -0.09 0.55387995)
 -x = hacia adelante
 -y = hacia la izquierda
  z = hacia arriba
- 
+
+yarp connect /icubSim/cam/left /jacub/perception/rawImage:i
  
 yarp connect /icubSim/cam/left /yarpview/img:i
 yarp connect /icubSim/cam/left /motionCUT/img:i
@@ -126,4 +127,5 @@ yarp connect /motionCUT/img:o /yarpview/img:i
 
 yarp connect /motionCUT/blobs:o /jacub/perception/movingBlobs:i
 
+head joint 3: ojos joint:0 (arriba-abajo) joint 2:izquierda-derecha
 

@@ -30,12 +30,14 @@ class WMemoryThread: public RateThread {
 	list<Json::Value> stm;
 
 	string robotName;
+	int cycles;
 public:
 	WMemoryThread(string robotName, const double period) :
 			RateThread(int(period * 1000.0)) {
 		this->robotName = robotName;
 		jsonReader.parse("{\"schemes\":[]}", context);
 		jsonReader.parse("[{},{}]", expectations);
+		cycles = 0;
 
 	}
 
@@ -90,48 +92,46 @@ public:
 	}
 
 	virtual void run() {
-
+		yDebug(" WMemory: cycle %d",++cycles);
 
 		Bottle input;
 		Bottle output;
-		string input_string;
+		string input_string="[{},{}]";
 
-
-
-		printf("waiting for attended context...\n");
+		yDebug(" WMemory: waiting for attended context...\n");
 		attendedContextInputPort.read(input);
 		input_string = input.toString();
+		//yDebug(" WMemory: Got input: %s",input_string.c_str());
+
 		prepareInput(input_string);
 		jsonReader.parse(input_string.c_str(), context);
-		std::cout << "Got context: " << '\n' << context.toStyledString()
-				<< '\n';
+		yDebug(" WMemory: Got context: %s",context.toStyledString().c_str());
 
-		printf("writing out attended context...\n");
+		yDebug(" WMemory: writing out attended context...\n");
 		output.addString(fastWriter.write(context));
 		attendedContextOutputPort.write(output);
 
-		printf("waiting for emotional context...\n");
+		yDebug(" WMemory: waiting for emotional context...\n");
 		input.clear();
 		emotionalContextInputPort.read(input);
 		input_string = input.toString();
 		prepareInput(input_string);
 		jsonReader.parse(input_string.c_str(), context);
-		std::cout << "Got context: " << '\n' << context.toStyledString()
-				<< '\n';
+		yDebug(" WMemory: Got context: %s",context.toStyledString().c_str());
 		output.clear();
-		printf("writing out emotional context...\n");
+		yDebug(" WMemory: writing out emotional context...\n");
 				output.addString(fastWriter.write(context));
 				emotionalContextOutputPort.write(output);
 
-				printf("waiting for expectations...\n");
+				yDebug(" WMemory: waiting for expectations...\n");
 				input.clear();
-				expectationsInputPort.read(input);
-				input_string = input.toString();
-				prepareInput(input_string);
-				jsonReader.parse(input_string.c_str(), expectations);
-				std::cout << "Got expectations: " << '\n' << expectations.toStyledString()
-						<< '\n';
-				printf("writing out expectations...\n");
+				//expectationsInputPort.read(input);
+				//yDebug(" WMemory: input read\n");
+				//input_string = input.toString();
+				//prepareInput(input_string);
+				//jsonReader.parse(input_string.c_str(), expectations);
+				yDebug(" WMemory: Got expectations: %s",expectations.toStyledString().c_str());
+				yDebug(" WMemory: writing out expectations...\n");
 				output.addString(fastWriter.write(expectations));
 				expectationsOutputPort.write(output);
 				Json::Value timeStep;

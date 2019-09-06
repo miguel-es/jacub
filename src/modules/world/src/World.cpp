@@ -13,6 +13,7 @@
  #include <yarp/os/RFModule.h>
  #include <yarp/os/RateThread.h>
  #include <yarp/os/RpcClient.h>
+#include <yarp/os/impl/Logger.h>
 
 
  #define CTRL_THREAD_PER     0.02    // [s]
@@ -25,8 +26,9 @@
  {
 
      RpcClient world_port;
+     Port continueInputPort;
      bool inited;
-
+     int step;
 	 double x;
 	 double y;
 	 double z;
@@ -39,32 +41,42 @@
      virtual bool threadInit()
      {
 
-    	  x= 0.09f;
+    	 	step = 0;
+    	  x= 0.0f;
     	  y = 0.55387995f;
-    	  z = 0.35f;
+    	  z = 0.60f;
 
        inited = false;
 	   if(!world_port.open("/jacub/world")){
-            printf("Failed creating port");
+            yError(" World: Failed creating port");
             return false;
        }
 
        if(!world_port.addOutput("/icubSim/world")){
-            printf("Failed adding output to /icubSim/word port. Is iCub_SIM running?");
+            yError(" World: Failed adding output to /icubSim/word port. Is iCub_SIM running?");
             return false;
        }
+
+       if(!continueInputPort.open("/world/continue:i")){
+                   yError(" World: Failed adding input port /world/continue:i");
+                   return false;
+              }
+
 
        Bottle cmd;
        	  cmd.addString("world");
        	  cmd.addString("del");
        	  cmd.addString("all");
 
-       	printf("Cleaning world\n");
+       	yInfo(" World: Cleaning world\n");
        		Bottle response;
        		world_port.write(cmd,response);
-       		printf("World  response: %s",response.toString().c_str());
+       		yDebug(" World: response: %s",response.toString().c_str());
 
-       		addObj("box",0.06f,0.06f,0.06f,0.09f,0.55387995f,0.35f,0,0,1);
+       		addObj("box",0.06f,0.06f,0.06f,0.0f,0.55387995f,0.37f,1,0,0);
+       	//	addObj("box",0.06f,0.06f,0.06f,0.2f,0.55387995f,0.35f,1,0,0);
+       		//addObj("box",0.06f,0.06f,0.06f,0.09f,0.55387995f,0.35f,1,0,0);
+       		//addObj("box",0.06f,0.06f,0.06f,0.00f,0.55387995f,0.35f,1,1,0);
        		getPos("box",1);
        return true;
      }
@@ -72,21 +84,44 @@
      virtual void afterStart(bool s)
      {
          if (s)
-             printf("World control thread started successfully\n");
+             yInfo("World control thread started successfully\n");
          else
-             printf("World control thread did not start\n");
+             yError("World control thread did not start\n");
 
      }
 
      virtual void run()
      {
-    	// 0.0900000035762787
-         printf("X=%f ",x);
-         x+=0.001;
-         printf("X'=%f\n",x);
-         mvObj("box",x,y,z);
 
-         if(x>0.225000) x = 0.09;
+    	if(step==15){
+    		yDebug(" World: Adding green box");
+    		mvObj("box",0.2f,0.55387995f,0.35f);
+    		step++;
+    		//addObj("box",0.06f,0.06f,0.06f,0.2f,0.55387995f,0.35f,0,1,0);
+    	}
+    	 Bottle input;
+    	 continueInputPort.read(input);
+    	 if(step<15 && x<0.325000){
+    	// 0.0900000035762787
+    		// if(x>0.325000) return;
+         yDebug(" step left=%f ",x);
+       z+=0.01;
+         yDebug("z'=%f\n",z);
+         mvObj("box",x,y,z);
+         step++;
+
+         //if(x>0.325000) x = 0.09;
+    	 }/*else if(step<600 && x>0){
+             yDebug("step right=%f ",x);
+             x-=0.005;
+             yDebug("X'=%f\n",x);
+             mvObj("box",x,y,z);
+             //step++;
+    	 }
+    	 step++;
+    	 if(step==600){
+    		 step = 0;
+    	 }*/
 
      }
 
@@ -106,10 +141,10 @@
 	  cmd.addDouble(x);
 	  cmd.addDouble(y);
 	  cmd.addDouble(z);
-	printf("Moving %s\n",obj.c_str());
+	yDebug("Moving %s\n",obj.c_str());
 	Bottle response;
 	world_port.write(cmd,response);
-	printf("World  response: %s",response.toString().c_str());
+	yDebug(" World: response: %s",response.toString().c_str());
     }
 
       void addObj(string obj,float size1,float size2,float size3,float x,float y,float z, int r, int g, int b){
