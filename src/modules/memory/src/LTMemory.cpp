@@ -193,28 +193,37 @@ private:
 		yInfo("Probing knowledge base with match mode set to %s...\n",
 				matchMode.c_str());
 
+		bool c1HasVContext = context[0].size()!=0;
+		bool c1HasTContext = context[1].size()!=0;
+
+		float vPer = 0;
+		float tPer = 0;
+if(c1HasVContext>0){
+  vPer = (((float)context[0].size()-1)/(float)context[0].size())*100;
+}
+
+		if(c1HasTContext>0){
+			  tPer = (((float)context[1].size()-1)/(float)context[1].size())*100;
+		}
+
 		for (Json::Value& schema : kb["schemes"]) {
 			if(matchMode=="partial" && !schema["equilibrated"].asBool()) continue;
 			Json::Value leafs = utils::getLeafs(schema);
 			//yInfo("LEAFS \n %s",leafs.toStyledString().c_str());
 			bool foundMatch = false;
 			for (Json::Value& leaf : leafs) {
-			int visualContextSize = leaf["context"][0].size();
-			int tactileContextSize = leaf["context"][1].size();
+			//int visualContextSize = leaf["context"][0].size();
+			//int tactileContextSize = leaf["context"][1].size();
 
+			bool c2HasVContext = leaf["context"][0].size()!=0;
+			bool c2HasTContext = leaf["context"][1].size()!=0;
+			//bool bothVCEmpty = !c1HasVContext && leaf["context"][0].size()==0;
+			//bool bothTCEmpty = !c1HasTContext && leaf["context"][1].size()==0;
 			float visualMatch = utils::match(context[0], leaf["context"][0]);
 			float tactilMatch = utils::match(context[1], leaf["context"][1]);
 			//yInfo("vMatch \n %f",visualMatch);
 			//yInfo("tMatch \n %f",tactilMatch);
-			float vPer = 0;
-			float tPer = 0;
-if(visualContextSize>0){
-	  vPer = (((float)visualContextSize-1)/(float)visualContextSize)*100;
-}
 
-			if(tactileContextSize>0){
-				  tPer = (((float)tactileContextSize-1)/(float)tactileContextSize)*100;
-			}
 
 
 			if(matchMode=="exact" && visualMatch==100 && tactilMatch==100){
@@ -224,7 +233,7 @@ if(visualContextSize>0){
 				yInfo("Trying schema %s %s\n",schema["id"].asCString(),schema["context"].toStyledString().c_str());
 				yInfo("Matches %f visual and %f tactil \n",visualMatch, tactilMatch);
 
-				if(leaf["context"][0].size()>0 && visualMatch==100 && tactileContextSize==0){ //visual context matches exactly
+				/*if(leaf["context"][0].size()>0 && visualMatch==100 && tactileContextSize==0){ //visual context matches exactly
 					matchedSchemas[0].append(schema);
 
 					/*if(!only100){
@@ -232,15 +241,37 @@ if(visualContextSize>0){
 						only100 = true;
 					}
 
-break;*/
-				}else if(!only100  && vPer>0 && visualMatch==vPer && tactileContextSize==0){//visual context differs in one aspect
+break;
+				}else */
+				if(c1HasVContext && !c1HasTContext && c2HasVContext && !c2HasTContext  && visualMatch==vPer){//visual context differs in one aspect
+
 					//yInfo("Trying schema %s %s\n",schema["id"].asCString(),schema["context"].toStyledString().c_str());
 					//yInfo("Matches %f visual and %f tactil \n",visualMatch, tactilMatch);
 					matchedSchemas[0].append(schema);
 					break;
+
+
+				}else if(c1HasTContext && !c1HasVContext && c2HasTContext && !c2HasVContext && tactilMatch==tPer){//visual context differs in one aspect
+
+					//yInfo("Trying schema %s %s\n",schema["id"].asCString(),schema["context"].toStyledString().c_str());
+					//yInfo("Matches %f visual and %f tactil \n",visualMatch, tactilMatch);
+					matchedSchemas[1].append(schema);
+					break;
+
+
+				}else if(c1HasTContext && c1HasVContext){
+
+					if(leaf["context"][0].size()>0 && visualMatch==100){
+						matchedSchemas[0].append(schema);
+						break;
+					}else if(leaf["context"][1].size()>0 && tactilMatch==100){
+						matchedSchemas[1].append(schema);
+												break;
+					}
+
 				}
 
-				else if(leaf["context"][1].size()>0 && visualContextSize==0 && tactilMatch==100){ //tactile context matches exactly
+				/*else if(leaf["context"][1].size()>0 && visualContextSize==0 && tactilMatch==100){ //tactile context matches exactly
 					matchedSchemas[1].append(schema);
 					//yInfo("Trying schema %s %s\n",schema["id"].asCString(),schema["context"].toStyledString().c_str());
 					//yInfo("Matches %f visual and %f tactil \n",visualMatch, tactilMatch);
@@ -249,14 +280,14 @@ break;*/
 						only100 = true;
 					}
 
-					break;*/
+					break;
 
-				}else if(!only100 && tPer>0 && visualContextSize==0 && tactilMatch==tPer){//visual context matches exactly
+				}else if(leaf["context"][1].size()>0 && ((tPer>0 && tactilMatch==tPer)|| (tactilMatch==100 && visualMatch!=100 && visualContextSize!=0))){//visual context matches exactly
 					//yInfo("Trying schema %s %s\n",schema["id"].asCString(),schema["context"].toStyledString().c_str());
 					//yInfo("Matches %f visual and %f tactil \n",visualMatch, tactilMatch);
 					matchedSchemas[1].append(schema);
 					break;
-				}
+				}*/
 			}
 			}
 		}
