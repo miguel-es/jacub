@@ -198,6 +198,7 @@ private:
 
 		float vPer = 0;
 		float tPer = 0;
+		//std::setprecision(3)(333333);
 if(c1HasVContext>0){
   vPer = (((float)context[0].size()-1)/(float)context[0].size())*100;
 }
@@ -231,7 +232,7 @@ if(c1HasVContext>0){
 				break;
 			}else if (matchMode=="partial"){
 				yInfo("Trying schema %s %s\n",schema["id"].asCString(),schema["context"].toStyledString().c_str());
-				yInfo("Matches %f visual and %f tactil \n",visualMatch, tactilMatch);
+				yInfo("Matches %f visual and %f tactil, vPer=%f, tPer=%f \n",visualMatch, tactilMatch,vPer,tPer);
 
 				/*if(leaf["context"][0].size()>0 && visualMatch==100 && tactileContextSize==0){ //visual context matches exactly
 					matchedSchemas[0].append(schema);
@@ -243,31 +244,30 @@ if(c1HasVContext>0){
 
 break;
 				}else */
-				if(c1HasVContext && !c1HasTContext && c2HasVContext && !c2HasTContext  && visualMatch==vPer){//visual context differs in one aspect
+				if(c1HasTContext && c1HasVContext){
+
+									if((c2HasVContext && !c2HasTContext && visualMatch==100) || (c2HasVContext && c2HasTContext && visualMatch==100 && tactilMatch!=100)){
+										matchedSchemas[0].append(schema);
+										break;
+									}else if((c2HasTContext && !c2HasVContext && tactilMatch==100) || (c2HasTContext && c2HasVContext && tactilMatch==100 && visualMatch!=100)){
+										matchedSchemas[1].append(schema);
+																break;
+									}
+
+								}else
+				if(c1HasVContext && !c1HasTContext && ((c2HasVContext && !c2HasTContext && visualMatch==vPer)||(c2HasVContext && c2HasTContext && visualMatch==100.0))){//visual context differs in one aspect
 
 					//yInfo("Trying schema %s %s\n",schema["id"].asCString(),schema["context"].toStyledString().c_str());
 					//yInfo("Matches %f visual and %f tactil \n",visualMatch, tactilMatch);
 					matchedSchemas[0].append(schema);
 					break;
-
-
-				}else if(c1HasTContext && !c1HasVContext && c2HasTContext && !c2HasVContext && tactilMatch==tPer){//visual context differs in one aspect
+				}else if(c1HasTContext && !c1HasVContext && ((c2HasTContext && !c2HasVContext && tactilMatch==tPer)||(c2HasTContext && c2HasVContext && tactilMatch==100.0))){//visual context differs in one aspect
 
 					//yInfo("Trying schema %s %s\n",schema["id"].asCString(),schema["context"].toStyledString().c_str());
 					//yInfo("Matches %f visual and %f tactil \n",visualMatch, tactilMatch);
 					matchedSchemas[1].append(schema);
 					break;
 
-
-				}else if(c1HasTContext && c1HasVContext){
-
-					if(leaf["context"][0].size()>0 && visualMatch==100){
-						matchedSchemas[0].append(schema);
-						break;
-					}else if(leaf["context"][1].size()>0 && tactilMatch==100){
-						matchedSchemas[1].append(schema);
-												break;
-					}
 
 				}
 

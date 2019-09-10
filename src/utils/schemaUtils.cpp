@@ -16,10 +16,11 @@ float match(Json::Value context1, Json::Value context2){
 		if(context1[memberName].empty()) return 0;
 					if (context2[memberName] == "*"
 							|| context1[memberName] == context2[memberName]) {
-						match += 100.0 / membersSize;
+						//match += 100.0 / membersSize;
+						match+=1.0;
 					}
 				}
-	return match;
+	return (match/membersSize)*100;
 
 }
 

@@ -227,24 +227,28 @@ Json::Value matchedSchemas;
 		yDebug(" DevER: Got %s \n",matchedSchemas.toStyledString().c_str());
 
 		//yDebug(" DevER: Got: " << '\n' << matchedSchemas.toStyledString() << '\n';
-		string ids = "";
-		if(matchedSchemas.size()==0){
+		string ids = matchMode+"=";
+		if(matchMode=="exact"){
+			ids+="[";
 		for(Json::Value schema: matchedSchemas){
 			//yDebug("Quesque : %s",schema.toStyledString().c_str());
 			ids+=" "+schema["id"].asString();
 		}
-		}else if(matchedSchemas.size()==2){
+		ids+="]";
+		}else if(matchMode=="partial"){
+			ids=" visual:[";
 			for(Json::Value schema: matchedSchemas[0]){
 						//yDebug("Quesque : %s",schema.toStyledString().c_str());
 						ids+=" "+schema["id"].asString();
 					}
-			ids+=" - ";
+			ids+="] tactil:[";
 			for(Json::Value schema: matchedSchemas[1]){
 									//yDebug("Quesque : %s",schema.toStyledString().c_str());
 									ids+=" "+schema["id"].asString();
 								}
+			ids+="]";
 		}
-		yDebug(" DevER: matched schemas [%s]",ids.c_str());
+		yDebug(" DevER: matched schemas %s",ids.c_str());
 		jsonReader.parse("[]", selectedSchemas);
 		Json::Value expectations;
 		jsonReader.parse("[]", expectations);
