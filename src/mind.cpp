@@ -52,8 +52,8 @@ int main(int argc, char *argv[]) {
 
 	//connect module ports
 	string from,to;
-
-	/* from = "/" + robotName + "/perception/rawImage:i";
+/*
+	 from = "/" + robotName + "/perception/rawImage:i";
 	 to = "/icubSim/cam/left";
 
 	if (Network::connect(to, from)) {

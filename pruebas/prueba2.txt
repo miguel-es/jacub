@@ -1,31 +1,31 @@
 "[\{\"distress\":1, \"color\":\"c1\", \"size\": \"s1\", \"moving\": \"true\", \"sector\":4\},\{\}]"
 
-exacto:1,11,18 parcial: visual: 8 9 10 12 13 14 15 16 17 19 tactil: 
+exacto:1,11,18 parcial: visual: [8 9 10 12 13 14 15 16 17 19] tactil:[] 
 
 "[\{\},\{\"contentment\":1,\"texture\":\"t1\",\"hand\":\"open\"\}]"
 
-exacto: 2,4 parcial: visual: tactil:  6 20 21 22 23 24
+exacto: 2,4 parcial: visual:[] tactil: [6 20 21 22 23 24]
 
 "[\{\"distress\":1,\"color\":\"c1\",\"size\":\"s1\",\"moving\":\"true\",\"sector\":2\},\{\}]"
 
-exacto:1,9,17 parcial: [visual: 8 10 11 12 13 14 15 16 18 19 tactil: ]
+exacto:1,9,17 parcial: visual:[8 10 11 12 13 14 15 16 18 19] tactil:[]
 
 "[\{\"contentment\":2,\"color\":\"c1\",\"size\":\"s1\",\"moving\":\"true\",\"sector\":5\},\{\}]"
-exacto: 5,7 parcial: [visual: 3 22 23 tactil: ]
+exacto: 5,7 parcial: visual:[3 22 23] tactil:[]
 
 "[\{\},\{\"contentment\":2,\"hand\":\"closed\",\"texture\":\"t1\"\}]"
 
-exacto: 6 parcial: [visual: tactil:  4]
+exacto: 6 parcial: visual:[] tactil:[4]
 
 "[\{\"distress\":1,\"color\":\"c1\",\"size\":\"s1\",\"moving\":\"true\",\"sector\":9\},\{\"contentment\":1,\"texture\":\"t1\",\"hand\":\"open\"\}]"
 exacto: 20 parcial: visual:[ 1 15] tactil:[ 2 4 21 22 23 24]
 
 "[\{\"contentment\":2,\"color\":\"c1\",\"size\":\"s1\",\"moving\":\"true\",\"sector\":\"4\"\},\{\"contentment\":1,\"texture\":\"t1\",\"hand\":\"open\"\}]"
 
-exacto: 22,23 parcial:visual:[ 5 7] tactil:[ 2 4 20 21 24] 
+exacto: 22,23 parcial:visual:[5 7] tactil:[2 4 20 21 24] 
 
 "[\{\"contentment\":1,\"color\":\"c1\",\"size\":\"s1\",\"moving\":\"true\",\"sector\":\"6\"\},\{\"contentment\":1,\"texture\":\"t1\",\"hand\":\"open\"\}]"
 
 
-exacto:24 parcial: visual:[ 3] tactil:[ 2 4 20 21 22 23]
+exacto:24 parcial: visual:[3] tactil:[2 4 20 21 22 23]
 
