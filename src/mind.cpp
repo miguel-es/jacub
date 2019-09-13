@@ -52,7 +52,7 @@ int main(int argc, char *argv[]) {
 
 	//connect module ports
 	string from,to;
-/*
+
 	 from = "/" + robotName + "/perception/rawImage:i";
 	 to = "/icubSim/cam/left";
 
@@ -64,7 +64,7 @@ int main(int argc, char *argv[]) {
 	{
 		yWarning(" Failed establishing connection from %s to %s. Is the iCubSim left cam running?\n",to.c_str(),from.c_str());
 
-	}*/
+	}
 
 	from = "/icubSim/skin/left_hand_comp";
 		 to = "/"+robotName+"/perception/leftHandSkin:i";

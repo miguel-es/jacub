@@ -1,5 +1,1 @@
-"[\{\"distress\":1,\"color\":\"c1\",\"size\":\"s1\",\"moving\":\"true\",\"sector\":9\},\{\"contentment\":1,\"texture\":\"t1\",\"hand\":\"open\"\}]"
-
-"[\{\"contentment\":2,\"color\":\"c1\",\"size\":\"s1\",\"moving\":\"true\",\"sector\":\"4\"\},\{\"contentment\":1,\"texture\":\"t1\",\"hand\":\"open\"\}]"
-
-"[\{\"contentment\":1,\"color\":\"c1\",\"size\":\"s1\",\"moving\":\"true\",\"sector\":\"6\"\},\{\"contentment\":1,\"texture\":\"t1\",\"hand\":\"*\"\}]"
+[[\{"color":"c1","size":"s1","sector":4\,"moving":"true"}],{}]

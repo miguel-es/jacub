@@ -215,11 +215,11 @@ public:
 		cycles = 0;
 
 		xhorigin = -0.35;
-		yhorigin = -0.2;
+		yhorigin = 0.0;//-0.2;
 		zhorigin = -0.005;//-0.19//origin, zhorigin;
 		//yDebug("returned\n");
 		setInitialLeftHandPos();
-		//setInitialHeadPos();
+		setInitialHeadPos();
 
 		return true;
 	}
@@ -387,7 +387,7 @@ yDebug(" Locomotion: hand state %s",leftHandState.c_str());
 
 		 output = doneOutputPort.prepare();
 		output.addString(done ? "true" : "false");
-		doneOutputPort.write();
+		//doneOutputPort.write();
 		//doneOutputPort.wr
 		return true;
 	}
@@ -399,6 +399,7 @@ private:
 
 		//moveHead(-60, 0, -15);
 		moveHead(-60, 0, 25);
+		//moveHead(-60, 0, -15);
 		//moveHead(int angle0, int angle1, int angle2) {
 	}
 

@@ -201,7 +201,7 @@ cycles = 0;
 		if(allowPartialMatch &&  r ==0){
 			matchMode = "partial";
 		}
-		matchMode = "partial";//TODO:delete
+		matchMode = "exact";//TODO:delete
 
 Bottle outputM;
 		outputM.addString(matchMode);
@@ -396,11 +396,18 @@ mentalActions.append(action);
 					emotionalResponse+=1;
 					}
 				}
+				int s = rand()%2;
+				yDebug(" DevER: rand %d",s);
+			yDebug(" DevER: expectedEmotionalResponse of schema %s is %d",matches[i]["id"].asString().c_str(),emotionalResponse);
 				//yDebug("tik6 %s - emotionalResponse %d",leaf.toStyledString().c_str(),emotionalResponse);
-			if(emotionalResponse> maxEmotionalResponse){//  leaf.isMember("fulfilled") && matches[i]["fulfilled"].size()>maxProbability&&height>maxH){
+			if(emotionalResponse> maxEmotionalResponse || height>maxH || (matches[i].isMember("expected") && !bestMatch.isMember("expected"))){//  leaf.isMember("fulfilled") && matches[i]["fulfilled"].size()>maxProbability&&height>maxH){
 				bestMatch = matches[i];
 				maxH = height;
 				maxEmotionalResponse = emotionalResponse;
+				continue;
+			}else if(emotionalResponse==maxEmotionalResponse && height==maxH && s==1 && (matches[i].isMember("expected") && bestMatch.isMember("expected"))){
+				yDebug(" DevER: random selected %s ",matches[i]["id"].asString().c_str());
+				bestMatch = matches[i];
 				continue;
 			}
 			}

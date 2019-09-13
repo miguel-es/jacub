@@ -26,6 +26,8 @@ exacto: 22,23 parcial:visual:[5 7] tactil:[2 4 20 21 24]
 
 "[\{\"contentment\":1,\"color\":\"c1\",\"size\":\"s1\",\"moving\":\"true\",\"sector\":\"6\"\},\{\"contentment\":1,\"texture\":\"t1\",\"hand\":\"open\"\}]"
 
-
 exacto:24 parcial: visual:[3] tactil:[2 4 20 21 22 23]
 
+"[\{\"color\":\"c1\", \"size\": \"s1\", \"moving\": \"true\", \"sector\":4\},\{\}]"
+
+"[\{\"contentment\":1, \"color\":\"c1\", \"size\": \"s1\", \"moving\": \"true\", \"sector\":4\},\{\}]"

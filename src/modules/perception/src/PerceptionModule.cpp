@@ -172,6 +172,8 @@ public:
 
 				// Filter by Area.
 				params.filterByArea = true;
+				params.filterByConvexity = false;
+				params.minDistBetweenBlobs = 100.0;
 				/*printf("area between %d - %d\n", area["from"].asInt(),
 				 area["to"].asInt());*/
 				params.minArea = area["from"].asInt();

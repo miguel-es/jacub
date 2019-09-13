@@ -42,7 +42,7 @@ private:
 	//bool engagedObjIsPerceived;
 	Json::Value visualEngagement,tactilEngagement;
 	Json::Value colors;
-	bool lostObject;
+	bool lostAttendedObject;
 	int cycles;
 
 public:
@@ -56,7 +56,7 @@ public:
 		emotionalAttatchmentWeight=0.0;
 		changeAttentionV = false;
 		changeAttentionT = false;
-		lostObject = true;
+		lostAttendedObject = true;
 		cycles = 0;
 	}
 
@@ -139,7 +139,7 @@ public:
 		//yDebug(" Attention: read cleaned%s\n",input.toString().c_str());
 		jsonReader.parse(input_string.c_str(), sensorialContext);
 		yDebug(" Attention: visually engaged to: %s",visualEngagement.toStyledString().c_str());
-		lostObject = true;
+		lostAttendedObject = visualEngagement.size()!=0;
 		if (sensorialContext[0].size() != 0) {
 
 			yDebug(" Attention: Got sensorial context: %s",sensorialContext.toStyledString().c_str());
@@ -151,7 +151,7 @@ public:
 			for (Json::Value obj : sensorialContext[0]) {
 				if(visualEngagement.size()!=0 && utils::areAboutSameObject(obj,visualEngagement)){
 					yDebug("found engaged to");
-					lostObject = false;
+					lostAttendedObject = false;
 				}
 				float brightness = getColorBrightness(obj["color"].asString());
 				//yDebug(" Attention: Brightness for %s = %f",obj["color"].asString().c_str(),brightness);
@@ -178,6 +178,12 @@ public:
 				//yDebug(" Attention: Secondbest=\n"<<secondBest.toStyledString();
 			}
 
+			if(lostAttendedObject){
+				yDebug(" Attention: attended vContext = visualEngagement");
+				attendedContext[0] = visualEngagement;
+				//continue;
+			}
+
 			if(changeAttentionV){
 				yDebug(" Attention: Changing attention to second best\n");
 				attendedContext[0] = secondBest;
@@ -189,15 +195,15 @@ public:
 			//attendedContext[0]["engagedTo"] = visualEngagement;
 		}
 
-		yDebug(" Attention: lost object = %d",lostObject);
+		yDebug(" Attention: lost object = %d",lostAttendedObject);
 		attendedContext[1] = sensorialContext[1];
 		yDebug(" Attention: Attended context: %s \n",attendedContext.toStyledString().c_str());
 
 		Bottle output;// = attendedContextOutputPort.prepare();
 		Json::Value attendedOutput = attendedContext;
 
-		if(attendedOutput[0].size()!=0 && visualEngagement.size()!=0 && lostObject){
-			attendedOutput[0]["lostObject"] = true;
+		if(attendedOutput[0].size()!=0 && visualEngagement.size()!=0 && lostAttendedObject){
+			attendedOutput[0]["lostAttendedObject"] = true;
 		}
 
 		output.addString(jsonWriter.write(attendedOutput));
@@ -215,7 +221,7 @@ public:
 		Json::Value commandedActions;
 		jsonReader.parse(input_string.c_str(), commandedActions);
 		yDebug(" Attention: got mental actions %s\n",commandedActions.toStyledString().c_str());
-		if(!lostObject){
+		if(!lostAttendedObject){
 		visualEngagement = attendedContext[0];
 		}
 		for (Json::Value& action : commandedActions) {

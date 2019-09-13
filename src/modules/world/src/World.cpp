@@ -32,6 +32,7 @@
 	 double x;
 	 double y;
 	 double z;
+	 int delta;
 
      // the event callback attached to the "motion-ongoing"
 
@@ -45,6 +46,7 @@
     	  x= 0.0f;
     	  y = 0.55387995f;
     	  z = 0.60f;
+    	  delta = 1;
 
        inited = false;
 	   if(!world_port.open("/jacub/world")){
@@ -73,7 +75,7 @@
        		world_port.write(cmd,response);
        		yDebug(" World: response: %s",response.toString().c_str());
 
-       		addObj("box",0.06f,0.06f,0.06f,0.0f,0.55387995f,0.37f,1,0,0);
+       		//addObj("box",0.06f,0.06f,0.06f,0.0f,0.55387995f,0.37f,1,0,0);
        	//	addObj("box",0.06f,0.06f,0.06f,0.2f,0.55387995f,0.35f,1,0,0);
        		//addObj("box",0.06f,0.06f,0.06f,0.09f,0.55387995f,0.35f,1,0,0);
        		//addObj("box",0.06f,0.06f,0.06f,0.00f,0.55387995f,0.35f,1,1,0);
@@ -93,25 +95,28 @@
      virtual void run()
      {
 
-    	if(step==15){
+    	/*if(step==15){
     		yDebug(" World: Adding green box");
     		mvObj("box",0.2f,0.55387995f,0.35f);
     		step++;
     		//addObj("box",0.06f,0.06f,0.06f,0.2f,0.55387995f,0.35f,0,1,0);
-    	}
+    	}*/
     	 Bottle input;
     	 continueInputPort.read(input);
-    	 if(step<15 && x<0.325000){
+    	 //if(delta==1 && x<0.325000){
     	// 0.0900000035762787
     		// if(x>0.325000) return;
-         yDebug(" step left=%f ",x);
-       z+=0.01;
-         yDebug("z'=%f\n",z);
+       /*  yDebug(" step left=%f ",x);
+       x=x+(delta*0.03);
+         yDebug("x'=%f\n",x);
          mvObj("box",x,y,z);
          step++;
+*/
 
-         //if(x>0.325000) x = 0.09;
-    	 }/*else if(step<600 && x>0){
+    	 //}
+       /*  if(x>0.325000) delta = -1;
+         if(x<-0.325000) delta = 1;*/
+    	 /*else if(step<600 && x>0){
              yDebug("step right=%f ",x);
              x-=0.005;
              yDebug("X'=%f\n",x);
