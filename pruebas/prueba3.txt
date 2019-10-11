@@ -1,0 +1,11 @@
+"[\{\"contentment\":1, \"color\":\"c1\", \"size\": \"s1\", \"moving\": \"true\",\"sector\":4\},\{\}]"
+
+"[\{\"contentment\":2, \"color\":\"c1\", \"size\": \"s1\", \"moving\": \"true\",\"sector\":5\},\{\}]"
+
+"[\{\"contentment\":2, \"color\":\"c2\", \"size\": \"s1\", \"moving\": \"true\",\"sector\":1\},\{\}]"
+
+"[\{\"contentment\":1,\"color\":\"c1\",\"size\":\"s1\", \"moving\": \"true\",\"sector\":9\},\{\"contentment\":1,\"hand\":\"open\",\"texture\":\"t1\"\}]"
+
+"[\{\"contentment\":2,\"color\":\"c1\",\"size\":\"s1\", \"moving\": \"true\",\"sector\":\"4\"\},\{\"contentment\":1,\"hand\":\"open\",\"texture\":\"t1\"\}]"
+
+"[\{\"contentment\":1,\"color\":\"c1\",\"size\":\"s1\", \"moving\": \"true\",\"sector\":\"6\"\},\{\"contentment\":1,\"hand\":\"open\",\"texture\":\"t1\"\}]"

@@ -1,0 +1,67 @@
+<application>
+<name>Calibrated Cameras Bayer 320 x 240</name>
+<dependencies>
+</dependencies>
+   <module>
+      <name>yarpdev</name>
+      <parameters> --from camera/ServerGrabberDualDragonBayer.ini --split true</parameters>
+	  <node>pc104</node>
+   </module>
+    <module>
+        <name>camCalib</name>
+        <parameters>--context cameraCalibration --from icubEyes.ini --group CAMERA_CALIBRATION_LEFT --name /icub/camcalib/left</parameters>  
+        <node>icubsrv</node>
+    </module> 
+    <module>
+        <name>camCalib</name>
+        <parameters>--context cameraCalibration --from icubEyes.ini --group CAMERA_CALIBRATION_RIGHT --name /icub/camcalib/right</parameters> 
+        <node>icubsrv</node>
+    </module> 
+   <module>
+      <name>yarpview</name>
+      <parameters>--name /icub/view/left --x 0 --y 0 --p 50</parameters>
+      <node>icubsrv</node>
+   </module>
+   <module>
+      <name>yarpview</name>
+      <parameters>--name /icub/view/right --x 320 --y 0 --p 50</parameters>
+      <node>icubsrv</node>
+   </module>
+   <module>
+      <name>frameGrabberGui2</name>
+	  <parameters>--local /icub/fggui/left --remote /icub/cam/left --x 0 --y 350 --width 350 --height 500</parameters>
+      <node>icubsrv</node>
+	  <dependencies>
+         <port timeout="10">/icub/cam/left</port>
+      </dependencies>	  
+   </module>
+   <module>
+      <name>frameGrabberGui2</name>
+	  <parameters>--local /icub/fggui/right --remote /icub/cam/right --x 320 --y 350 --width 350 --height 500</parameters>
+      <node>icubsrv</node>
+	  <dependencies>
+         <port timeout="10">/icub/cam/right</port>
+      </dependencies>	  
+   </module>
+<connection>
+  <output>/icub/cam/left</output>
+  <input>/icub/camcalib/left/in</input>
+  <protocol>mcast+recv.bayer+method.nearest+size.half</protocol>
+</connection>
+<connection>
+  <output>/icub/cam/right</output>
+  <input>/icub/camcalib/right/in</input>
+  <protocol>mcast+recv.bayer+method.nearest+size.half</protocol>
+</connection>
+<connection>
+  <output>/icub/camcalib/left/out</output>
+  <input>/icub/view/left</input>
+  <protocol>mcast</protocol>
+</connection>
+<connection>
+  <output>/icub/camcalib/right/out</output>
+  <input>/icub/view/right</input>
+  <protocol>mcast</protocol>
+</connection>
+</application>
+

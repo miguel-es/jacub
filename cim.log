@@ -1,0 +1,613 @@
+[DEBUG]
+ODE configuration: ODE ODE_EXT_trimesh ODE_EXT_opcode ODE_OPC_new_collider ODE_EXT_threading ODE_double_precision
+
+[DEBUG]SimConfig::configure
+[INFO]default module name:  /icubSim 
+[INFO]default verbosity level:  0 
+[INFO]The iCub simulator will start with the following configuration: 
+
+ Elevation :  off 
+ startHomePos :  on 
+ Legs :  off 
+ Torso :  on 
+ Left arm :  on 
+ Left hand :  on 
+ Right arm :  off 
+ Right hand :  off 
+ Head :  on 
+ Fixed Hip :  on 
+ 
+ Self-collisions :  off 
+ Collisions for covers :  off 
+ 
+ Pressure sensors:  on 
+ Whole body skin emulation:  off 
+ Cameras : on 
+ Objects :  on 
+ Head Cover :  on 
+ Legs Cover :  off 
+ Left arm Covers :  on 
+ Right arm Covers :  on 
+ Torso Cover :  on 
+ Screen :  off 
+ 
+ 
+[INFO]Creating 3D Model of the icub.......
+ 
+[DEBUG]Loading mesh data from '/home/miguel/.config/yarp/contexts/simConfig/models/leftPalm.x' 
+[DEBUG]...
+[DEBUG]...
+[DEBUG]... OK!
+[DEBUG]Loading texture coordinate from '/home/miguel/.config/yarp/contexts/simConfig/models/leftPalm.x' 
+[DEBUG]...
+[DEBUG]...
+[DEBUG]... OK!
+[DEBUG]Loading normals from '/home/miguel/.config/yarp/contexts/simConfig/models/leftPalm.x' 
+[DEBUG]...
+[DEBUG]...
+[DEBUG]... OK!
+[DEBUG]Loading mesh data from '/home/miguel/.config/yarp/contexts/simConfig/models/mod2.x' 
+[DEBUG]Loading texture coordinate from '/home/miguel/.config/yarp/contexts/simConfig/models/mod2.x' 
+[DEBUG]... OK!
+[DEBUG]Loading normals from '/home/miguel/.config/yarp/contexts/simConfig/models/mod2.x' 
+[DEBUG]... OK!
+[DEBUG]Loading mesh data from '/home/miguel/.config/yarp/contexts/simConfig/models/mod2.x' 
+[DEBUG]Loading texture coordinate from '/home/miguel/.config/yarp/contexts/simConfig/models/mod2.x' 
+[DEBUG]... OK!
+[DEBUG]Loading normals from '/home/miguel/.config/yarp/contexts/simConfig/models/mod2.x' 
+[DEBUG]... OK!
+[DEBUG]Loading mesh data from '/home/miguel/.config/yarp/contexts/simConfig/models/rightPalm.x' 
+[DEBUG]...
+[DEBUG]...
+[DEBUG]... OK!
+[DEBUG]Loading texture coordinate from '/home/miguel/.config/yarp/contexts/simConfig/models/rightPalm.x' 
+[DEBUG]...
+[DEBUG]...
+[DEBUG]... OK!
+[DEBUG]Loading normals from '/home/miguel/.config/yarp/contexts/simConfig/models/rightPalm.x' 
+[DEBUG]...
+[DEBUG]...
+[DEBUG]... OK!
+[DEBUG]Loading mesh data from '/home/miguel/.config/yarp/contexts/simConfig/models/torso.x' 
+[DEBUG]...
+[DEBUG]...
+[DEBUG]... OK!
+[DEBUG]Loading texture coordinate from '/home/miguel/.config/yarp/contexts/simConfig/models/torso.x' 
+[DEBUG]...
+[DEBUG]...
+[DEBUG]... OK!
+[DEBUG]Loading normals from '/home/miguel/.config/yarp/contexts/simConfig/models/torso.x' 
+[DEBUG]...
+[DEBUG]...
+[DEBUG]... OK!
+[DEBUG]Loading mesh data from '/home/miguel/.config/yarp/contexts/simConfig/models/leftUpperArm.x' 
+[DEBUG]...
+[DEBUG]...
+[DEBUG]... OK!
+[DEBUG]Loading texture coordinate from '/home/miguel/.config/yarp/contexts/simConfig/models/leftUpperArm.x' 
+[DEBUG]...
+[DEBUG]...
+[DEBUG]... OK!
+[DEBUG]Loading normals from '/home/miguel/.config/yarp/contexts/simConfig/models/leftUpperArm.x' 
+[DEBUG]...
+[DEBUG]...
+[DEBUG]... OK!
+[DEBUG]Loading mesh data from '/home/miguel/.config/yarp/contexts/simConfig/models/rightUpperArm.x' 
+[DEBUG]...
+[DEBUG]...
+[DEBUG]... OK!
+[DEBUG]Loading texture coordinate from '/home/miguel/.config/yarp/contexts/simConfig/models/rightUpperArm.x' 
+[DEBUG]...
+[DEBUG]...
+[DEBUG]... OK!
+[DEBUG]Loading normals from '/home/miguel/.config/yarp/contexts/simConfig/models/rightUpperArm.x' 
+[DEBUG]...
+[DEBUG]...
+[DEBUG]... OK!
+[DEBUG]Loading mesh data from '/home/miguel/.config/yarp/contexts/simConfig/models/hip.x' 
+[DEBUG]...
+[DEBUG]...
+[DEBUG]... OK!
+[DEBUG]Loading texture coordinate from '/home/miguel/.config/yarp/contexts/simConfig/models/hip.x' 
+[DEBUG]...
+[DEBUG]...
+[DEBUG]... OK!
+[DEBUG]Loading normals from '/home/miguel/.config/yarp/contexts/simConfig/models/hip.x' 
+[DEBUG]...
+[DEBUG]...
+[DEBUG]... OK!
+[DEBUG]Motor head hinge 0 1
+[DEBUG]Motor head hinge 1 -1
+[DEBUG]Motor head hinge 2 -1
+[DEBUG]Motor head hinge 3 1
+[DEBUG]Motor head hinge 4 -1
+[DEBUG]Motor head hinge 5 1
+[DEBUG]Vergence motor remap 1
+[DEBUG]Vergence motor remap -1
+[DEBUG]Motor leftarm hinge 0 -1
+[DEBUG]Motor leftarm hinge 1 -1
+[DEBUG]Motor leftarm hinge 2 1
+[DEBUG]Motor leftarm hinge 3 1
+[DEBUG]Motor leftarm hinge 4 1
+[DEBUG]Motor leftarm universalAngle1 5 1
+[DEBUG]Motor leftarm universalAngle2 5 -1
+[DEBUG]Motor leftarm hinge 6 1
+[DEBUG]Motor leftarm hinge 8 -1
+[DEBUG]Motor leftarm universalAngle1 22 1
+[DEBUG]Motor leftarm universalAngle2 22 -1
+[DEBUG]Motor leftarm hinge 23 1
+[DEBUG]Motor leftarm hinge 24 1
+[DEBUG]Motor leftarm hinge 10 1
+[DEBUG]Motor leftarm hinge 14 1
+[DEBUG]Motor leftarm hinge 18 1
+[DEBUG]Motor leftarm hinge 11 1
+[DEBUG]Motor leftarm hinge 15 1
+[DEBUG]Motor leftarm hinge 19 1
+[DEBUG]Motor leftarm hinge 12 1
+[DEBUG]Motor leftarm hinge 16 1
+[DEBUG]Motor leftarm hinge 20 1
+[DEBUG]Motor torso hinge 2 1
+[DEBUG]Motor torso hinge 1 1
+[DEBUG]Motor torso hinge 0 -1
+[INFO]External robotDescriptionServer was not found. Opening a new RobotDescriptionServer. 
+[INFO]created device <robotDescriptionServer>. See C++ class RobotDescriptionServer for documentation.
+[INFO]created device <robotDescriptionClient>. See C++ class RobotDescriptionClient for documentation.
+[DEBUG]Creating interface for body part left_arm
+[DEBUG]ControlBoardWrapper2: 'period' parameter missing, using default thread period = 20ms 
+[DEBUG]opening controlBoardWrapper2 subdevice
+[INFO]created device <simulationcontrol>. See C++ class iCubSimulationControl for documentation.
+[DEBUG]joints parameter is 16
+[INFO]/icubSim/left_arm : no ROS initialization required 
+[INFO]/icubSim/left_arm  initting YARP initialization 
+[INFO]created wrapper <controlboardwrapper2>. See C++ class yarp::dev::ControlBoardWrapper2 for documentation.
+[DEBUG]Creating interface for body part head
+[DEBUG]ControlBoardWrapper2: 'period' parameter missing, using default thread period = 20ms 
+[DEBUG]opening controlBoardWrapper2 subdevice
+[INFO]created device <simulationcontrol>. See C++ class iCubSimulationControl for documentation.
+[DEBUG]joints parameter is 6
+[INFO]/icubSim/head : no ROS initialization required 
+[INFO]/icubSim/head  initting YARP initialization 
+[INFO]created wrapper <controlboardwrapper2>. See C++ class yarp::dev::ControlBoardWrapper2 for documentation.
+[DEBUG]Creating interface for body part torso
+[DEBUG]ControlBoardWrapper2: 'period' parameter missing, using default thread period = 20ms 
+[DEBUG]opening controlBoardWrapper2 subdevice
+[INFO]created device <simulationcontrol>. See C++ class iCubSimulationControl for documentation.
+[DEBUG]joints parameter is 3
+[INFO]/icubSim/torso : no ROS initialization required 
+[INFO]/icubSim/torso  initting YARP initialization 
+[INFO]created wrapper <controlboardwrapper2>. See C++ class yarp::dev::ControlBoardWrapper2 for documentation.
+[INFO]Adding video texture face
+[INFO]Adding video texture screen
+[INFO]Adding video texture sky
+[DEBUG]***** OdeSdlSimulation::simLoop 
+[DEBUG]Loading texture   '  '  
+[INFO]Commands available:
+[INFO]	left
+[INFO]	right
+[INFO]	wide
+[INFO]	world
+[INFO]Commands available:
+[INFO]	left
+[INFO]	right
+[INFO]	wide
+[INFO]	world
+[DEBUG]ODE world
+[DEBUG]Operation:
+[DEBUG]  cmd?: get
+[DEBUG]  kind: 
+[DEBUG]mdir
+[DEBUG]
+[DEBUG]  name: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  dynamic: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  location: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  size: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  color: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  rotation: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  radius: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  length: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  active: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  index: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  collide: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  parameter: 
+[DEBUG]True
+[DEBUG]
+[DEBUG]  rightHanded?: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  modelName: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  modelTexture: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]Result:
+[DEBUG]  success: true
+[DEBUG]  msg: 
+[DEBUG]  location: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  color: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  path: 
+[DEBUG]/home/miguel/.config/yarp/contexts/simConfig/models
+[DEBUG]
+[DEBUG]ODE world
+[DEBUG]Operation:
+[DEBUG]  cmd?: mk
+[DEBUG]  kind: 
+[DEBUG]model
+[DEBUG]
+[DEBUG]  name: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  dynamic: 
+[DEBUG]False
+[DEBUG]
+[DEBUG]  location: 
+[DEBUG]0 0 2
+[DEBUG]
+[DEBUG]  size: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  color: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  rotation: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  radius: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  length: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  active: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  index: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  collide: 
+[DEBUG]True
+[DEBUG]
+[DEBUG]  parameter: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  rightHanded?: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  modelName: 
+[DEBUG]mesa2.x
+[DEBUG]
+[DEBUG]  modelTexture: 
+[DEBUG]blueTexture3.bmp
+[DEBUG]
+[DEBUG]Operation:
+[DEBUG]  cmd?: mk
+[DEBUG]  kind: 
+[DEBUG]model
+[DEBUG]
+[DEBUG]  name: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  dynamic: 
+[DEBUG]False
+[DEBUG]
+[DEBUG]  location: 
+[DEBUG]0 0 2
+[DEBUG]
+[DEBUG]  size: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  color: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  rotation: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  radius: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  length: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  active: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  index: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  collide: 
+[DEBUG]True
+[DEBUG]
+[DEBUG]  parameter: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  rightHanded?: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  modelName: 
+[DEBUG]mesa2.x
+[DEBUG]
+[DEBUG]  modelTexture: 
+[DEBUG]blueTexture3.bmp
+[DEBUG]
+[DEBUG]Making a model
+[DEBUG]Result:
+[DEBUG]  success: false
+[DEBUG]  msg: Check spelling and location of model file
+[DEBUG]  location: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  color: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  path: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]ODE world
+[DEBUG]Operation:
+[DEBUG]  cmd?: mk
+[DEBUG]  kind: 
+[DEBUG]model
+[DEBUG]
+[DEBUG]  name: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  dynamic: 
+[DEBUG]False
+[DEBUG]
+[DEBUG]  location: 
+[DEBUG]0 0 2
+[DEBUG]
+[DEBUG]  size: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  color: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  rotation: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  radius: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  length: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  active: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  index: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  collide: 
+[DEBUG]True
+[DEBUG]
+[DEBUG]  parameter: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  rightHanded?: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  modelName: 
+[DEBUG]table.x
+[DEBUG]
+[DEBUG]  modelTexture: 
+[DEBUG]blueTexture3.bmp
+[DEBUG]
+[DEBUG]Operation:
+[DEBUG]  cmd?: mk
+[DEBUG]  kind: 
+[DEBUG]model
+[DEBUG]
+[DEBUG]  name: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  dynamic: 
+[DEBUG]False
+[DEBUG]
+[DEBUG]  location: 
+[DEBUG]0 0 2
+[DEBUG]
+[DEBUG]  size: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  color: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  rotation: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  radius: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  length: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  active: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  index: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  collide: 
+[DEBUG]True
+[DEBUG]
+[DEBUG]  parameter: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  rightHanded?: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  modelName: 
+[DEBUG]table.x
+[DEBUG]
+[DEBUG]  modelTexture: 
+[DEBUG]blueTexture3.bmp
+[DEBUG]
+[DEBUG]Making a model
+[DEBUG]Loading mesh data from '/home/miguel/.config/yarp/contexts/simConfig/models/table.x' 
+[DEBUG]...
+[DEBUG]...
+[DEBUG]Result:
+[DEBUG]  success: false
+[DEBUG]  msg: Check spelling and location of model file
+[DEBUG]  location: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  color: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  path: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]ODE world
+[DEBUG]Operation:
+[DEBUG]  cmd?: mk
+[DEBUG]  kind: 
+[DEBUG]model
+[DEBUG]
+[DEBUG]  name: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  dynamic: 
+[DEBUG]False
+[DEBUG]
+[DEBUG]  location: 
+[DEBUG]0 0 2
+[DEBUG]
+[DEBUG]  size: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  color: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  rotation: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  radius: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  length: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  active: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  index: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  collide: 
+[DEBUG]True
+[DEBUG]
+[DEBUG]  parameter: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  rightHanded?: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  modelName: 
+[DEBUG]table.x
+[DEBUG]
+[DEBUG]  modelTexture: 
+[DEBUG]blueTexture3.bmp
+[DEBUG]
+[DEBUG]Operation:
+[DEBUG]  cmd?: mk
+[DEBUG]  kind: 
+[DEBUG]model
+[DEBUG]
+[DEBUG]  name: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  dynamic: 
+[DEBUG]False
+[DEBUG]
+[DEBUG]  location: 
+[DEBUG]0 0 2
+[DEBUG]
+[DEBUG]  size: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  color: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  rotation: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  radius: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  length: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  active: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  index: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  collide: 
+[DEBUG]True
+[DEBUG]
+[DEBUG]  parameter: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  rightHanded?: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  modelName: 
+[DEBUG]table.x
+[DEBUG]
+[DEBUG]  modelTexture: 
+[DEBUG]blueTexture3.bmp
+[DEBUG]
+[DEBUG]Making a model
+[DEBUG]Loading mesh data from '/home/miguel/.config/yarp/contexts/simConfig/models/table.x' 
+[DEBUG]...
+[DEBUG]...
+[DEBUG]Result:
+[DEBUG]  success: false
+[DEBUG]  msg: Check spelling and location of model file
+[DEBUG]  location: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  color: 
+[DEBUG]not set
+[DEBUG]
+[DEBUG]  path: 
+[DEBUG]not set
+[DEBUG]
+[INFO]Stopping SDL and ODE threads...
+[INFO]
+CAUGHT Ctrl-c 
+[INFO]
+CAUGHT Ctrl-c 
+[INFO]
+CAUGHT Ctrl-c 
+[INFO]
+CAUGHT Ctrl-c 

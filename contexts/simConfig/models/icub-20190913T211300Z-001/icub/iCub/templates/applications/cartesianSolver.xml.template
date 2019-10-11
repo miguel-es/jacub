@@ -1,0 +1,63 @@
+<application>
+<name>Cartesian Solvers Launcher</name>
+
+        <dependencies>
+        </dependencies>
+
+        <module>
+                <name>yarplogger</name>
+                <parameters>--start --no_stop</parameters>
+                <node>console</node>
+        </module>
+
+        <module>
+                <name>yarprobotinterface</name>
+                <node>pc104</node>
+        </module>
+
+        <module>
+                <name>iKinCartesianSolver</name>
+                <parameters>--part right_arm</parameters>
+                <node>pwrNode1</node>
+                <dependencies>
+                    <port timeout="60.0" request="is_ready" reply="[ok]">/icub/yarprobotinterface</port>
+                </dependencies>
+        </module>
+
+        <module>
+                <name>iKinCartesianSolver</name>
+                <parameters>--part left_arm</parameters>
+                <node>pwrNode2</node>
+                <dependencies>
+                    <port timeout="60.0" request="is_ready" reply="[ok]">/icub/yarprobotinterface</port>
+                </dependencies>
+        </module>
+
+        <module>
+                <name>iKinCartesianSolver</name>
+                <parameters>--part right_leg</parameters>
+                <node>pwrNode3</node>
+                <dependencies>
+                    <port timeout="60.0" request="is_ready" reply="[ok]">/icub/yarprobotinterface</port>
+                </dependencies>
+        </module>
+
+        <module>
+                <name>iKinCartesianSolver</name>
+                <parameters>--part left_leg</parameters>
+                <node>pwrNode4</node>
+                <dependencies>
+                    <port timeout="60.0" request="is_ready" reply="[ok]">/icub/yarprobotinterface</port>
+                </dependencies>
+        </module>
+
+        <module>
+                <name>iKinGazeCtrl</name>
+                <parameters></parameters>
+                <node>pwrNode5</node>
+                <dependencies>
+                    <port timeout="60.0" request="is_ready" reply="[ok]">/icub/yarprobotinterface</port>
+                </dependencies>
+        </module>
+
+</application>
