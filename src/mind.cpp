@@ -56,7 +56,7 @@ int main(int argc, char *argv[]) {
 	 from = "/" + robotName + "/perception/rawImage:i";
 	 to = "/icubSim/cam/left";
 
-	if (Network::connect(to, from)) {
+	/*if (Network::connect(to, from)) {
 		yInfo(
 		"Established  port connection from %s to %s",to.c_str(),from.c_str());
 	}
@@ -64,7 +64,7 @@ int main(int argc, char *argv[]) {
 	{
 		yWarning(" Failed establishing connection from %s to %s. Is the iCubSim left cam running?\n",to.c_str(),from.c_str());
 
-	}
+	}*/
 
 	from = "/icubSim/skin/left_hand_comp";
 		 to = "/"+robotName+"/perception/leftHandSkin:i";

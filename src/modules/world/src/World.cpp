@@ -75,10 +75,14 @@
        		world_port.write(cmd,response);
        		yDebug(" World: response: %s",response.toString().c_str());
 
-       		//addObj("box",0.06f,0.06f,0.06f,0.0f,0.55387995f,0.37f,1,0,0);
+
+       		import3DModel("tsss.x","wood.bm",0,0,0.6);
+       		addObj("box",0.07f,0.07f,0.07f,0.05f,0.55387995f,0.32f,1,0,0);
        	//	addObj("box",0.06f,0.06f,0.06f,0.2f,0.55387995f,0.35f,1,0,0);
-       		//addObj("box",0.06f,0.06f,0.06f,0.09f,0.55387995f,0.35f,1,0,0);
-       		//addObj("box",0.06f,0.06f,0.06f,0.00f,0.55387995f,0.35f,1,1,0);
+       		addObj("box",0.09f,0.05f,0.05f,-0.05f,0.55387995f,0.5f,1,1,0);
+       		addSph(0.06,-0.29f,0.5387995f,0.45f,0,0,1);
+       		addCyl(0.04,0.06,-0.25f,0.55387995f,0.32f,0,1,0);
+
        		getPos("box",1);
        return true;
      }
@@ -106,16 +110,16 @@
     	 //if(delta==1 && x<0.325000){
     	// 0.0900000035762787
     		// if(x>0.325000) return;
-       /*  yDebug(" step left=%f ",x);
+         /*yDebug(" step left=%f ",x);
        x=x+(delta*0.03);
          yDebug("x'=%f\n",x);
          mvObj("box",x,y,z);
-         step++;
-*/
+         step++;*/
+
 
     	 //}
-       /*  if(x>0.325000) delta = -1;
-         if(x<-0.325000) delta = 1;*/
+         if(x>0.325000) delta = -1;
+         if(x<-0.325000) delta = 1;
     	 /*else if(step<600 && x>0){
              yDebug("step right=%f ",x);
              x-=0.005;
@@ -171,6 +175,43 @@
       	world_port.write(cmd,response);
       	printf("World port response: %s\n",response.toString().c_str());
           }
+
+      void addSph(float radius,float x, float y, float z, int r, int g, int b){
+    	  Bottle cmd;
+    	        	  cmd.addString("world");
+    	        	  cmd.addString("mk");
+    	        	  cmd.addString("ssph");
+    	        	  if(radius>0) cmd.addDouble(radius);
+    	        	  cmd.addDouble(x);
+    	        	  cmd.addDouble(y);
+    	        	  cmd.addDouble(z);
+    	        	  cmd.addInt(r);
+    	        	  cmd.addInt(g);
+    	        	  cmd.addInt(b);
+    	        	printf("Adding sph to the world\n");
+    	        	Bottle response;
+    	        	world_port.write(cmd,response);
+    	        	printf("World port response: %s\n",response.toString().c_str());
+      }
+      void addCyl(float radius,float length, float x, float y, float z, int r, int g, int b){
+         	  Bottle cmd;
+         	        	  cmd.addString("world");
+         	        	  cmd.addString("mk");
+         	        	  cmd.addString("scyl");
+         	        	  if(radius>0) cmd.addDouble(radius);
+         	        	 if(length>0) cmd.addDouble(length);
+         	        	  cmd.addDouble(x);
+         	        	  cmd.addDouble(y);
+         	        	  cmd.addDouble(z);
+         	        	  cmd.addInt(r);
+         	        	  cmd.addInt(g);
+         	        	  cmd.addInt(b);
+         	        	printf("Adding cyl to the world\n");
+         	        	Bottle response;
+         	        	world_port.write(cmd,response);
+         	        	printf("World port response: %s\n",response.toString().c_str());
+           }
+
 
       void getPos(string obj,int id){
     	  Bottle cmd;

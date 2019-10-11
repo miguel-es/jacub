@@ -4,6 +4,7 @@
 #include <iostream>
 #include <yarp/os/Network.h>
 #include <yarp/os/BufferedPort.h>
+#include <yarp/os/RpcClient.h>
 #include <yarp/os/BinPortable.h>
 #include <yarp/sig/Image.h>
 #include <yarp/os/Property.h>
@@ -41,7 +42,7 @@ private:
 	BufferedPort<ImageOf<PixelBgr> > processedImageOutputPort;
 	BufferedPort<Bottle> movingBlobsInputPort;
 	Port leftHandSkinInputPort;
-	Port sensorialContextOutputPort;
+	RpcClient sensorialContextOutputPort;
 	Port continueInputPort;
 	Json::Value perceptualMemory;
 	Port leftHandStateInputPort;
@@ -49,6 +50,7 @@ private:
 	Json::Reader jsonReader;
 	Json::FastWriter fastWriter;
 	string leftHandState;
+
 	int cycles;
 
 public:
@@ -158,21 +160,21 @@ public:
 		for (Json::Value color : perceptualMemory["colors"]) {
 			for (Json::Value area : perceptualMemory["sizes"]) {
 
-				//yDebug(" Perception: Trying to detect objects of color:%s and size:%s\n",
-				//color["name"].asString().c_str();
-				//area["name"].asString().c_str();
-				//
+				yDebug(" Perception: Trying to detect objects of color:%s and size:%s\n",
+				color["name"].asString().c_str(),
+				area["name"].asString().c_str());
 
 				/*printf("area => %s\n", area.toStyledString().c_str());*/
 				SimpleBlobDetector::Params params;
 
 				// Change thresholds
-				params.minThreshold = 30;
-				params.maxThreshold = 200;
+				//params.minThreshold = 30;
+				params.minThreshold = 65;
+				params.maxThreshold = 93;
 
 				// Filter by Area.
 				params.filterByArea = true;
-				params.filterByConvexity = false;
+				//params.filterByConvexity = false;
 				params.minDistBetweenBlobs = 100.0;
 				/*printf("area between %d - %d\n", area["from"].asInt(),
 				 area["to"].asInt());*/
@@ -180,12 +182,13 @@ public:
 				params.maxArea = area["to"].asInt();
 
 				// Filter by Circularity
-				//params.filterByCircularity = true;
-				//params.minCircularity = 0.1;
+				params.filterByCircularity = false;
+				params.minCircularity = 0.4;
+				params.maxCircularity=1;
 
 				// Filter by Convexity
-				//	params.filterByConvexity = true;
-				//params.minConvexity = 0.87;
+				params.filterByConvexity = false;
+				params.minConvexity = 0.0;
 
 				// Filter by Inertia
 				//params.filterByInertia = true;
@@ -198,8 +201,8 @@ public:
 
 				Mat color_filtered_img;
 
-				//yDebug(" Perception: Color from : %d,%d,%d",color["from"][0].asInt(),color["from"][1].asInt(),color["from"][2].asInt());
-				//yDebug(" Perception: Color to : %d,%d,%d",color["to"][0].asInt(),color["to"][1].asInt(),color["to"][2].asInt());
+				yDebug(" Perception: Color from : %d,%d,%d",color["from"][0].asInt(),color["from"][1].asInt(),color["from"][2].asInt());
+				yDebug(" Perception: Color to : %d,%d,%d",color["to"][0].asInt(),color["to"][1].asInt(),color["to"][2].asInt());
 
 				cv::Scalar from = cv::Scalar(color["from"][0].asInt(),
 						color["from"][1].asInt(), color["from"][2].asInt());
@@ -306,8 +309,8 @@ public:
 		}
 
 		for(Json::Value key:sensorialContext[0].getMemberNames()) {
-			sensorialContext[0][key.asString()].removeMember("x");
-			sensorialContext[0][key.asString()].removeMember("y");
+			//sensorialContext[0][key.asString()].removeMember("x");
+			//sensorialContext[0][key.asString()].removeMember("y");
 			if(!sensorialContext[0][key.asString()].isMember("moving")) {
 				sensorialContext[0][key.asString()]["moving"] = false;
 			}
@@ -332,6 +335,22 @@ public:
 		line(im_with_keypoints, Point(212, 0), Point(212, inputRawImage->height()),
 				Scalar(0, 255, 0), 1, 8, 0);
 
+		int baseline=0;
+		string text = to_string(cycles);
+		int fontFace = FONT_HERSHEY_SCRIPT_SIMPLEX;
+		double fontScale = 0.5;
+		int thickness = 2;
+
+		Size textSize = getTextSize(text, fontFace,
+		                            fontScale, thickness, &baseline);
+		//baseline += thickness;
+
+		// center the text
+		Point textOrg(0,textSize.height);
+		putText(im_with_keypoints, text, textOrg, fontFace, fontScale,
+		        Scalar::all(255), thickness, 8);
+
+
 		ImageOf<PixelBgr> &outputpImage = processedImageOutputPort.prepare();
 
 		IplImage procImage = IplImage(im_with_keypoints);
@@ -342,6 +361,8 @@ public:
 		//blobbedImageOutputPort.write();
 
 		processedImageOutputPort.write();
+
+
 		//return true;
 		yDebug(" Perception: reading skin sensors.. ");
 		Bottle skin_sensors;
@@ -360,15 +381,23 @@ public:
 
 		if(touchingSomething){
 			 //leftHandState = input.toString();
-			int contentment = 1;
-			if(leftHandState=="closed") contentment = 2;
-			sensorialContext[1]["contentment"] = contentment;
+			//int contentment = 1;
+			//if(leftHandState=="closed") contentment = 2;
+			//sensorialContext[1]["contentment"] = contentment;
 			sensorialContext[1]["texture"] = "t1";
 			sensorialContext[1]["hand"] = leftHandState;
 		}
 		/*	IplImage blobedImage = IplImage(im_with_keypoints);
 
 
+		IplImage procImage = IplImage(im_with_keypoints);
+		outputpImage.wrapIplImage(&procImage);
+
+		yDebug(" Perception: Writing out procesed image ");
+
+		//blobbedImageOutputPort.write();
+
+		processedImageOutputPort.write();
 		 ImageOf<PixelBgr> &outputProcessedImage = processedImageOutputPort.prepare();
 
 
@@ -382,7 +411,7 @@ public:
 		//outputProcessedImage.resize(inputRawImage->width(), inputRawImage->height());
 		//outputImage = yarpReturnImage;
 
-		yDebug(" Perception: Writing out processed image");
+		//yDebug(" Perception: Writing out processed image");
 
 		//processedImageOutputPort.write()
 
@@ -391,12 +420,37 @@ public:
 		yDebug(" Perception: writing out sensorial  context\n");
 		Bottle output;
 		output.addString(fastWriter.write(sensorialContext));
-		sensorialContextOutputPort.write(output);
+		Bottle response;
+		sensorialContextOutputPort.write(output,response);
+		//yDebug(" Perception: attention replied %s",response.toString().c_str());
+		float attendedX = response.get(0).asFloat32();
+		float attendedY = response.get(1).asFloat32();
+		yDebug(" Perception: attention replied %f, %f",attendedX,attendedY);
+
+		if(attendedX!=-1 && attendedY!=-1){
+			yDebug(" Perception: drawing attended %f, %f ",attendedX,attendedY);
+			line(im_with_keypoints, Point(attendedX, attendedY-5), Point(attendedX, attendedY+5),
+					Scalar(0, 255, 0), 2, 8, 0);
+			line(im_with_keypoints, Point(attendedX-5, attendedY), Point(attendedX+5, attendedY),
+								Scalar(0, 255, 0), 2, 8, 0);
+		}
+
+		ImageOf<PixelBgr> &outputpImage2 = processedImageOutputPort.prepare();
+
+		IplImage procImage2 = IplImage(im_with_keypoints);
+		outputpImage2.wrapIplImage(&procImage2);
+
+		yDebug(" Perception: Writing out procesed image ");
+
+		//blobbedImageOutputPort.write();
+
+		processedImageOutputPort.write();
 
 		Bottle input;
 		yDebug(" Perception: waiting for hand state");
 		leftHandStateInputPort.read(input);
 		yDebug(" Perception: left hand state %s",input.toString().c_str());
+		leftHandState = input.toString();
 
 		yDebug(" Perception: Waiting for continue signal\n");
 		//Bottle input;

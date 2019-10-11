@@ -160,6 +160,7 @@ public:
 		// it after closing the module
 		// the context contains the dofs status, the tracking mode,
 		// the resting positions, the limits and so on.
+		left_arm_ctrl->waitMotionDone(0.1,0.50);
 		left_arm_ctrl->storeContext(&startup_context_id);
 		// set trajectory time
 		left_arm_ctrl->setTrajTime(1.0);
@@ -214,9 +215,9 @@ public:
 		head.view(head_ctrl);
 		cycles = 0;
 
-		xhorigin = -0.35;
-		yhorigin = 0.0;//-0.2;
-		zhorigin = -0.005;//-0.19//origin, zhorigin;
+		xhorigin = -0.35;  //-0.55 x -0.35
+		yhorigin = -0.05;//= -0.04;//0.0;//-0.2;  -0.30 y -0.05
+		zhorigin = 0.0;//0.02;//-0.005;//-0.19//origin, zhorigin;  0.0 z 0.15
 		//yDebug("returned\n");
 		setInitialLeftHandPos();
 		setInitialHeadPos();
@@ -261,13 +262,18 @@ public:
 		//string action = input.toString();
 		bool done = false;
 
-		/*vector<std::string> actions { "headUp", "headDown", "headLeft",
+		vector<std::string> actions { "headUp", "headDown", "headLeft",
 				"headRight", "headLeftUp", "headLeftDown", "headRightUp",
 				"headRightDown", "handUp", "handDown", "handLeft", "handRight",
-				"handBackward", "handForward", "closeHand", "openHand" };*/
-		vector<std::string> actions { "headUp", "headDown", "headLeft",
+				"handBackward", "handForward", "closeHand", "openHand" };
+		/*vector<std::string> actions { "headUp", "headDown", "headLeft",
 						"headRight", "headLeftUp", "headLeftDown", "headRightUp",
-						"headRightDown"};
+						"headRightDown"};/(*/
+
+		//if(commandedActions.size()==0) {
+		//	bool done = moveLeftArm(xhorigin,yhorigin-deltaCoord,zhorigin, 0.0, 0.0, 4.0);
+	//		if(done) yhorigin-=deltaCoord;
+		//}
 
 
 		for (Json::Value& action : commandedActions) {
@@ -330,7 +336,7 @@ public:
 				yDebug(" Locomotion: Moving hand right ...\n");
 				done = moveLeftArm(xhorigin,yhorigin+deltaCoord,zhorigin, 0.0, 0.0, 4.0);
 												if(done) yhorigin+=deltaCoord;
-												done = moveHead(0, 0, deltaAngle);
+												//done = moveHead(0, 0, deltaAngle);
 
 			} else if (action == "handLeft") {
 				yDebug(" Locomotion: Moving hand left ...\n");
@@ -350,14 +356,17 @@ public:
 								if(done)xhorigin+=deltaCoord;
 
 			} else if (action == "handForward") {
-			} else if (action == "closeHand" && leftHandState!="closed") {
+				yDebug(" Locomotion: Moving hand forward ...\n");
+				done = moveLeftArm(xhorigin-deltaCoord,yhorigin,zhorigin, 0.0, 0.0, 4.0);
+								if(done)xhorigin-=deltaCoord;
+			} else if (action == "closeHand") {
 				yDebug(" Locomotion: Closing left hand ...\n");
 				done = closeHand();
-				//if(done){
+				/*if(done){
 					leftHandState = "closed";
-				//}
-				done = moveLeftArm(xhorigin+deltaCoord,yhorigin,zhorigin+deltaCoord, 0.0, 0.0, 4.0);
-				if(done)zhorigin+=deltaCoord;
+				}*/
+				//done = moveLeftArm(xhorigin+deltaCoord,yhorigin,zhorigin+deltaCoord, 0.0, 0.0, 4.0);
+				//if(done)zhorigin+=deltaCoord;
 				//closeHand();
 			} else if (action == "openHand") {
 				yDebug(" Locomotion: Opening left hand ...\n");
@@ -387,7 +396,7 @@ yDebug(" Locomotion: hand state %s",leftHandState.c_str());
 
 		 output = doneOutputPort.prepare();
 		output.addString(done ? "true" : "false");
-		//doneOutputPort.write();
+		doneOutputPort.write();
 		//doneOutputPort.wr
 		return true;
 	}
@@ -398,15 +407,18 @@ private:
 		yInfo(" Setting initial head position for %s\n robot",robotName.c_str());
 
 		//moveHead(-60, 0, -15);
-		moveHead(-60, 0, 25);
+		//moveHead(-60, 0, 25);
+		//PRUEBA 2 7a moveHead(-48, 0, 0);
+		moveHead(-80, 0, -14.5);
 		//moveHead(-60, 0, -15);
 		//moveHead(int angle0, int angle1, int angle2) {
 	}
 
 	void setInitialLeftHandPos(){
 		yInfo(" Setting initial left hand position for %s\n robot",robotName.c_str());
-
-		moveLeftArm(xhorigin,yhorigin,zhorigin,0.0,0.0,4.0);
+		//PRUEBA 2 7a: moveLeftArm(xhorigin,yhorigin,zhorigin,45,0.0,0.0);
+		moveLeftArm(xhorigin,yhorigin,zhorigin,45,0.0,0.0);
+		//moveLeftArm(xhorigin,yhorigin,zhorigin,0.0,0.0,4.0);
 	}
 
 
@@ -454,7 +466,15 @@ private:
 	 */
 	bool moveLeftArm(double x, double y, double z, double ox, double oy,
 			double oz) {
+		/*xhorigin = -0.35;  //-0.55 x -0.35
+				yhorigin = -0.05;//= -0.04;//0.0;//-0.2;  -0.30 y -0.05
+				zhorigin = 0.15;//0.02;//-0.005;//-0.19//origin, zhorigin;  0.0 z 0.15*/
 
+//if(true){
+		yDebug(" %f g= -0.55? %d, %f l=-0.34? %d",x,x>=-0.55,x,x<=-0.34);
+		yDebug(" %f g= -0.30? %d, %f l=-0.05? %d",y,y>=-0.30,y,y<=-0.05);
+		yDebug(" %f g= 0.0? %d, %f l=0.15? %d",z,z>=0.0,z,z<=0.15);
+		if((x>=-0.55 && x<=-0.34)&&(y>=-0.30 && y<=-0.05)&&(z>=0.0 && z<=0.15)){
 		// translational target part: a circular trajectory
 		// in the yz plane centered in [-0.3,-0.1,0.1] with radius=0.1 m
 		// and frequency 0.1 Hz
@@ -481,10 +501,22 @@ private:
 
 		left_arm_ctrl->goToPose(xd, od);
 		bool done = left_arm_ctrl->waitMotionDone(0.1, 4.0);
-		if (!done) {
+			//yDebug("Locomotion: Left arm is taking to long to complete the movement\n");
+		if(done){
+			yDebug(" Locomotion: position reached");
+			xhorigin = x;
+					yhorigin = y;//0.0;//-0.2;
+					zhorigin = z;
+		}else{
 			yDebug("Locomotion: Left arm is taking to long to complete the movement\n");
+
 		}
+
 		return done;
+		}else {
+			yDebug(" Locomotion: hand motion out of bounds, doing nothing");
+			return true;
+		}
 	}
 
 	bool moveWrist() {
@@ -580,6 +612,7 @@ private:
 	}
 
 	bool closeHand() {
+		if(leftHandState!="closed"){
 		IEncoders *enc;
 		IVelocityControl *vel;
 
@@ -618,7 +651,7 @@ private:
 		 command[14]=0.0;
 		 command[15]=60.0;i/
 		 */
-		yDebug(" Locomotion: commandobe> %s\n\n\n", command.toString().c_str());
+		yDebug(" Locomotion: commando > %s\n\n\n", command.toString().c_str());
 		command[5] = -37.0;
 		command[7] = 0.0; //juntar dedos - = mas abiertos
 		command[8] = 88.0; //pulgar hacia palma
@@ -640,13 +673,39 @@ private:
 		 command[14]=81.0; //dedo medio doblas
 		 command[15]=137.0; //meñique doblar +=mas doblado*/
 
-		return left_hand_ctrl->positionMove(command.data());
-		//yDebug("closing hand...%d\n",done);
+
+		left_hand_ctrl->positionMove(command.data());
+
+		 bool done = left_arm_ctrl->waitMotionDone(0.1, 4.0);
+		 				if (!done) {
+		 					yDebug("Locomotion: Left arm is taking to long to complete the movement\n");
+		 				}
+
+		 yDebug(" Locomotion: done? %d",done);
+		 if(done) leftHandState="closed";
+		 return done;
+		} else {
+			yDebug(" Locomotion: Hand already closed");
+			return true;
+		}
+
+		/* bool reached = false;
+
+
+		 //left_hand_ctrl->checkMotionDone(done);
+
+		 while(!reached){
+			 yDebug(" Locomotion: waiting for motion to be completed");
+			 left_hand_ctrl->checkMotionDone(&reached);
+		 }
+		 return true;*/
+		 //yDebug("closing hand...%d\n",done);
 		//return done;
 
 	}
 
 	bool openHand() {
+		if(leftHandState!="closed"){
 		IEncoders *enc;
 		IVelocityControl *vel;
 
@@ -681,8 +740,19 @@ private:
 		command[15] = 9.999997;
 
 		yDebug("COMMAND");
-		bool done = left_hand_ctrl->positionMove(command.data());
- return true;
+		left_hand_ctrl->positionMove(command.data());
+		bool done = left_arm_ctrl->waitMotionDone(0.1, 4.0);
+				 				if (!done) {
+				 					yDebug("Locomotion: Left arm is taking to long to complete the movement\n");
+				 				}
+
+				 yDebug(" Locomotion: done? %d",done);
+				 if(done) leftHandState="open";
+				 return done;
+				} else {
+					yDebug(" Locomotion: Hand already open");
+					return true;
+				}
 	}
 
 	void limitTorsoPitch() {
@@ -730,4 +800,3 @@ private:
 		}
 	}
 };
-

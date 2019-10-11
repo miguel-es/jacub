@@ -15,6 +15,7 @@ bool areAboutSameObject(Json::Value context1, Json::Value context2);
 
 Json::Value getLeafs(Json::Value schema);
 int getSchemaHeight(Json::Value schema);
+int getExpectedEmotionalReward(Json::Value schema);
 }
 #endif
 

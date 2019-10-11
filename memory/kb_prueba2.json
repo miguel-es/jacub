@@ -144,7 +144,7 @@
 				"id":"22",
 				"equilibrated":true,
 				"context":[{"contentment":2,"color":"*","size":"*","sector":"*","moving":"*"}, {"contentment":1,"hand":"*","texture":"*"}],
-				"actions":["changeAttentionToV", "closeHand"],
+				"actions":["changeAttentionV", "closeHand"],
 				"expected":[{"contentment":2,"color":"*","size":"*","sector":"*","moving":"*"}, {"contentment":2,"hand":"*","texture":"*"}]
 			},
 			{

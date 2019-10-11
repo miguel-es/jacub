@@ -160,8 +160,8 @@ private:
 			break;
 			}
 		}
-		(" Allowing partialMatch: %s",allowPartialMatch?"yes":"no");
-		if(!allowPartialMatch) (" There are no equilibrated schemas\n");
+		yDebug(" Allowing partialMatch: %s",allowPartialMatch?"yes":"no");
+		if(!allowPartialMatch) yDebug(" There are no equilibrated schemas\n");
 cycles = 0;
 		return true;
 	}
@@ -169,7 +169,7 @@ cycles = 0;
 	bool engagement() {
 		yDebug(" DevER: cycle %d",++cycles);
 		yDebug(" DevER: In engagement mode\n");
-
+		Json::Value locomotionActions,mentalActions;
 		Bottle input;
 		Bottle output;
 		string input_string;
@@ -183,8 +183,13 @@ cycles = 0;
 		prepareInput(input_string);
 
 		jsonReader.parse(input_string.c_str(), currentContext);
-
 		yDebug(" DevER: Got context: %s \n",currentContext.toStyledString().c_str());
+
+		if(currentContext.size()==3 && currentContext[2].isMember("boredom")){
+			yDebug(" DevER: boredom detected");
+			locomotionActions.append("random");
+		}else{
+
 
 		yDebug(
 				" Writing 'match' to %s\n",ltMemoryModeOutputPort.getName().c_str());
@@ -197,11 +202,12 @@ cycles = 0;
 				" Writing out match mode to %s\n",matchModeOutputPort.getName().c_str());
 		string matchMode = "exact";
 		srand(time(NULL));
-		int r = rand();
-		if(allowPartialMatch &&  r ==0){
+		int r = rand()%2;
+		if(allowPartialMatch &&currentContext[1].size()!=0 && currentContext[1]["hand"].asString()=="closed"){
+		//if(allowPartialMatch &&  r==0 &&currentContext[1].size()!=0 && currentContext[1]["hand"].asString()=="closed"){
 			matchMode = "partial";
 		}
-		matchMode = "exact";//TODO:delete
+		//matchMode = "exact";//TODO:delete
 
 Bottle outputM;
 		outputM.addString(matchMode);
@@ -284,13 +290,14 @@ Json::Value matchedSchemas;
 		expectationsOutputPort.write(output);
 
 	//yDebug(" DevER: WRITTEEn");
-		Json::Value locomotionActions,mentalActions;
+
 		jsonReader.parse("[]", locomotionActions);
 		for (Json::Value& schema : selectedSchemas) {
 
 			for (Json::Value actionv : schema["actions"]) {
 				string action = actionv.asString();
-				if (action == "showInterestInV" || action == "showInterestInT"
+				yDebug(" DEvER: checking action %s",action.c_str());
+				if (action == "showIntetestInV" || action == "showInterestInT"
 						|| action == "changeAttentionT"
 						|| action == "changeAttentionV")  //mental actions
 				{
@@ -310,6 +317,7 @@ mentalActions.append(action);
 				 yDebug(" DevER: done action2\n");*/
 				Time::delay(2);
 			}
+		}
 		}
 		yDebug(" DevER: Issuing body actions %s \n",locomotionActions.toStyledString().c_str());
 
@@ -368,44 +376,49 @@ mentalActions.append(action);
 		Json::Value bestMatch;
 		if(matches.size()==0) return bestMatch;
 		bestMatch = matches[0];
-		int maxEmotionalResponse = 0;
+		int emotionalReward = utils::getExpectedEmotionalReward(matches[0]);
+		int maxEmotionalReward = emotionalReward;
+		yDebug(" DevER: expectedEmotionalReward of schema %s is %d",matches[0]["id"].asString().c_str(),emotionalReward);
+
 		int maxH = utils::getSchemaHeight(matches[0]);
-		if(matches.size()==1) return bestMatch;
+		//if(matches.size()==1) return bestMatch;
 		int maxProbability = -1;
 
 		for(int i=1;i<matches.size();i++){
 			Json::Value leafs = utils::getLeafs(matches[i]);
 			int height = utils::getSchemaHeight(matches[i]);
-			int emotionalResponse = 0;
+			int emotionalReward = 0;
 			for(Json::Value leaf:leafs){
 				//yDebug("tik");
-				if(leaf["context"][0].isMember("distress")){
+				/*if(leaf["context"][0].isMember("distress")){
 					//yDebug("tik2");
-					emotionalResponse -= leaf["context"][0]["distress"].asInt();
+					emotionalReward -= leaf["context"][0]["distress"].asInt();
 				}
 				//yDebug("tik3");
 				if(leaf["context"][0].isMember("contentment")){
 					//yDebug("tik4");
-					emotionalResponse += leaf["context"][0]["contentment"].asInt();
-				}
+					emotionalReward += leaf["context"][0]["contentment"].asInt();
+				}*/
+				emotionalReward = utils::getExpectedEmotionalReward(leaf);
+
 
 				//yDebug("tik5 %s",leaf["actions"].toStyledString().c_str());
-				for(Json::Value action:leaf["actions"]){
+				/*for(Json::Value action:leaf["actions"]){
 					if(action.asString()=="showInterestInV"){
 
-					emotionalResponse+=1;
+					emotionalReward+=1;
 					}
-				}
+				}*/
 				int s = rand()%2;
 				yDebug(" DevER: rand %d",s);
-			yDebug(" DevER: expectedEmotionalResponse of schema %s is %d",matches[i]["id"].asString().c_str(),emotionalResponse);
-				//yDebug("tik6 %s - emotionalResponse %d",leaf.toStyledString().c_str(),emotionalResponse);
-			if(emotionalResponse> maxEmotionalResponse || height>maxH || (matches[i].isMember("expected") && !bestMatch.isMember("expected"))){//  leaf.isMember("fulfilled") && matches[i]["fulfilled"].size()>maxProbability&&height>maxH){
+			yDebug(" DevER: expectedEmotionalReward of schema %s is %d",matches[i]["id"].asString().c_str(),emotionalReward);
+				//yDebug("tik6 %s - emotionalReward %d",leaf.toStyledString().c_str(),emotionalReward);
+			if(emotionalReward> maxEmotionalReward || height>maxH || (matches[i].isMember("expected") && !bestMatch.isMember("expected"))){//  leaf.isMember("fulfilled") && matches[i]["fulfilled"].size()>maxProbability&&height>maxH){
 				bestMatch = matches[i];
 				maxH = height;
-				maxEmotionalResponse = emotionalResponse;
+				maxEmotionalReward = emotionalReward;
 				continue;
-			}else if(emotionalResponse==maxEmotionalResponse && height==maxH && s==1 && (matches[i].isMember("expected") && bestMatch.isMember("expected"))){
+			}else if(emotionalReward==maxEmotionalReward && height==maxH && s==1 && (matches[i].isMember("expected") && bestMatch.isMember("expected"))){
 				yDebug(" DevER: random selected %s ",matches[i]["id"].asString().c_str());
 				bestMatch = matches[i];
 				continue;

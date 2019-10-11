@@ -19,6 +19,8 @@ yarp/os/Network.h
 -
 yarp/os/BufferedPort.h
 -
+yarp/os/RpcClient.h
+-
 yarp/os/BinPortable.h
 -
 yarp/sig/Image.h
@@ -60,6 +62,8 @@ iostream
 yarp/os/Network.h
 -
 yarp/os/BufferedPort.h
+-
+yarp/os/RpcClient.h
 -
 yarp/os/BinPortable.h
 -

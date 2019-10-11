@@ -19,15 +19,15 @@
 #include <jutils.h>
 #include <schemaUtils.h>
 #include <cmath>
-#define SWITCH_TO_V "changeAttentionToV"
-#define SWITCH_TO_T "changeAttentionToT"
+//#define SWITCH_TO_V "changeAttentionToV"
+//#define SWITCH_TO_T "changeAttentionToT"
 
 using namespace yarp::os;
 using namespace std;
 class AttentionModule: public RFModule {
 private:
 	string robotName;
-	Port sensorialContextInputPort;
+	RpcServer sensorialContextInputPort;
 	Port mentalActionsInputPort;
 	Port attendedContextOutputPort;
 	BufferedPort<Bottle> emotionalContextInputPort;
@@ -37,11 +37,12 @@ private:
 	Json::Value emotionalContext;
 	float emotionalAttatchmentWeight;
 	float movementSaliency;
-	float brightnessSaliency;
+	float brightnessSaliency, centerSaliency;
 	bool changeAttentionV,changeAttentionT;
 	//bool engagedObjIsPerceived;
 	Json::Value visualEngagement,tactilEngagement;
 	Json::Value colors;
+	int lostBy,forgetAfter;
 	bool lostAttendedObject;
 	int cycles;
 
@@ -52,12 +53,14 @@ public:
 		jsonReader.parse("{}", tactilEngagement);
 		jsonReader.parse("{}", visualEngagement);
 		movementSaliency = 0.0;
-		brightnessSaliency = 0.0;
+		brightnessSaliency,centerSaliency = 0.0;
 		emotionalAttatchmentWeight=0.0;
 		changeAttentionV = false;
 		changeAttentionT = false;
 		lostAttendedObject = true;
 		cycles = 0;
+		lostBy = 0;
+		forgetAfter = 0;
 	}
 
 	virtual bool configure(ResourceFinder &rf) {
@@ -71,6 +74,11 @@ public:
 				rf.check("brightness_saliency", Value("0.2")).asFloat32();
 		emotionalAttatchmentWeight =
 				rf.check("emotional_attachment_weight", Value("0.4")).asFloat32();
+
+		forgetAfter =
+						rf.check("forgetAfter", Value("2")).asFloat32();
+		centerSaliency =
+								rf.check("center_weight", Value("0.1")).asFloat32();
 
 		if (!sensorialContextInputPort.open(
 				"/" + robotName + "/attention/sensorialContext:i")) {
@@ -131,7 +139,7 @@ public:
 
 		yDebug(" Attention: waiting for sensorial context...\n");
 		input.clear();
-		sensorialContextInputPort.read(input);
+		sensorialContextInputPort.read(input,true);
 		Json::Value sensorialContext;
 		//yDebug(" Attention: read %s\n",input.toString().c_str());
 		input_string = input.toString();
@@ -139,11 +147,16 @@ public:
 		//yDebug(" Attention: read cleaned%s\n",input.toString().c_str());
 		jsonReader.parse(input_string.c_str(), sensorialContext);
 		yDebug(" Attention: visually engaged to: %s",visualEngagement.toStyledString().c_str());
+		if(lostBy>forgetAfter){
+			yDebug(" Attention: forgetting lost attended object");
+			jsonReader.parse("{}", visualEngagement);
+		}
 		lostAttendedObject = visualEngagement.size()!=0;
 		if (sensorialContext[0].size() != 0) {
 
 			yDebug(" Attention: Got sensorial context: %s",sensorialContext.toStyledString().c_str());
 			float salencyBias = 0.0;
+			float SecondSalencyBias = 0.0;
 			float saliency = 0.0;
 			Json::Value secondBest;
 			jsonReader.parse("[]", attendedContext);
@@ -156,56 +169,79 @@ public:
 				float brightness = getColorBrightness(obj["color"].asString());
 				//yDebug(" Attention: Brightness for %s = %f",obj["color"].asString().c_str(),brightness);
 				saliency = (
-						(obj.isMember("moving") && obj["moving"].asBool()) ?
+						obj["moving"].asBool() ?
 								1 : 0) * movementSaliency
-						+ ((brightness/100)*brightnessSaliency);
+						+ ((brightness/100)*brightnessSaliency)+(obj["sector"].asInt()==5?1:0)*centerSaliency;
 				if(emotionalContext[0].size()>0)
 					saliency+=(utils::areAboutSameObject(obj,visualEngagement)?1:0)*emotionalAttatchmentWeight;
-				//yDebug("obj %s saliency=%f saliencyBias =%f",obj.toStyledString().c_str(),saliency,salencyBias);
+				yDebug("obj %s saliency=%f saliencyBias =%f",obj["color"].asString().c_str(),saliency,salencyBias);
 				if (saliency > salencyBias) {
 					//yDebug("saliency > salencyBias");
+					SecondSalencyBias = salencyBias;
 					salencyBias = saliency;
 					//yDebug(" Attention: Before changin\n"<<attendedContext[0].toStyledString();
 
 					secondBest = attendedContext[0];
 
 					attendedContext[0] = obj;
+					yDebug(" Attention: set 1");
 					//yDebug(" Attention: After changin\n"<<attendedContext[0].toStyledString();
-				}else if(secondBest.size()==0){
+				}else if(saliency > SecondSalencyBias){
+					SecondSalencyBias = saliency;
 					secondBest = obj;
 				}
 
 				//yDebug(" Attention: Secondbest=\n"<<secondBest.toStyledString();
 			}
 
-			if(lostAttendedObject){
-				yDebug(" Attention: attended vContext = visualEngagement");
-				attendedContext[0] = visualEngagement;
-				//continue;
-			}
-
 			if(changeAttentionV){
 				yDebug(" Attention: Changing attention to second best\n");
 				attendedContext[0] = secondBest;
+				visualEngagement = secondBest;
+							yDebug(" Attention: Visual engagement: %s",visualEngagement.toStyledString().c_str());
 				changeAttentionV = false;
+			}else if(lostAttendedObject){
+				yDebug(" Attention: attended vContext = visualEngagement");
+				attendedContext[0] = visualEngagement;
+				lostBy++;
+				//continue;
 			}
 
 		} else {
+			yDebug(" Attention: ELSE");
 			attendedContext[0] = sensorialContext[0];
 			//attendedContext[0]["engagedTo"] = visualEngagement;
 		}
 
+		if(lostAttendedObject){
+						yDebug(" Attention: attended vContext = visualEngagement");
+						attendedContext[0] = visualEngagement;
+						//continue;
+					}
+
 		yDebug(" Attention: lost object = %d",lostAttendedObject);
 		attendedContext[1] = sensorialContext[1];
-		yDebug(" Attention: Attended context: %s \n",attendedContext.toStyledString().c_str());
 
 		Bottle output;// = attendedContextOutputPort.prepare();
 		Json::Value attendedOutput = attendedContext;
 
+		yDebug(" Attention: Attended context: %s \n",attendedOutput.toStyledString().c_str());
+
+
 		if(attendedOutput[0].size()!=0 && visualEngagement.size()!=0 && lostAttendedObject){
 			attendedOutput[0]["lostAttendedObject"] = true;
 		}
-
+Bottle response;
+float attendedX,attendedY = -1;
+//float attendedY = -1;
+if(attendedContext[0].size()!=0 && !lostAttendedObject){
+attendedX = attendedContext[0]["x"].asFloat();
+attendedY = attendedContext[0]["y"].asFloat();
+}
+response.addFloat32(attendedX);
+response.addFloat32(attendedY);
+		yDebug(" Attention: Replying to perception ");
+		sensorialContextInputPort.reply(response);
 		output.addString(jsonWriter.write(attendedOutput));
 		//yDebug(" Attention: Writing out attended context -- %s",output.toString().c_str());
 		attendedContextOutputPort.write(output);
@@ -228,10 +264,10 @@ public:
 			yDebug(" Attention: ACTION %s\n",action.toStyledString().c_str());
 		if( action=="showInterestInV"){
 			visualEngagement = attendedContext[0];
-			yDebug(" Attention: Engaged to %s",visualEngagement.toStyledString().c_str());
+			yDebug(" Attention: Visual engagement: %s",visualEngagement.toStyledString().c_str());
 		}else if(action=="showInterestInT"){
 			tactilEngagement = attendedContext[1];
-			yDebug(" Attention: Engaged to %s",tactilEngagement.toStyledString().c_str());
+			yDebug(" Attention: Tactil engagement: %s",tactilEngagement.toStyledString().c_str());
 		}else if(action=="changeAttentionV"){
 			changeAttentionV = true;
 		}else if(action=="changeAttentionT"){

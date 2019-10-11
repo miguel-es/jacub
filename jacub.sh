@@ -49,8 +49,6 @@ nohup yarprobotinterface --context simCartesianControl > log/yarprobotinterface.
 nohup iKinCartesianSolver --context simCartesianControl --part left_arm > log/iKinCartesianSolver.log 2>&1 &
 
 sleep 3
-echo "Initializing world..."
-nohup world >log/world.log 2>&1 &
 echo "Starting memory module..."
 nohup memory --context jacub > log/memory.log 2>&1 &
 echo "Starting perception module..."
@@ -65,6 +63,8 @@ echo "Starting locomotion module..."
 nohup locomotion --context jacub > log/locomotion.log 2>&1 &
 
 sleep 7
+echo "Initializing world..."
+nohup world >log/world.log 2>&1 &
 iCubSkinGui --useCalibration> log/ikinGui.log 2>&1 &
 yarp connect /jacub/locomotion/done:o /world/continue:i
 yarp connect /icubSim/cam/left /view/img:i
