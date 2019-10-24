@@ -223,9 +223,25 @@ public:
 		attendedContext[1] = sensorialContext[1];
 
 		Bottle output;// = attendedContextOutputPort.prepare();
+
+		yDebug(" Attention: cycle--- %d",cycles);
+		if(cycles==1){ yDebug("Setting dummy context");
+		attendedContext[0]["lostAttendedObject"] = true;
+		attendedContext[0]["color"] = "c1";
+		attendedContext[0]["size"] = "s1";
+		attendedContext[0]["moving"] = false;
+		attendedContext[0]["sector"] = 9;
+				attendedContext[0]["x"] =0;
+				attendedContext[0]["y"]=0;
+
+		}
+
 		Json::Value attendedOutput = attendedContext;
 
+
+
 		yDebug(" Attention: Attended context: %s \n",attendedOutput.toStyledString().c_str());
+
 
 
 		if(attendedOutput[0].size()!=0 && visualEngagement.size()!=0 && lostAttendedObject){
@@ -234,6 +250,8 @@ public:
 Bottle response;
 float attendedX,attendedY = -1;
 //float attendedY = -1;
+
+
 if(attendedContext[0].size()!=0 && !lostAttendedObject){
 attendedX = attendedContext[0]["x"].asFloat();
 attendedY = attendedContext[0]["y"].asFloat();

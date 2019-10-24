@@ -131,7 +131,7 @@ public:
 		return 1.0;
 	}
 	virtual bool updateModule() {
-		yDebug(" Perception: cycle %d",++cycles);
+		yDebug(" Perception: cycle %d, leftHandState=%s",++cycles,leftHandState.c_str());
 		yDebug(" Perception: waiting for an image...");
 
 		ImageOf<PixelBgr> *inputRawImage = rawImageInputPort.read();
@@ -416,6 +416,8 @@ public:
 		//processedImageOutputPort.write()
 
 		yDebug(" Perception: Sensorial  context: %s",sensorialContext.toStyledString().c_str());
+
+		if(cycles==1){Bottle input;continueInputPort.read(input);}
 
 		yDebug(" Perception: writing out sensorial  context\n");
 		Bottle output;

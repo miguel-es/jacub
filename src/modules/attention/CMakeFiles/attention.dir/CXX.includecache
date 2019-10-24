@@ -13,6 +13,8 @@ string.h
 ../../../src/utils/schemaUtils.h
 jsoncpp/json/json.h
 -
+string
+-
 
 /home/miguel/eclipse-workspace/jacub/src/modules/attention/src/AttentionModule.cpp
 stdio.h

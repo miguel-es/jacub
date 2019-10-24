@@ -55,6 +55,7 @@ protected:
 	Vector xd;
 	Vector od;
 	bool moved;
+	int direction;
 
 	int startup_context_id;
 
@@ -81,6 +82,7 @@ public:
 
 		//Time::turboBoost();
 		leftHandState = "open";
+		 direction = 1;
 		closed = 0;
 		string robotName = rf.check("robot", Value("jacub")).asString();
 
@@ -94,7 +96,7 @@ public:
 		 return false;
 		 }*/
 		this->robotName = robotName;
-		this->deltaAngle = 10;
+		//this->deltaAngle = 10;
 		//clock = 0;
 		/* cartesianEventParameters.type="motion-ongoing";
 		 cartesianEventParameters.motionOngoingCheckPoint=0.2;*/
@@ -217,7 +219,7 @@ public:
 
 		xhorigin = -0.35;  //-0.55 x -0.35
 		yhorigin = -0.05;//= -0.04;//0.0;//-0.2;  -0.30 y -0.05
-		zhorigin = 0.0;//0.02;//-0.005;//-0.19//origin, zhorigin;  0.0 z 0.15
+		zhorigin = 0.0;//-0.005;//-0.19//origin, zhorigin;  0.0 z 0.15
 		//yDebug("returned\n");
 		setInitialLeftHandPos();
 		setInitialHeadPos();
@@ -275,6 +277,7 @@ public:
 	//		if(done) yhorigin-=deltaCoord;
 		//}
 
+		bool handAction = false;
 
 		for (Json::Value& action : commandedActions) {
 			yDebug(" Locomotion: ACTION %s\n",action.toStyledString().c_str());
@@ -332,6 +335,7 @@ public:
 			} else if (action == "headRightDown") {
 				yDebug(" Locomotion: Moving head right and down ...\n");
 				done = moveHead(-deltaAngle, 0, -deltaAngle);
+				//done = moveHead(0, 0, -deltaAngle);
 			} else if (action == "handRight") {
 				yDebug(" Locomotion: Moving hand right ...\n");
 				done = moveLeftArm(xhorigin,yhorigin+deltaCoord,zhorigin, 0.0, 0.0, 4.0);
@@ -339,27 +343,28 @@ public:
 												//done = moveHead(0, 0, deltaAngle);
 
 			} else if (action == "handLeft") {
+				handAction = true;
 				yDebug(" Locomotion: Moving hand left ...\n");
 				done = moveLeftArm(xhorigin,yhorigin-deltaCoord,zhorigin, 0.0, 0.0, 4.0);
 												if(done) yhorigin-=deltaCoord;
-			} else if (action == "handUp") {
+			} else if (action == "handUp") {handAction = true;
 				yDebug(" Locomotion: Moving hand up %f ...\n",deltaCoord);
 				done = moveLeftArm(xhorigin,yhorigin,zhorigin+2*deltaCoord, 0.0, 0.0, 4.0);
 								if(done) zhorigin+=2*deltaCoord;
-			} else if (action == "handDown") {
+			} else if (action == "handDown") {handAction = true;
 				yDebug(" Locomotion: Moving hand down ...\n");
 				done = moveLeftArm(xhorigin,yhorigin,zhorigin-deltaCoord, 0.0, 0.0, 4.0);
 				if(done) zhorigin-=deltaCoord;
-			} else if (action == "handBackward") {
+			} else if (action == "handBackward") {handAction = true;
 				yDebug(" Locomotion: Moving hand backwards ...\n");
 				done = moveLeftArm(xhorigin+deltaCoord,yhorigin,zhorigin, 0.0, 0.0, 4.0);
 								if(done)xhorigin+=deltaCoord;
 
-			} else if (action == "handForward") {
+			} else if (action == "handForward") {handAction = true;
 				yDebug(" Locomotion: Moving hand forward ...\n");
 				done = moveLeftArm(xhorigin-deltaCoord,yhorigin,zhorigin, 0.0, 0.0, 4.0);
 								if(done)xhorigin-=deltaCoord;
-			} else if (action == "closeHand") {
+			} else if (action == "closeHand") {handAction = true;
 				yDebug(" Locomotion: Closing left hand ...\n");
 				done = closeHand();
 				/*if(done){
@@ -380,11 +385,26 @@ public:
 			//yDebug(" Locomotion: Action performed \n";
 		}
 
+		/*handAction = true;
+		if(!handAction){
+yDebug(" Locomotion: Moving hand autonomously, direction=%d",direction);
+			if(moveLeftArm(xhorigin,yhorigin+(direction*deltaCoord),zhorigin, 0.0, 0.0, 4.0)){
+				yhorigin+=direction*deltaCoord;
+			}else{
+				direction = (-1*direction);
+				moveLeftArm(xhorigin,yhorigin+(direction*deltaCoord),zhorigin, 0.0, 0.0, 4.0);
+			}
+
+			//if(done) yhorigin+=deltaCoord;
+
+			/*done = moveLeftArm(xhorigin,yhorigin+deltaCoord,zhorigin, 0.0, 0.0, 4.0);
+															if(done) yhorigin+=deltaCoord;*/
+		//}
 		yDebug(" Locomotion: writing out left hand state [%s]",leftHandState.c_str());
 		yDebug(" Locomotion: closed %d",closed);
 		if(leftHandState=="closed") closed++;
 
-		if(closed>5 && openHand()){
+		if(closed>30 && openHand()){
 			closed = 0;
 		}
 yDebug(" Locomotion: hand state %s",leftHandState.c_str());
@@ -396,7 +416,7 @@ yDebug(" Locomotion: hand state %s",leftHandState.c_str());
 
 		 output = doneOutputPort.prepare();
 		output.addString(done ? "true" : "false");
-		doneOutputPort.write();
+		//doneOutputPort.write();
 		//doneOutputPort.wr
 		return true;
 	}
@@ -409,7 +429,9 @@ private:
 		//moveHead(-60, 0, -15);
 		//moveHead(-60, 0, 25);
 		//PRUEBA 2 7a moveHead(-48, 0, 0);
-		moveHead(-80, 0, -14.5);
+		//moveHead(-80, 0, -14.5);
+		//PRUEBA 4
+				moveHead(-25, 0, 40);
 		//moveHead(-60, 0, -15);
 		//moveHead(int angle0, int angle1, int angle2) {
 	}
@@ -450,6 +472,16 @@ private:
 		command[2] = command[2] + angle2;
 
 		return head_ctrl->positionMove(command.data());
+
+		bool done = false;
+		head_ctrl->checkMotionDone(&done);
+					//yDebug("Locomotion: Left arm is taking to long to complete the movement\n");
+				while(!done){
+					head_ctrl->checkMotionDone(&done);
+				yDebug(" Locomotion: waiting for head movement to complete...");
+				Time::delay(0.1);
+				}
+
 
 		/* axe0_pos = 0;
 		 axe1_pos=0;
@@ -515,7 +547,7 @@ private:
 		return done;
 		}else {
 			yDebug(" Locomotion: hand motion out of bounds, doing nothing");
-			return true;
+			return false;
 		}
 	}
 
@@ -705,7 +737,7 @@ private:
 	}
 
 	bool openHand() {
-		if(leftHandState!="closed"){
+		if(leftHandState!="open"){
 		IEncoders *enc;
 		IVelocityControl *vel;
 

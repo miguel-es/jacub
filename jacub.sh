@@ -65,7 +65,10 @@ nohup locomotion --context jacub > log/locomotion.log 2>&1 &
 sleep 7
 echo "Initializing world..."
 nohup world >log/world.log 2>&1 &
+
 iCubSkinGui --useCalibration> log/ikinGui.log 2>&1 &
+echo 'waiting for world to be up...'
+yarp wait /world/continue:i
 yarp connect /jacub/locomotion/done:o /world/continue:i
 yarp connect /icubSim/cam/left /view/img:i
 #yarp connect /motionCUT/img:o /view/motion:i

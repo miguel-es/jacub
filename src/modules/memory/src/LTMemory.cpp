@@ -121,7 +121,47 @@ public:
 			jsonReader.parse(input_string.c_str(), context);
 			yDebug(" LTMemory: Got context: %s",context.toStyledString().c_str());
 			Json::Value matchedSchemas = match(context);
-			yDebug(" LTMemory:  Matched schemas\n %s",matchedSchemas.toStyledString().c_str());
+
+
+			string ids = matchMode+"=";
+			if(matchMode=="exact"){
+				ids+="[";
+			for(Json::Value schema: matchedSchemas){
+				//yDebug("Quesque : %s",schema.toStyledString().c_str());
+				for(Json::Value leaf: utils::getLeafs(schema)){
+					if(leaf.isMember("match")){
+					ids+=" "+leaf["id"].asString();
+					}
+				}
+			}
+			ids+="]";
+			}else if(matchMode=="partial"){
+				ids=" visual:[";
+				for(Json::Value schema: matchedSchemas[0]){
+					for(Json::Value leaf: utils::getLeafs(schema)){
+									if(leaf.isMember("match")){
+									ids+=" "+leaf["id"].asString();
+									}
+								}
+							//yDebug("Quesque : %s",schema.toStyledString().c_str());
+							//ids+=" "+schema["id"].asString();
+						}
+				ids+="] tactil:[";
+				for(Json::Value schema: matchedSchemas[1]){
+										//yDebug("Quesque : %s",schema.toStyledString().c_str());
+					for(Json::Value leaf: utils::getLeafs(schema)){
+									if(leaf.isMember("match")){
+									ids+=" "+leaf["id"].asString();
+									}
+								}
+										//ids+=" "+schema["id"].asString();
+									}
+				ids+="]";
+			}
+			yDebug(" DevER: matched schemas %s",ids.c_str());
+					yDebug(" LTMemory: matched schemas %s",ids.c_str());
+
+			//yDebug(" LTMemory:  Matched schemas\n %s",matchedSchemas.toStyledString().c_str());
 
 			if(matchMode=="exact")
 			yDebug(" LTMemory: %d schemas matched",matchedSchemas.size());
@@ -207,11 +247,12 @@ if(c1HasVContext>0){
 			  tPer = (((float)context[1].size()-1)/(float)context[1].size())*100;
 		}
 
-		for (Json::Value& schema : kb["schemes"]) {
-			if(matchMode=="partial" && !schema["equilibrated"].asBool()) continue;
+		for (Json::Value schema : kb["schemes"]) {
+			if(matchMode=="partial" && !schema["equilibrated"].asBool()&& !schema.isMember("children")) continue;
 			Json::Value leafs = utils::getLeafs(schema);
 			//yInfo("LEAFS \n %s",leafs.toStyledString().c_str());
 			bool foundMatch = false;
+			bool selected = false;
 			for (Json::Value& leaf : leafs) {
 			//int visualContextSize = leaf["context"][0].size();
 			//int tactileContextSize = leaf["context"][1].size();
@@ -220,16 +261,25 @@ if(c1HasVContext>0){
 			bool c2HasTContext = leaf["context"][1].size()!=0;
 			//bool bothVCEmpty = !c1HasVContext && leaf["context"][0].size()==0;
 			//bool bothTCEmpty = !c1HasTContext && leaf["context"][1].size()==0;
-			float visualMatch = utils::match(context[0], leaf["context"][0]);
-			float tactilMatch = utils::match(context[1], leaf["context"][1]);
+			float visualMatch = utils::match(context[0], leaf["context"][0],matchMode);
+			float tactilMatch = utils::match(context[1], leaf["context"][1],matchMode);
 			//yInfo("vMatch \n %f",visualMatch);
 			//yInfo("tMatch \n %f",tactilMatch);
 
 
 
 			if(matchMode=="exact" && visualMatch==100 && tactilMatch==100){
-				matchedSchemas.append(schema);
-				break;
+				//schema[leaf["id"].asString()]["matched"]=true;
+				//leaf["matched"]=true;
+			Json::Value jv = utils::markAsMatch(schema,leaf["id"].asString());
+yDebug("MArked => id=%s %s",leaf["id"].asString().c_str(), jv.toStyledString().c_str());
+
+				//if(!selected){
+				//selected = true;
+				matchedSchemas.append(utils::markAsMatch(schema,leaf["id"].asString()));
+				//}
+				//schema["selected"] = true;
+				//break;
 			}else if (matchMode=="partial"){
 				yInfo("Trying schema %s %s\n",schema["id"].asCString(),schema["context"].toStyledString().c_str());
 				yInfo("Matches %f visual and %f tactil, vPer=%f, tPer=%f \n",visualMatch, tactilMatch,vPer,tPer);
@@ -246,30 +296,46 @@ break;
 				}else */
 				if(c1HasTContext && c1HasVContext){
 
-									if((c2HasVContext && !c2HasTContext && visualMatch==100) || (c2HasVContext && c2HasTContext && visualMatch==100 && tactilMatch!=100)){
-										matchedSchemas[0].append(schema);
-										break;
-									}else if((c2HasTContext && !c2HasVContext && tactilMatch==100) || (c2HasTContext && c2HasVContext && tactilMatch==100 && visualMatch!=100)){
-										matchedSchemas[1].append(schema);
-																break;
+					//if((c2HasVContext && !c2HasTContext && visualMatch==100) || (c2HasVContext && c2HasTContext && visualMatch==100 && tactilMatch!=100)){
+
+									if(c2HasVContext && !c2HasTContext && visualMatch==100){
+										matchedSchemas[0].append(utils::markAsMatch(schema,leaf["id"].asString()));
+										//break;
+									//}else if((c2HasTContext && !c2HasVContext && tactilMatch==100) || (c2HasTContext && c2HasVContext && tactilMatch==100 && visualMatch!=100)){
+
+									}else if(c2HasTContext && !c2HasVContext && tactilMatch==100){
+										matchedSchemas[1].append(utils::markAsMatch(schema,leaf["id"].asString()));
+																//break;
 									}
 
 								}else
-				if(c1HasVContext && !c1HasTContext && ((c2HasVContext && !c2HasTContext && visualMatch==vPer)||(c2HasVContext && c2HasTContext && visualMatch==100.0))){//visual context differs in one aspect
+									if(c1HasVContext && !c1HasTContext && c2HasVContext && !c2HasTContext && visualMatch==vPer){//visual context differs in one aspect
+
+				//if(c1HasVContext && !c1HasTContext && ((c2HasVContext && !c2HasTContext && visualMatch==vPer)||(c2HasVContext && !c2HasTContext && visualMatch==100.0))){//visual context differs in one aspect
 
 					//yInfo("Trying schema %s %s\n",schema["id"].asCString(),schema["context"].toStyledString().c_str());
 					//yInfo("Matches %f visual and %f tactil \n",visualMatch, tactilMatch);
-					matchedSchemas[0].append(schema);
-					break;
-				}else if(c1HasTContext && !c1HasVContext && ((c2HasTContext && !c2HasVContext && tactilMatch==tPer)||(c2HasTContext && c2HasVContext && tactilMatch==100.0))){//visual context differs in one aspect
+										//schema[leaf["id"].asString()]["matched"]=true;
+										//leaf["matched"]=true;
+					matchedSchemas[0].append(utils::markAsMatch(schema,leaf["id"].asString()));
+					//break;
+				}else if(c1HasTContext && !c1HasVContext && c2HasTContext && !c2HasVContext && tactilMatch==tPer){//visual context differs in one aspect
+				//}else if(c1HasTContext && !c1HasVContext && ((c2HasTContext && !c2HasVContext && tactilMatch==tPer)||(c2HasTContext && c2HasVContext && tactilMatch==100.0))){//visual context differs in one aspect
 
 					//yInfo("Trying schema %s %s\n",schema["id"].asCString(),schema["context"].toStyledString().c_str());
 					//yInfo("Matches %f visual and %f tactil \n",visualMatch, tactilMatch);
-					matchedSchemas[1].append(schema);
-					break;
+					//schema[leaf["id"].asString()]["matched"]=true;
+					//leaf["matched"]=true;
+					matchedSchemas[1].append(utils::markAsMatch(schema,leaf["id"].asString()));
+					//break;
 
 
 				}
+
+				//if(matchMode=="exact" && selected){
+				//	yDebug("Appening id=%s",schema["id"].asString().c_str());
+				//	matchedSchemas.append(schema);
+				//}
 
 				/*else if(leaf["context"][1].size()>0 && visualContextSize==0 && tactilMatch==100){ //tactile context matches exactly
 					matchedSchemas[1].append(schema);

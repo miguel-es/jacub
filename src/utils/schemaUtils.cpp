@@ -6,14 +6,19 @@
 
 using namespace std;
 namespace utils{
-float match(Json::Value context1, Json::Value context2){
+float match(Json::Value context1, Json::Value context2,string matchMode){
 	if(context1.size()==0 and context2.size()==0) return 100;
 	Json::Value::Members context1Members = context1.getMemberNames();
 	Json::Value::Members contextMembers = context2.getMemberNames();
 	int membersSize = contextMembers.size();
 	float match = 0;
 	for (string memberName : contextMembers) {
-		if(context1[memberName].empty()) return 0;
+		if(context1[memberName].empty()){
+			if(matchMode=="partial" && memberName=="distress" && context1["contentment"] == context2["distress"])
+				match+=0.0;
+			else
+			return 0;
+		}
 					if (context2[memberName] == "*"
 							|| context1[memberName] == context2[memberName]) {
 						//match += 100.0 / membersSize;
@@ -109,6 +114,25 @@ int getExpectedEmotionalReward(Json::Value schema){
 
 }
 
+Json::Value markAsMatch(Json::Value schema, std::string id){
+
+	if(!schema.isMember("children")){
+		if(schema["id"]==id){
+			yDebug("Marked schema %s",id.c_str());
+			schema["match"]=true;
+			//return schema;
+		}
+		return schema;
+	}
+	for (Json::Value &child : schema["children"]) {
+		child = markAsMatch(child, id);
+			//return true;
+			//schema["children"]["id"]
+		//}
+		}
+		return schema;
+
+}
 
 
 }

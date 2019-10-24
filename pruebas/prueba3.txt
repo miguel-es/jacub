@@ -1,11 +1,94 @@
-"[\{\"contentment\":1, \"color\":\"c1\", \"size\": \"s1\", \"moving\": \"true\",\"sector\":4\},\{\}]"
+"[\{\"contentment\":1,\"color\":\"c1\",\"size\":\"s1\",\"moving\":\"true\",\"sector\":4\},\{\}]" 
 
-"[\{\"contentment\":2, \"color\":\"c1\", \"size\": \"s1\", \"moving\": \"true\",\"sector\":5\},\{\}]"
+2a
+Mis resultados:
 
-"[\{\"contentment\":2, \"color\":\"c2\", \"size\": \"s1\", \"moving\": \"true\",\"sector\":1\},\{\}]"
+[DEBUG] DevER: matched schemas exact=[ 3 28 33]
+[DEBUG] DevER: matched schemas  visual:[ 1 5 7 11 18 25 26 27 29 30 31 32 34 35 36] tactil:[]
 
-"[\{\"contentment\":1,\"color\":\"c1\",\"size\":\"s1\", \"moving\": \"true\",\"sector\":9\},\{\"contentment\":1,\"hand\":\"open\",\"texture\":\"t1\"\}]"
+Tus resultados:
+Debe de hacer match 100% con los esquemas: id=3, 28, 33.
+Debe de hacer match parcial con los esquemas: id= 5, 7, 11, 18, 25, 26, 27, 29, 30,
+31, 32, 34, 35, 36,
 
-"[\{\"contentment\":2,\"color\":\"c1\",\"size\":\"s1\", \"moving\": \"true\",\"sector\":\"4\"\},\{\"contentment\":1,\"hand\":\"open\",\"texture\":\"t1\"\}]"
 
-"[\{\"contentment\":1,\"color\":\"c1\",\"size\":\"s1\", \"moving\": \"true\",\"sector\":\"6\"\},\{\"contentment\":1,\"hand\":\"open\",\"texture\":\"t1\"\}]"
+"[\{\"contentment\":2,\"color\":\"c1\",\"size\":\"s1\",\"moving\":\"true\",\"sector\":5\},\{\}]"
+2b
+
+Mis resultados:
+[DEBUG] DevER: matched schemas exact=[ 5 7]
+[DEBUG] DevER: matched schemas  visual:[ 3] tactil:[]
+
+Tus resultados:
+Debe de hacer match 100% con los esquemas: id=5,7
+Debe de hacer match parcial con los esquemas: id= 3
+
+
+
+"[\{\"contentment\":2,\"color\":\"c2\",\"size\":\"s1\",\"moving\":\"true\",\"sector\":1\},\{\}]"
+2c
+Mis resultados:
+[DEBUG] DevER: matched schemas exact=[ 5 7]
+[DEBUG] DevER: matched schemas  visual:[ 3 25] tactil:[]
+
+Tus resultados:
+
+Debe de hacer match 100% con los esquemas: id=5,7
+Debe de hacer match parcial con los esquemas: id= 3, 25,
+
+
+
+"[\{\"contentment\":1,\"color\":\"c1\",\"size\":\"s1\",\"moving\":\"true\",\"sector\":9\},\{\"contentment\":1,\"hand\":\"open\",\"texture\":\"t1\"\}]"
+3
+ Mis resultados:
+ [DEBUG] DevER: matched schemas exact=[ 24]
+ [DEBUG] DevER: matched schemas  visual:[ 3 32] tactil:[ 2 4]
+ [DEBUG] DevER: matched schemas  visual:[ 3 32] tactil:[ 2 4 20 21 22 23]
+ 
+ Tus resultados:
+
+Debe de hacer match 100% con los esquemas: id=24,
+Debe de hacer match parcial con los esquemas: id=3, 4, 32,
+
+Tú solo indicas que debe hacer match parcial con los esquemas: id=3, 4, 32 pero revisando creo que los que a mi me salen sí son match correctos
+ 
+"[\{\"contentment\":2,\"color\":\"c1\",\"size\":\"s1\",\"moving\":\"true\",\"sector\":4\},\{\"contentment\":1,\"hand\":\"open\",\"texture\":\"t1\"\}]"
+4 
+Mis resultados:
+[DEBUG] DevER: matched schemas exact=[ 22 23]
+[DEBUG] DevER: matched schemas  visual:[ 5 7] tactil:[ 2 4]
+[DEBUG] DevER: matched schemas  visual:[ 5 7] tactil:[ 2 4 20 21 24]
+
+Tus resultados:
+Debe de hacer match 100% con los esquemas: id=22,
+Debe de hacer match parcial con los esquemas: id=2, 4, 20, 21, 23, 24
+
+Tú indicas que 23 no es exacto sino parcial, pero el esquema 23 es:
+
+{
+				"id":"23",
+				"equilibrated":true,
+				"context":[{"contentment":2,"color":"*","size":"*","sector":"*","moving":"*"}, {"contentment":1,"hand":"*","texture":"*"}],
+				"actions":["showIntetestInV", "closeHand"],
+				"expected":[{"contentment":2,"color":"*","size":"*","sector":"*","moving":"*"}, {"contentment":2,"hand":"*","texture":"*"}]
+}
+
+Así que sí es match exacto.
+
+
+			
+"[\{\"contentment\":1,\"color\":\"c1\",\"size\":\"s1\",\"moving\":\"true\",\"sector\":6\},\{\"contentment\":1,\"hand\":\"open\",\"texture\":\"t1\"\}]"
+
+5
+
+Mis resultados:
+
+[DEBUG] DevER: matched schemas exact=[ 24]
+[DEBUG] DevER: matched schemas  visual:[ 3 29 34] tactil:[ 2 4]
+[DEBUG] DevER: matched schemas  visual:[ 3 29 34] tactil:[ 2 4 20 21 22 23]
+
+Tus resultados:
+
+Debe de hacer match 100% con los esquemas: id= 24
+Debe de hacer match parcial con los esquemas: id= 2, 3, 4, 29, 34
+
