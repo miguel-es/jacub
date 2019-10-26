@@ -83,32 +83,34 @@ int getSchemaHeight(Json::Value schema){
 	return 1+childHMax;
 }
 
-int getExpectedEmotionalReward(Json::Value schema){
+int getExpectedEmotionalReward(Json::Value context){
 	int emotionalReward = 0;
 	//yDebug(" Getting expected emotional reward of schem%s",context.toStyledString().c_str());
 
-	if(schema.isMember("expected")){
+	if(context.size()==2){
 
-	if(schema["expected"][0].isMember("distress")){
+	if(context[0].isMember("distress")){
 		//yDebug("tik2");
-		emotionalReward -= schema["expected"][0]["distress"].asInt();
+		emotionalReward -= context[0]["distress"].asInt();
 	}
 	//yDebug("tik3");
-	if(schema["expected"][0].isMember("contentment")){
+	if(context[0].isMember("contentment")){
 		//yDebug("tik4");
-		emotionalReward += schema["expected"][0]["contentment"].asInt();
+		emotionalReward += context[0]["contentment"].asInt();
 	}
 
-	}else{
-		return 0;
-		/*for(Json::Value action:leaf["actions"]){
-							if(action.asString()=="showInterestInV"){
+	if(context[1].isMember("distress")){
+			//yDebug("tik2");
+			emotionalReward -= context[1]["distress"].asInt();
+		}
+		//yDebug("tik3");
+		if(context[1].isMember("contentment")){
+			//yDebug("tik4");
+			emotionalReward += context[1]["contentment"].asInt();
+		}
 
-							emotionalReward+=1;
-							}
-						}*/
+
 	}
-
 	//yDebug("tik5 %s",leaf["actions"].toStyledString().c_str());
 	return emotionalReward;
 

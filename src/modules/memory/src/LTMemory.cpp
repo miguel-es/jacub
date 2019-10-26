@@ -13,6 +13,7 @@
 #define CTRL_THREAD_PER     0.02 // [s]
 #define MATCH_MODE     "match"
 #define UPDATE_MODE     "update"
+#define SAVE_MODE	"save"
 
 #include <jutils.h>
 #include <schemaUtils.h>
@@ -173,6 +174,8 @@ public:
 			Json::FastWriter fastWriter;
 			output.addString(fastWriter.write(matchedSchemas));
 			matchedSchemasOutputPort.write(output);
+		}else if(input.toString() == SAVE_MODE){
+			save();
 		}
 	}
 
@@ -207,7 +210,7 @@ private:
 		yInfo("There are no equilibrated schemas\n");
 		}*/
 
-		totalSchemes = kb["schemes"].size();
+		totalSchemes = kb["totalSchemes"].asInt();
 
 		yDebug(" LTMemory: %d schemas loaded",totalSchemes);
 		return true;
@@ -254,6 +257,7 @@ if(c1HasVContext>0){
 			bool foundMatch = false;
 			bool selected = false;
 			for (Json::Value& leaf : leafs) {
+				yDebug(" LTMemory: testing schema %s",leaf["id"].asString().c_str());
 			//int visualContextSize = leaf["context"][0].size();
 			//int tactileContextSize = leaf["context"][1].size();
 
@@ -361,101 +365,30 @@ break;
 	}
 
 
+	void save() {
 
-	/*float match(Json::Value context1, Json::Value context2) {
-			bool matchesVisual = true;
-			bool matchesTactile = true;
-			Json::Value::Members contextMembers = context2[0].getMemberNames();
-			for (string memberName : contextMembers) {
-				if ((context2[0][memberName].empty()
-						&& context2[0][memberName] == "*")
-						|| context1[0][memberName] != context2[0][memberName]) {
-					matchesVisual = false;
-				}
-			}
+		yDebug(" LTMemory: SAVE_MODE set\n");
+		Bottle input;
+					yDebug(" LTMemory: waiting for new schema to save ...\n");
 
-			Json::Value::Members contextMembers = context2[1].getMemberNames();
-			for (string memberName : contextMembers) {
-				if ((context2[1][memberName].empty()
-						&& context2[1][memberName] == "*")
-						|| context1[1][memberName] != context2[1][memberName]) {
-					matchesTactile = false;
-				}
-			}
+					//matchModeInputPort.read(input);
+					//string input_string = input.toString();
 
+					//yDebug(" LTMemory: waiting for a context to match...\n");
+					contextInputPort.read(input);
+					string input_string = input.toString();
+					prepareInput(input_string);
+					Json::Value newSchema;
+					jsonReader.parse(input_string.c_str(), newSchema);
+					yDebug(" LTMemory: Got schema: %s",newSchema.toStyledString().c_str());
+					newSchema["id"]=to_string(++totalSchemes);
+					kb["schemes"].append(newSchema);
+					kb["totalSchemes"]=totalSchemes;
+					yDebug(" LTMemory: Saving new schema: %s",newSchema.toStyledString().c_str());
 
-		//}
-			if(matchMode=="partial"){
-				return (matchesVisual && !matchesTactile) || (!matchesVisual && matchesTactile);
-			}else{
-				return matchesVisual && matchesTactile;
-			}
-		float match = 0;
-
-		if (context2[1].size() == 0) // if tactile context is empty then it matches anything
-				{
-			match += 50.0;
-		} else {
-			Json::Value::Members contenxtMembers = context1[1].getMemberNames();
-			int membersSize = contenxtMembers.size();
-
-			for (string memberName : contenxtMembers) {
-				//yDebug(" LTMemory: chekin [ " << memberName <<" ]"<<'\n';
-				if (context2[1][memberName].empty()
-						|| context1[1][memberName] == context2[1][memberName]) {
-					match += 50.0 / membersSize;
-				}
-			}
-
-			contenxtMembers = context2[1].getMemberNames();
-			membersSize = contenxtMembers.size();
-			//yDebug(" LTMemory: camate [  ]"<<'\n';
-			for (string memberName : contenxtMembers) {
-				//yDebug(" LTMemory: chekin [ " << memberName <<" ]"<<'\n';
-				if (context1[1][memberName].empty()) {
-					match -= 50.0 / membersSize;
-				}
-			}
+					//yDebug(" DevER: matched schemas %s",ids.c_str());
+						//	yDebug(" LTMemory: matched schemas %s",ids.c_str());
 		}
-
-		if (context2[0].size() == 0) // if visual context is empty then it matches anything
-				{
-			match += 50.0;
-		} else {
-			//yInfo("cisual contest not empty\n");
-
-			Json::Value::Members contenxtMembers = context2[0].getMemberNames();
-			int membersSize = contenxtMembers.size();
-
-			//yInfo("Miembros => %s",contenxtMembers.toStyledString())
-			/*yDebug(" LTMemory: size "<<membersSize<<'\n';
-			 float r = (50.0/membersSize);
-			 yInfo("rate %f\n",r);*/
-
-			//yDebug(" LTMemory: camate [  ]"<<'\n';
-			/*for (string memberName : contenxtMembers) {
-				//yInfo( " match [ %f ]\n",match);
-				if (!context1[0][memberName].empty()
-						&& context1[0][memberName] == context2[0][memberName]) {
-					match += 50.0 / membersSize;
-				}
-			}
-			/*
-			 contenxtMembers = context2[0].getMemberNames();
-			 membersSize = contenxtMembers.size();
-			 //yDebug(" LTMemory: camate [  ]"<<'\n';
-			 for(string memberName: contenxtMembers)
-			 {
-			 //yDebug(" LTMemory: chekin [ " << memberName <<" ]"<<'\n';
-			 if(context1[0][memberName].empty())
-			 {
-			 match-=50.0/membersSize;
-			 }
-			 }*/
-
-		//}
-		//return match;
-
 	//}
 
 };

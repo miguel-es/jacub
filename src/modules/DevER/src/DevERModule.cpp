@@ -2,6 +2,7 @@
 
 #include <cstdio>
 #include <cmath>
+#include <queue>
 
 #include <yarp/os/Network.h>
 #include <yarp/os/RFModule.h>
@@ -45,7 +46,11 @@ private:
 	//Json::Value matchedSchemas;
 	Json::Value selectedSchemas;
 	Json::Value expectations;
-	vector<Json::Value> behaviorPath;
+	vector<Json::Value> selectedTreePath;
+	//vector<Json::Value> wm;
+	queue<Json::Value> wm; //Working memory (short term memory) TODO: move to Working memory module
+	int wmdeep;
+	Json::Value currentContext;
 
 	string robotName;
 	Json::Reader jsonReader;
@@ -114,6 +119,7 @@ public:
 
 		//Probe kb for equilibrated schemas TODO: this shoud be asked to the memory module
 		checkKB(rf.check("kb", Value("")).toString());
+		wmdeep = rf.check("WMDeep", Value("3")).asInt32();
 		//loadKB(rf.check("kb_file", Value("../../schemas/kb.json")).toString());
 
 		return true;
@@ -131,6 +137,14 @@ public:
 		return 1.0;
 	}
 	virtual bool updateModule() {
+
+		yDebug(" DevER: Working memory: [");
+
+		/*for (std::vector<Json::Value>::size_type i = 0; i < wm.size(); i++) {
+			yDebug(" t%d = %s",i,wm.at(i).toStyledString().c_str());// << ' ';
+		}*/
+		printWM(wm);
+		yDebug(" ]");
 		if (!engagement()) {
 			reflection();
 		}
@@ -161,7 +175,7 @@ private:
 		}
 		yDebug(" Allowing partialMatch: %s",allowPartialMatch?"yes":"no");
 		if (!allowPartialMatch)
-			yDebug(" There are no equilibrated schemas\n");
+		yDebug(" There are no equilibrated schemas\n");
 		cycles = 0;
 		return true;
 	}
@@ -178,7 +192,7 @@ private:
 		yDebug(" DevER: waiting for current context...\n");
 
 		currentContextInputPort.read(input);
-		Json::Value currentContext;
+		//Json::Value currentContext;
 		//yDebug(" DevER: read %s \n",input.toString().c_str());
 		input_string = input.toString();
 		prepareInput(input_string);
@@ -191,17 +205,30 @@ private:
 				&& currentContext[2].isMember("boredom")) {
 			yDebug(" DevER: boredom detected");
 			locomotionActions.append("random");
+
 		} else {
-			if(expectations.size()!=0 && behaviorPath.size()>0 && utils::match(currentContext[0],expectations[0],"exact")==100&& utils::match(currentContext[1],expectations[1],"exact")==100) {//expectations fullfilled
+
+			 if(currentContext.size() == 3
+							&& currentContext[2].isMember("joy")) {
+						yDebug(" DevER: joy detected!");
+						accommodation();
+			 }
+
+			if(expectations.size()!=0 && selectedTreePath.size()>0 && utils::match(currentContext[0],expectations[0],"exact")==100&& utils::match(currentContext[1],expectations[1],"exact")==100) {//expectations fullfilled
 
 				yDebug(" Dev E-R: getting next schema in the tree");
-				selectedSchemas = behaviorPath.at(behaviorPath.size()-1);
+				selectedSchemas = selectedTreePath.at(selectedTreePath.size()-1);
 				jsonReader.parse("[]", expectations);
-				if(behaviorPath.at(behaviorPath.size()-1).isMember("expected")) {
-					expectations.append(behaviorPath.at(behaviorPath.size()-1)["expected"][0]);
-					expectations.append(behaviorPath.at(behaviorPath.size()-1)["expected"][1]);
+				//&& selectedTreePath.size()>0 &&
+				if(selectedTreePath.at(selectedTreePath.size()-1).isMember("expected")) {
+					expectations.append(selectedTreePath.at(selectedTreePath.size()-1)["expected"][0]);
+					expectations.append(selectedTreePath.at(selectedTreePath.size()-1)["expected"][1]);
+					if(wm.size()>=wmdeep){
+						wm.pop();
+					}
+					wm.push(selectedTreePath.at(selectedTreePath.size()-1));
 				}
-				behaviorPath.pop_back();
+				selectedTreePath.pop_back();
 			} else {
 				yDebug(
 						" Dev E-R: retrieving schema from memory ");
@@ -297,25 +324,38 @@ private:
 
 					//}
 					yDebug("getting path");
-					behaviorPath = getPathFromMatchToRoot(bestMatch);
+					selectedTreePath = getPathFromMatchToRoot(bestMatch);
 					yDebug("Printing selected branch ");
-					for (std::vector<Json::Value>::size_type i = 0; i < behaviorPath.size(); i++) {
-						yDebug(" node %d = %s",i,behaviorPath.at(i).toStyledString().c_str());	// << ' ';
+					for (std::vector<Json::Value>::size_type i = 0; i < selectedTreePath.size(); i++) {
+						yDebug(" node %d = %s",i,selectedTreePath.at(i).toStyledString().c_str());	// << ' ';
 					}
 
-					selectedSchemas = behaviorPath.at(behaviorPath.size()-1);
+					selectedSchemas = selectedTreePath.at(selectedTreePath.size()-1);
 					jsonReader.parse("[]", expectations);
-					if(behaviorPath.at(behaviorPath.size()-1).isMember("expected")) {
-						expectations.append(behaviorPath.at(behaviorPath.size()-1)["expected"][0]);
-						expectations.append(behaviorPath.at(behaviorPath.size()-1)["expected"][1]);
+					if(selectedTreePath.at(selectedTreePath.size()-1).isMember("expected")) {
+						expectations.append(selectedTreePath.at(selectedTreePath.size()-1)["expected"][0]);
+						expectations.append(selectedTreePath.at(selectedTreePath.size()-1)["expected"][1]);
+
 					}
-					behaviorPath.pop_back();
+
+					if(selectedTreePath.size()!=0) {
+						wm.push(selectedTreePath.at(selectedTreePath.size()-1));
+					}
+
+					selectedTreePath.pop_back();
+
+					if(selectedTreePath.size()>1) {
+						Json::Value goal;
+						goal["goal"]=selectedTreePath.at(0)["expected"];
+						expectations.append(goal);
+						//expectations["goal"] = selectedTreePath.at(0)["expected"];
+					}
 
 					yDebug(" DevER: expectations from tree: %s \n",expectations.toStyledString().c_str());
 
 				} else {
 					//yDebug(" DevER: Getting best exact else \n");
-					behaviorPath.empty();
+					selectedTreePath.empty();
 					if(matchedSchemas[0].size()>0) {
 						Json::Value bestMatch = getBestMatch(matchedSchemas[0]);
 						selectedSchemas.append(bestMatch);
@@ -352,7 +392,7 @@ private:
 				//showInterestInV
 				if (action == "showInterestInV" || action == "showInterestInT"
 						|| action == "changeAttentionT"
-						|| action == "changeAttentionV")  //mental actions
+						|| action == "changeAttentionV")//mental actions
 				{
 					mentalActions.append(action);
 					//			yDebug(" DevER: mental action\n");
@@ -398,7 +438,33 @@ private:
 		yDebug(" DevER: is in Reflection mode");
 		Json::Value locomotionActions;
 		jsonReader.parse("[]", locomotionActions);
-		locomotionActions.append("random");
+
+		vector<std::string> actions { "headUp", "headDown", "headLeft",
+						"headRight", "headLeftUp", "headLeftDown", "headRightUp",
+						"headRightDown", "handUp", "handDown", "handLeft", "handRight",
+						"handBackward", "handForward", "closeHand", "openHand" };
+
+						srand(time(NULL));
+						int randomi = rand() % actions.size();
+						yDebug(" DevER: reflection random action");
+						/*for(int i = 0; i < action.size(); i++)
+						 {*/
+						float random_index = rand() % actions.size();
+						yDebug(" DevER: random seed=%f",random_index);
+						string action = actions[random_index];
+						//}
+					//}
+
+		locomotionActions.append(action);
+		Json::Value t;
+		jsonReader.parse("{}", t);
+		t["context"]=currentContext;
+		t["actions"]=locomotionActions;
+
+		if(wm.size()>=wmdeep){
+								wm.pop();
+							}
+		wm.push(t);
 
 		yDebug(" DevER: Issuing random body actions %s \n",locomotionActions.toStyledString().c_str());
 
@@ -425,7 +491,10 @@ private:
 		Json::Value bestMatch;
 		if(matches.size()==0) return bestMatch;
 		bestMatch = matches[0];
-		int emotionalReward = utils::getExpectedEmotionalReward(matches[0]);
+		int emotionalReward = 0;
+		if(matches[0].isMember("expected")){
+			emotionalReward = utils::getExpectedEmotionalReward(matches[0]["expected"]);
+		}
 		int maxEmotionalReward = emotionalReward;
 		yDebug(" DevER: expectedEmotionalReward of schema %s is %d",matches[0]["id"].asString().c_str(),emotionalReward);
 
@@ -449,7 +518,9 @@ private:
 				 //yDebug("tik4");
 				 emotionalReward += leaf["context"][0]["contentment"].asInt();
 				 }*/
-				emotionalReward = utils::getExpectedEmotionalReward(leaf);
+				if(leaf.isMember("expected")){
+					emotionalReward = utils::getExpectedEmotionalReward(leaf["expected"]);
+				}
 
 				//yDebug("tik5 %s",leaf["actions"].toStyledString().c_str());
 				/*for(Json::Value action:leaf["actions"]){
@@ -479,17 +550,17 @@ private:
 
 	/*Json::Value getExpectations(Json::Value schema,int index) {
 
-		if(!schema.isMember("children") && !schema.isMember("match")) return nullptr;
-		else if(!schema.isMember("children") && schema.isMember("match")) return schema["expected"][index];
-		if(schema.isMember("children")) {
-			Json::Value leafs = utils::getLeafs(schema);
-			for(Json::Value leaf:leafs) {
-				Json::Value leafExpectations = getExpectations(leaf,index);
-				if(leafExpectations!=nullptr) return leafExpectations;
-			}
-		}
-		return nullptr;
-	}*/
+	 if(!schema.isMember("children") && !schema.isMember("match")) return nullptr;
+	 else if(!schema.isMember("children") && schema.isMember("match")) return schema["expected"][index];
+	 if(schema.isMember("children")) {
+	 Json::Value leafs = utils::getLeafs(schema);
+	 for(Json::Value leaf:leafs) {
+	 Json::Value leafExpectations = getExpectations(leaf,index);
+	 if(leafExpectations!=nullptr) return leafExpectations;
+	 }
+	 }
+	 return nullptr;
+	 }*/
 
 	vector<Json::Value> getPathFromMatchToRoot(Json::Value schema) {
 		vector<Json::Value> path;
@@ -512,5 +583,90 @@ private:
 		return path;
 	}
 
+	bool accommodation() {
+
+		if(currentContext.size()==3 && currentContext[2].isMember("joy")) {
+			return automatization();
+		}
+
+		return false;
+	}
+	bool automatization() {
+		yDebug(" Dev E-R: Automating path:");
+
+		Json::Value actions = getLastActions(wm);
+
+		Json::Value newSchema;
+		newSchema["context"]=wm.front()["context"];
+		newSchema["expected"]=wm.back()["expected"];
+		newSchema["actions"]=actions;
+		newSchema["equilibrated"]=false;
+
+		yDebug(" Dev E-R: new schema %s",newSchema.toStyledString().c_str());
+
+		yDebug(
+				" Writing 'save' to %s\n",ltMemoryModeOutputPort.getName().c_str());
+		Bottle outputMode;
+		outputMode.addString("save");
+		ltMemoryModeOutputPort.write(outputMode);
+
+		yDebug(" Dev E-R: writing new schema to ltmemory ");
+		Bottle output;
+		output.addString(fastWriter.write(newSchema));
+		currentContextOutputPort.write(output);
+
+		yDebug(" Dev E-R: done writing ");
+		return true;/*
+		 vector<Json::Value> path;
+		 if(!schema.isMember("children") && !schema.isMember("match") ) return path;
+		 else if(!schema.isMember("children") && schema.isMember("match")) {schema.removeMember("match"); path.push_back(schema); return path;}
+		 if(schema.isMember("children")) {
+		 Json::Value children = schema["children"];
+		 schema.removeMember("children");
+		 path.push_back(schema);
+		 for(Json::Value child:children) {
+		 //if(leaf.isMember("match")) {leaf.removeMember("match");leaf.removeMember("children"); path.push_back(leaf);return path;}
+
+		 vector<Json::Value> pathFromMatchToChild = getPathFromMatchToRoot(child);
+		 if(pathFromMatchToChild.size()>0) {
+		 path.insert(path.end(),pathFromMatchToChild.begin(),pathFromMatchToChild.end());
+		 return path;
+		 }
+		 }
+		 }
+		 return path;*/
+	}
+
+	void printWM(queue<Json::Value> wm)
+	{
+		//printing content of queue
+		//string content ="[";
+		int i = 0;
+		while (!wm.empty()){
+			//content+=wm.front().toStyledString();
+			yDebug(" DevER: t%d %s",i++,wm.front().toStyledString().c_str());
+			wm.pop();
+
+		}
+		//content+="]";
+		//yDebug(" DevER: Working memory content %s",content.c_str());
+	}
+
+	Json::Value getLastActions(queue<Json::Value> wm)
+	{
+			//printing content of queue
+		Json::Value actions;
+				jsonReader.parse("[]", actions);
+			//Json::Value actions;
+						while (!wm.empty()){
+				for(Json::Value action: wm.front()["actions"]){
+					actions.append(action);
+				}
+				wm.pop();
+			}
+						return actions;
+			//content+="]";
+			//yDebug(" DevER: Working memory content %s",content);
+		}
 };
 
