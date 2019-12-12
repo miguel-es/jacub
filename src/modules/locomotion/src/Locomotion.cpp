@@ -217,7 +217,7 @@ public:
 		head.view(head_ctrl);
 		cycles = 0;
 
-		xhorigin = -0.35;  //-0.55 x -0.35
+		xhorigin = -0.34;  //-0.55 x -0.35
 		yhorigin = -0.05;//= -0.04;//0.0;//-0.2;  -0.30 y -0.05
 		zhorigin = 0.0;//-0.005;//-0.19//origin, zhorigin;  0.0 z 0.15
 		//yDebug("returned\n");
@@ -431,7 +431,8 @@ private:
 		//PRUEBA 2 7a moveHead(-48, 0, 0);
 		//moveHead(-80, 0, -14.5);
 		//PRUEBA 4
-				moveHead(-25, 0, 40);
+				//cabeza con distress moveHead(-25, 0, 40);
+		moveHead(-50,0,0);
 		//moveHead(-60, 0, -15);
 		//moveHead(int angle0, int angle1, int angle2) {
 	}

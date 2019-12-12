@@ -18,6 +18,7 @@ Json::Value getLeafs(Json::Value schema);
 int getSchemaHeight(Json::Value schema);
 int getExpectedEmotionalReward(Json::Value schema);
 Json::Value markAsMatch(Json::Value schema, std::string id);
+Json::Value appendChild(Json::Value schema, Json::Value node);
 }
 
 

@@ -417,7 +417,7 @@ public:
 
 		yDebug(" Perception: Sensorial  context: %s",sensorialContext.toStyledString().c_str());
 
-		if(cycles==1){Bottle input;continueInputPort.read(input);}
+		Bottle input;continueInputPort.read(input);
 
 		yDebug(" Perception: writing out sensorial  context\n");
 		Bottle output;
@@ -448,7 +448,7 @@ public:
 
 		processedImageOutputPort.write();
 
-		Bottle input;
+		//Bottle input;
 		yDebug(" Perception: waiting for hand state");
 		leftHandStateInputPort.read(input);
 		yDebug(" Perception: left hand state %s",input.toString().c_str());

@@ -44,9 +44,10 @@ private:
 	Json::Value kb;
 
 	//Json::Value matchedSchemas;
-	Json::Value selectedSchemas;
+	Json::Value selectedSchema;
 	Json::Value expectations;
 	vector<Json::Value> selectedTreePath;
+	Json::Value previousSituation;
 	//vector<Json::Value> wm;
 	queue<Json::Value> wm; //Working memory (short term memory) TODO: move to Working memory module
 	int wmdeep;
@@ -137,12 +138,12 @@ public:
 		return 1.0;
 	}
 	virtual bool updateModule() {
-
-		yDebug(" DevER: Working memory: [");
+		yDebug(" DevER: cycle %d",++cycles);
+		yDebug(" DevER: Working memory in  cycle %d: [",cycles);
 
 		/*for (std::vector<Json::Value>::size_type i = 0; i < wm.size(); i++) {
-			yDebug(" t%d = %s",i,wm.at(i).toStyledString().c_str());// << ' ';
-		}*/
+		 yDebug(" t%d = %s",i,wm.at(i).toStyledString().c_str());// << ' ';
+		 }*/
 		printWM(wm);
 		yDebug(" ]");
 		if (!engagement()) {
@@ -181,7 +182,6 @@ private:
 	}
 
 	bool engagement() {
-		yDebug(" DevER: cycle %d",++cycles);
 		yDebug(" DevER: In engagement mode\n");
 		Json::Value locomotionActions,
 		mentalActions;
@@ -201,6 +201,19 @@ private:
 		yDebug(
 				" DevER: Got context: %s \n",currentContext.toStyledString().c_str());
 		yDebug(" DevER: expected %s \n",expectations.toStyledString().c_str());
+		//if(!wm.empty()){
+		//wm.front()["expected"]=currentContext;
+		//}
+
+		if(!previousSituation.empty()) {
+			if(wm.size()>=wmdeep) {
+
+				wm.pop();
+			}
+			previousSituation["consequence"] = currentContext;
+			wm.push(previousSituation);
+		}
+
 		if (currentContext.size() == 3
 				&& currentContext[2].isMember("boredom")) {
 			yDebug(" DevER: boredom detected");
@@ -208,25 +221,25 @@ private:
 
 		} else {
 
-			 if(currentContext.size() == 3
-							&& currentContext[2].isMember("joy")) {
-						yDebug(" DevER: joy detected!");
-						accommodation();
-			 }
+			if(currentContext.size() == 3
+					&& (currentContext[2].isMember("joy")||currentContext[2].isMember("surprise"))) {
+
+				accommodation();
+			}
 
 			if(expectations.size()!=0 && selectedTreePath.size()>0 && utils::match(currentContext[0],expectations[0],"exact")==100&& utils::match(currentContext[1],expectations[1],"exact")==100) {//expectations fullfilled
 
 				yDebug(" Dev E-R: getting next schema in the tree");
-				selectedSchemas = selectedTreePath.at(selectedTreePath.size()-1);
+				selectedSchema = selectedTreePath.at(selectedTreePath.size()-1);
 				jsonReader.parse("[]", expectations);
 				//&& selectedTreePath.size()>0 &&
 				if(selectedTreePath.at(selectedTreePath.size()-1).isMember("expected")) {
 					expectations.append(selectedTreePath.at(selectedTreePath.size()-1)["expected"][0]);
 					expectations.append(selectedTreePath.at(selectedTreePath.size()-1)["expected"][1]);
-					if(wm.size()>=wmdeep){
-						wm.pop();
-					}
-					wm.push(selectedTreePath.at(selectedTreePath.size()-1));
+					/*if(wm.size()>=wmdeep) {
+					 wm.pop();
+					 }
+					 wm.push(selectedTreePath.at(selectedTreePath.size()-1));*/
 				}
 				selectedTreePath.pop_back();
 			} else {
@@ -271,52 +284,49 @@ private:
 				Json::Value matchedSchemas;
 				jsonReader.parse(input_string.c_str(), matchedSchemas);
 
-				yDebug(" DevER: Got %s \n",matchedSchemas.toStyledString().c_str());
+				//yDebug(" DevER: Got %s \n",matchedSchemas.toStyledString().c_str());
 
 				//yDebug(" DevER: Got: " << '\n' << matchedSchemas.toStyledString() << '\n';
-				string ids = matchMode+"=";
-				if(matchMode=="exact") {
-					ids+="[";
-					for(Json::Value schema: matchedSchemas) {
-						//yDebug("Quesque : %s",schema.toStyledString().c_str());
-						for(Json::Value leaf: utils::getLeafs(schema)) {
-							if(leaf.isMember("match")) {
-								ids+=" "+leaf["id"].asString();
-							}
+				string ids = "exact=[";
+				for(Json::Value schema: matchedSchemas[0]) {
+					//yDebug("Quesque : %s",schema.toStyledString().c_str());
+					for(Json::Value leaf: utils::getLeafs(schema)) {
+						if(leaf.isMember("match")) {
+							ids+=" "+leaf["id"].asString();
 						}
 					}
-					ids+="]";
-				} else if(matchMode=="partial") {
-					ids=" visual:[";
-					for(Json::Value schema: matchedSchemas[0]) {
-						for(Json::Value leaf: utils::getLeafs(schema)) {
-							if(leaf.isMember("match")) {
-								ids+=" "+leaf["id"].asString();
-							}
-						}
-						//yDebug("Quesque : %s",schema.toStyledString().c_str());
-						//ids+=" "+schema["id"].asString();
-					}
-					ids+="] tactil:[";
-					for(Json::Value schema: matchedSchemas[1]) {
-						//yDebug("Quesque : %s",schema.toStyledString().c_str());
-						for(Json::Value leaf: utils::getLeafs(schema)) {
-							if(leaf.isMember("match")) {
-								ids+=" "+leaf["id"].asString();
-							}
-						}
-						//ids+=" "+schema["id"].asString();
-					}
-					ids+="]";
 				}
+				ids+="]";
+				ids+=" partial [[";
+				for(Json::Value schema: matchedSchemas[1][0]) {
+					for(Json::Value leaf: utils::getLeafs(schema)) {
+						if(leaf.isMember("match")) {
+							ids+=" "+leaf["id"].asString();
+						}
+					}
+					//yDebug("Quesque : %s",schema.toStyledString().c_str());
+					//ids+=" "+schema["id"].asString();
+				}
+				ids+="], [";
+				for(Json::Value schema: matchedSchemas[1][1]) {
+					//yDebug("Quesque : %s",schema.toStyledString().c_str());
+					for(Json::Value leaf: utils::getLeafs(schema)) {
+						if(leaf.isMember("match")) {
+							ids+=" "+leaf["id"].asString();
+						}
+					}
+					//ids+=" "+schema["id"].asString();
+				}
+				ids+="]]";
+
 				yDebug(" DevER: matched schemas %s",ids.c_str());
-				jsonReader.parse("[]", selectedSchemas);
+				//jsonReader.parse("[]", selectedSchema);
 				// expectations;
 				jsonReader.parse("[]", expectations);
-				if(matchMode=="exact" && matchedSchemas.size()>0) {
+				if(matchedSchemas[0].size()>0) {
 					//yDebug(" DevER: Getting best exact \n");
-					Json::Value bestMatch = getBestMatch(matchedSchemas);
-					//selectedSchemas.append(bestMatch);
+					Json::Value bestMatch = getBestMatch(matchedSchemas[0]);
+					//selectedSchema.append(bestMatch);
 					//if(bestMatch.isMember("expected")){
 					//yDebug("getting expectations");
 					//expectations.append(getExpectations(bestMatch,0));
@@ -330,7 +340,7 @@ private:
 						yDebug(" node %d = %s",i,selectedTreePath.at(i).toStyledString().c_str());	// << ' ';
 					}
 
-					selectedSchemas = selectedTreePath.at(selectedTreePath.size()-1);
+					selectedSchema = selectedTreePath.at(selectedTreePath.size()-1);
 					jsonReader.parse("[]", expectations);
 					if(selectedTreePath.at(selectedTreePath.size()-1).isMember("expected")) {
 						expectations.append(selectedTreePath.at(selectedTreePath.size()-1)["expected"][0]);
@@ -338,9 +348,9 @@ private:
 
 					}
 
-					if(selectedTreePath.size()!=0) {
-						wm.push(selectedTreePath.at(selectedTreePath.size()-1));
-					}
+					/*if(selectedTreePath.size()!=0) {
+					 wm.push(selectedTreePath.at(selectedTreePath.size()-1));
+					 }*/
 
 					selectedTreePath.pop_back();
 
@@ -353,24 +363,72 @@ private:
 
 					yDebug(" DevER: expectations from tree: %s \n",expectations.toStyledString().c_str());
 
-				} else {
+				} else if(matchedSchemas[1][0].size()!=0 || matchedSchemas[1][1].size()!=0) {//partial match
 					//yDebug(" DevER: Getting best exact else \n");
 					selectedTreePath.empty();
-					if(matchedSchemas[0].size()>0) {
-						Json::Value bestMatch = getBestMatch(matchedSchemas[0]);
-						selectedSchemas.append(bestMatch);
-						if(bestMatch.isMember("expected")) expectations.append(bestMatch["expected"][0]);
+					Json::Value mergedSchema;
+					Json::Value expectedv;
+					Json::Value expectedt;
+					jsonReader.parse("{}", expectedv);
+					jsonReader.parse("{}", expectedt);
+					jsonReader.parse("{\"context\":[],\"actions\":[],\"expected\":[]}", mergedSchema);
+					if(matchedSchemas[1][0].size()>0) {
+						Json::Value bestMatch = getBestMatch(matchedSchemas[1][0]);
+						yDebug("best v");
+						mergedSchema["context"].append(bestMatch["context"][0]);
+						for(Json::Value action:bestMatch["actions"]) {
+							mergedSchema["actions"].append(action);
+						}
+						yDebug("best v");
+
+						if(bestMatch.isMember("expected")) {
+							expectedv = bestMatch["expected"][0];
+						}
+						yDebug("best v");
+						//if(bestMatch.isMember("expected")) expectations.append(bestMatch["expected"][0]);
 					}
-					if(matchedSchemas[1].size()>0) {
-						Json::Value bestMatch = getBestMatch(matchedSchemas[1]);
-						selectedSchemas.append(bestMatch);
-						if(bestMatch.isMember("expected")) expectations.append(bestMatch["expected"][1]);
+					if(matchedSchemas[1][1].size()>0) {
+						Json::Value bestMatch = getBestMatch(matchedSchemas[1][1]);
+						mergedSchema["context"].append(bestMatch["context"][1]);
+						yDebug("best t");
+						for(Json::Value action:bestMatch["actions"]) {
+							mergedSchema["actions"].append(action);
+						}
+						yDebug("best t");
+						jsonReader.parse("{}", expectedt);
+						if(bestMatch.isMember("expected")) {
+							expectedt = bestMatch["expected"][1];
+						}
+						yDebug("best t");
 					}
+					//yDebug("best ttt");
+					if(expectedv.size()!=0 || expectedt.size()!=0) {
+						//	yDebug("best to");
+						mergedSchema["expected"].append(expectedv);
+						mergedSchema["expected"].append(expectedt);
+						expectations = mergedSchema["expected"];
+						Json::Value flag;
+						flag["partial"]=true;
+						expectations.append(flag);
+					} //else expectations = nullptr;
+
+					yDebug("best ti");
+					/*if(expectations.size()>0) {
+					 Json::Value flag;
+					 flag["partial"]=true;
+					 expectations.append(flag);
+					 }*/
+					yDebug("merged");
+					selectedSchema=mergedSchema;
+
 				}
 			}
-			//selectedSchemas = matchedSchemas;
-			yDebug(" DevER: selectedSchemas %s \n",selectedSchemas.toStyledString().c_str());
-			if(selectedSchemas.size()==0) {
+			//selectedSchema = matchedSchemas;
+			yDebug(" DevER: selectedSchema %s \n",selectedSchema.toStyledString().c_str());
+			previousSituation["actions"] = selectedSchema["actions"];
+			previousSituation["context"] = currentContext;
+
+			if(selectedSchema.size()==0) {
 				yInfo(" DevER: didn't find any applicable schema");
 				return false;
 			}
@@ -384,9 +442,9 @@ private:
 			yDebug(" DevER: WRITTEEn");
 
 			jsonReader.parse("[]", locomotionActions);
-			//for (Json::Value& schema : selectedSchemas) {
+			//for (Json::Value& schema : selectedSchema) {
 
-			for (Json::Value actionv : selectedSchemas["actions"]) {
+			for (Json::Value actionv : selectedSchema["actions"]) {
 				string action = actionv.asString();
 				yDebug(" DEvER: checking action %s",action.c_str());
 				//showInterestInV
@@ -439,34 +497,34 @@ private:
 		Json::Value locomotionActions;
 		jsonReader.parse("[]", locomotionActions);
 
-		vector<std::string> actions { "headUp", "headDown", "headLeft",
-						"headRight", "headLeftUp", "headLeftDown", "headRightUp",
-						"headRightDown", "handUp", "handDown", "handLeft", "handRight",
-						"handBackward", "handForward", "closeHand", "openHand" };
+		vector<std::string> actions {"headUp", "headDown", "headLeft",
+			"headRight", "headLeftUp", "headLeftDown", "headRightUp",
+			"headRightDown", "handUp", "handDown", "handLeft", "handRight",
+			"handBackward", "handForward", "closeHand", "openHand"};
 
-						srand(time(NULL));
-						int randomi = rand() % actions.size();
-						yDebug(" DevER: reflection random action");
-						/*for(int i = 0; i < action.size(); i++)
-						 {*/
-						float random_index = rand() % actions.size();
-						yDebug(" DevER: random seed=%f",random_index);
-						string action = actions[random_index];
-						//}
-					//}
+		srand(time(NULL));
+		int randomi = rand() % actions.size();
+		yDebug(" DevER: reflection random action");
+		/*for(int i = 0; i < action.size(); i++)
+		 {*/
+		float random_index = rand() % actions.size();
+		yDebug(" DevER: random seed=%f",random_index);
+		string action = actions[random_index];
+		//}
+		//}
 
 		locomotionActions.append(action);
 		Json::Value t;
 		jsonReader.parse("{}", t);
-		t["context"]=currentContext;
-		t["actions"]=locomotionActions;
+		previousSituation["context"]=currentContext;
+		previousSituation["actions"]=locomotionActions;
 
-		if(wm.size()>=wmdeep){
-								wm.pop();
-							}
-		wm.push(t);
+		/*if(wm.size()>=wmdeep) {
+		 wm.pop();
+		 }
+		 wm.push(t);
 
-		yDebug(" DevER: Issuing random body actions %s \n",locomotionActions.toStyledString().c_str());
+		 */yDebug(" DevER: Issuing random body actions %s \n",locomotionActions.toStyledString().c_str());
 
 		Bottle output;
 		//output.clear();
@@ -487,12 +545,12 @@ private:
 	}
 
 	Json::Value getBestMatch(Json::Value matches) {
-		yDebug(" DevER: Getting best match");
+		yDebug(" DevER: Getting best match from %s",matches.toStyledString().c_str());
 		Json::Value bestMatch;
 		if(matches.size()==0) return bestMatch;
 		bestMatch = matches[0];
 		int emotionalReward = 0;
-		if(matches[0].isMember("expected")){
+		if(matches[0].isMember("expected")) {
 			emotionalReward = utils::getExpectedEmotionalReward(matches[0]["expected"]);
 		}
 		int maxEmotionalReward = emotionalReward;
@@ -518,7 +576,7 @@ private:
 				 //yDebug("tik4");
 				 emotionalReward += leaf["context"][0]["contentment"].asInt();
 				 }*/
-				if(leaf.isMember("expected")){
+				if(leaf.isMember("expected")) {
 					emotionalReward = utils::getExpectedEmotionalReward(leaf["expected"]);
 				}
 
@@ -585,12 +643,254 @@ private:
 
 	bool accommodation() {
 
-		if(currentContext.size()==3 && currentContext[2].isMember("joy")) {
+		if(currentContext[2].isMember("joy")) {
+			yDebug(" DevER: joy detected!");
 			return automatization();
+		} else if(currentContext[2].isMember("surprise")) {
+			yDebug(" DevER: surprise detected!");
+			map<string,string> variables;
+			Json::Value newSchema = createSchemaFromWM(wm,&variables);//creates a new schema from the content of working memory
+			newSchema["expected"] = currentContext;
+			Json::Value deleted;
+			newSchema["expected"].removeIndex(2,&deleted);
+			yDebug(" DevER: schema from memory %s",newSchema.toStyledString().c_str());
+			yDebug(
+					" Writing 'save' to %s\n",ltMemoryModeOutputPort.getName().c_str());
+			Bottle outputMode;
+			outputMode.addString("save");
+			ltMemoryModeOutputPort.write(outputMode);
+
+			yDebug(" Dev E-R: writing new schema to ltmemory ");
+			Bottle output;
+			output.addString(fastWriter.write(newSchema));
+			currentContextOutputPort.write(output);
+
+			yDebug(" Dev E-R: done writing ");
+			return true;
 		}
 
 		return false;
 	}
+
+	Json::Value generalization(Json::Value schema) {
+		for(string member:schema["context"][0].getMemberNames()) {
+
+			if(member=="contentment" || member=="distress" || member=="color") continue;
+			schema["context"][0][member]="*";
+			if(schema.isMember("expected")) {
+				schema["expected"][0][member]="*";
+			}
+		}
+
+		for(string member:schema["context"][1].getMemberNames()) {
+
+			if(member=="contentment" || member=="distress") continue;
+			schema["context"][1][member]="*";
+			if(schema.isMember("expected")) {
+				schema["expected"][1][member]="*";
+			}
+		}
+
+		return schema;
+	}
+	Json::Value createSchemaFromWM(queue<Json::Value> wm,map<string,string> *variables) {
+		yDebug(" Dev E-R: creating new schema");
+
+		Json::Value ancestor;
+		if(!wm.empty()) {
+			Json::Value node = wm.front();
+			wm.pop();
+			//yDebug("poped %s",node.toStyledString().c_str());
+			//Json::Value deleted;
+			Json::Value deleted;
+			//yDebug("toing000");
+			if(node["consequence"].size()==3) {
+				yDebug("toing00'");
+				node["consequence"].removeIndex(2,&deleted);
+				yDebug("toing00");
+			}
+			//yDebug("toing0");
+
+			if(node["context"].size()==3) {
+
+				node["context"].removeIndex(2,&deleted);
+			}
+			Json::Value expected = node["consequence"];
+			node.removeMember("consequence");
+			node["expected"]=expected;
+//yDebug("toing");
+			for(string member:node["context"][0].getMemberNames()) {
+
+				if(member=="contentment" || member=="distress") continue;
+				if(member=="color") {
+					map<string,string>::iterator it;
+
+					yDebug("antes de generalizar color");
+					for(map<string, string >::const_iterator it2 = variables->begin();
+					    it2 != variables->end(); ++it2)
+					{
+					    std::cout << it2->first << " " << it2->second << "\n";
+					}
+
+					it=variables->find(node["context"][0]["color"].asString());
+
+					if(it!=variables->end()) {
+						node["context"][0]["color"]= it->second;
+					} else {
+						string var = "$"+to_string(variables->size()+1);
+						variables->insert(std::pair<string,string>(node["context"][0]["color"].asString(),var));
+						node["context"][0]["color"]= var;
+						//yDebug("Inserting %s, %s",node["context"][0]["color"].asString().c_str(),("$"+to_string(variables.size()+1)).c_str());
+						//variables.insert(std::pair<string,string>(node["context"][0]["color"].asString(),"$"+to_string(variables.size()+1)));
+
+					}
+					if(!expected.empty()) {
+						it=variables->find(node["expected"][0]["color"].asString());
+						if(it!=variables->end()) {
+							node["expected"][0]["color"]= it->second;
+						} else {
+							string var = "$"+to_string(variables->size()+1);
+													variables->insert(std::pair<string,string>(node["expected"][0]["color"].asString(),var));
+													node["expected"][0]["color"]= var;
+						}
+					}
+
+					yDebug("antes de generalizar color");
+										for(map<string, string >::const_iterator it2 = variables->begin();
+										    it2 != variables->end(); ++it2)
+										{
+										    std::cout << it2->first << " " << it2->second << "\n";
+										}
+
+					continue;
+				}
+				node["context"][0][member]="*";
+
+				node["expected"][0][member]="*";
+			}
+
+			for(string member:node["context"][1].getMemberNames()) {
+
+				if(member=="contentment" || member=="distress") continue;
+				node["context"][1][member]="*";
+				if(node.isMember("expected")) {
+					node["expected"][1][member]="*";
+				}
+			}
+
+			yDebug("generalized %s",node.toStyledString().c_str());
+
+			for(map<string, string >::const_iterator it2 = variables->begin();
+														    it2 != variables->end(); ++it2)
+														{
+														    std::cout << it2->first << " " << it2->second << "\n";
+														}
+
+			ancestor = createSchemaFromWM(wm,variables);
+			yDebug("returned ancestor %s",ancestor.toStyledString().c_str());
+			if(!ancestor.empty()) {
+
+				Json::Value deleted;
+				//yDebug("toing000");
+				if(ancestor["consequence"].size()==3) {
+					yDebug("toing00'");
+					ancestor["consequence"].removeIndex(2,&deleted);
+					yDebug("toing00");
+				}
+				//yDebug("toing0");
+
+				if(ancestor["context"].size()==3) {
+
+					ancestor["context"].removeIndex(2,&deleted);
+				}
+				Json::Value expected = ancestor["consequence"];
+				ancestor.removeMember("consequence");
+				ancestor["expected"]=expected;
+				//yDebug("toing");
+				for(string member:ancestor["context"][0].getMemberNames()) {
+
+					if(member=="contentment" || member=="distress") continue;
+					if(member=="color") {
+						yDebug("Antes de ancestrar con %s, ex %s",ancestor["context"][0]["color"].asString().c_str(),ancestor["expected"][0]["color"].asString().c_str());
+						/*for(map<string, string >::const_iterator it2 = variables->begin();
+											    it2 != variables->end(); ++it2)
+											{
+											    std::cout << it2->first << " " << it2->second << "\n";
+											}
+
+						map<string,string>::iterator it;
+						it=variables->find(ancestor["context"][0]["color"].asString());
+						if(it!=variables->end()) {
+							ancestor["context"][0]["color"]= it->second;
+						} else {
+							variables->insert(std::pair<string,string>(ancestor["context"][0]["color"].asString(),"$"+to_string(variables->size()+1)));
+							ancestor["context"][0]["color"]= "$"+to_string(variables->size()+1);
+						}
+						if(!expected.empty()) {
+							it=variables->find(ancestor["expected"][0]["color"].asString());
+							if(it!=variables->end()) {
+								ancestor["expected"][0]["color"]= it->second;
+							} else {
+								variables->insert(std::pair<string,string>(ancestor["expected"][0]["color"].asString(),"$"+to_string(variables->size()+1)));
+
+								ancestor["expected"][0]["color"]= "$"+to_string(variables->size()+1);
+							}
+						}
+						yDebug("Despues de ancestrar");
+
+						for(map<string, string >::const_iterator it2 = variables->begin();
+																	    it2 != variables->end(); ++it2)
+																	{
+																	    std::cout << it2->first << " " << it2->second << "\n";
+								*/								//	}
+						continue;
+					}
+					ancestor["context"][0][member]="*";
+
+					ancestor["expected"][0][member]="*";
+				}
+
+				ancestor = utils::appendChild(ancestor,node);
+
+				yDebug("ancestor %s",ancestor.toStyledString().c_str());
+				return ancestor;
+			} else return node;
+		}
+		yDebug("hoja");
+		return ancestor;
+		/*
+		 while (!wm.empty()) {
+		 Json::Value node;
+		 for(Json::Value action: wm.front()["actions"]) {
+		 actions.append(action);
+		 }
+		 wm.pop();
+		 }
+
+		 Json::Value actions = getLastActions(wm);
+
+		 Json::Value newSchema;
+		 newSchema["context"]=wm.front()["context"];
+		 newSchema["expected"]=wm.back()["expected"];
+		 newSchema["actions"]=actions;
+		 newSchema["equilibrated"]=false;
+
+		 yDebug(" Dev E-R: new schema %s",newSchema.toStyledString().c_str());
+
+		 yDebug(
+		 " Writing 'save' to %s\n",ltMemoryModeOutputPort.getName().c_str());
+		 Bottle outputMode;
+		 outputMode.addString("save");
+		 ltMemoryModeOutputPort.write(outputMode);
+
+		 yDebug(" Dev E-R: writing new schema to ltmemory ");
+		 Bottle output;
+		 output.addString(fastWriter.write(newSchema));
+		 currentContextOutputPort.write(output);
+
+		 yDebug(" Dev E-R: done writing ");
+		 return true;
+		 */}
 	bool automatization() {
 		yDebug(" Dev E-R: Automating path:");
 
@@ -642,7 +942,7 @@ private:
 		//printing content of queue
 		//string content ="[";
 		int i = 0;
-		while (!wm.empty()){
+		while (!wm.empty()) {
 			//content+=wm.front().toStyledString();
 			yDebug(" DevER: t%d %s",i++,wm.front().toStyledString().c_str());
 			wm.pop();
@@ -654,19 +954,19 @@ private:
 
 	Json::Value getLastActions(queue<Json::Value> wm)
 	{
-			//printing content of queue
+		//printing content of queue
 		Json::Value actions;
-				jsonReader.parse("[]", actions);
-			//Json::Value actions;
-						while (!wm.empty()){
-				for(Json::Value action: wm.front()["actions"]){
-					actions.append(action);
-				}
-				wm.pop();
+		jsonReader.parse("[]", actions);
+		//Json::Value actions;
+		while (!wm.empty()) {
+			for(Json::Value action: wm.front()["actions"]) {
+				actions.append(action);
 			}
-						return actions;
-			//content+="]";
-			//yDebug(" DevER: Working memory content %s",content);
+			wm.pop();
 		}
+		return actions;
+		//content+="]";
+		//yDebug(" DevER: Working memory content %s",content);
+	}
 };
 

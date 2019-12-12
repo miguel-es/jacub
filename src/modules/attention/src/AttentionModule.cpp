@@ -225,7 +225,7 @@ public:
 		Bottle output;// = attendedContextOutputPort.prepare();
 
 		yDebug(" Attention: cycle--- %d",cycles);
-		if(cycles==1){ yDebug("Setting dummy context");
+		/*if(cycles==1){ yDebug("Setting dummy context");
 		attendedContext[0]["lostAttendedObject"] = true;
 		attendedContext[0]["color"] = "c1";
 		attendedContext[0]["size"] = "s1";
@@ -234,11 +234,14 @@ public:
 				attendedContext[0]["x"] =0;
 				attendedContext[0]["y"]=0;
 
-		}
+		}*/
 
 		Json::Value attendedOutput = attendedContext;
 
 
+		attendedOutput[0].removeMember("x");
+		attendedOutput[0].removeMember("y");
+		attendedOutput[1].removeMember("lostAttendedObject");
 
 		yDebug(" Attention: Attended context: %s \n",attendedOutput.toStyledString().c_str());
 

@@ -42,6 +42,7 @@ class LTMemoryThread: public RateThread {
 	//Json::Value matchedSchema;
 
 	string robotName;
+	string kb_path;
 
 public:
 	LTMemoryThread(string robotName, string kb_path, const double period) :
@@ -52,6 +53,7 @@ public:
 		totalSchemes = 0;
 		cycles = 0;
 		loadKB(kb_path);
+		this->kb_path =kb_path;
 		//jsonReader.parse("{\"schemes\":[]}", kb);
 	}
 
@@ -124,10 +126,8 @@ public:
 			Json::Value matchedSchemas = match(context);
 
 
-			string ids = matchMode+"=";
-			if(matchMode=="exact"){
-				ids+="[";
-			for(Json::Value schema: matchedSchemas){
+			string ids = "exact=[";
+			for(Json::Value schema: matchedSchemas[0]){
 				//yDebug("Quesque : %s",schema.toStyledString().c_str());
 				for(Json::Value leaf: utils::getLeafs(schema)){
 					if(leaf.isMember("match")){
@@ -136,9 +136,8 @@ public:
 				}
 			}
 			ids+="]";
-			}else if(matchMode=="partial"){
-				ids=" visual:[";
-				for(Json::Value schema: matchedSchemas[0]){
+				ids+=" partial [[";
+				for(Json::Value schema: matchedSchemas[1][0]){
 					for(Json::Value leaf: utils::getLeafs(schema)){
 									if(leaf.isMember("match")){
 									ids+=" "+leaf["id"].asString();
@@ -147,8 +146,8 @@ public:
 							//yDebug("Quesque : %s",schema.toStyledString().c_str());
 							//ids+=" "+schema["id"].asString();
 						}
-				ids+="] tactil:[";
-				for(Json::Value schema: matchedSchemas[1]){
+				ids+="], [";
+				for(Json::Value schema: matchedSchemas[1][1]){
 										//yDebug("Quesque : %s",schema.toStyledString().c_str());
 					for(Json::Value leaf: utils::getLeafs(schema)){
 									if(leaf.isMember("match")){
@@ -157,18 +156,18 @@ public:
 								}
 										//ids+=" "+schema["id"].asString();
 									}
-				ids+="]";
-			}
+				ids+="]]";
+
 			yDebug(" DevER: matched schemas %s",ids.c_str());
-					yDebug(" LTMemory: matched schemas %s",ids.c_str());
+					//yDebug(" LTMemory: matched schemas %s",ids.c_str());
 
 			//yDebug(" LTMemory:  Matched schemas\n %s",matchedSchemas.toStyledString().c_str());
 
-			if(matchMode=="exact")
+			/*if(matchMode=="exact")
 			yDebug(" LTMemory: %d schemas matched",matchedSchemas.size());
 			else
 				yDebug(" LTMemory: %d schemas matched visual context and %d matched tactil context ",matchedSchemas[0].size(),matchedSchemas[1].size());
-
+*/
 			yDebug(" LTMemory: writing matched schemas to matchedSchemas:o");
 			Bottle output;
 			Json::FastWriter fastWriter;
@@ -226,13 +225,15 @@ private:
 	Json::Value match(Json::Value context) {
 
 		Json::Value matchedSchemas;
-		if(matchMode=="exact")
+		/*if(matchMode=="exact")
 		jsonReader.parse("[]", matchedSchemas);
 		else
-			jsonReader.parse("[[],[]]", matchedSchemas);
+			jsonReader.parse("[[],[]]", matchedSchemas);*/
+		jsonReader.parse("[[],[[],[]]]", matchedSchemas);
+
 		// if partial match is set, the result is a list of two lists
 		// one for schemas matching visual and one for tactile
-		bool only100 = false;
+		//bool only100 = false;
 		yInfo("Probing knowledge base with match mode set to %s...\n",
 				matchMode.c_str());
 
@@ -251,11 +252,11 @@ if(c1HasVContext>0){
 		}
 
 		for (Json::Value schema : kb["schemes"]) {
-			if(matchMode=="partial" && !schema["equilibrated"].asBool()&& !schema.isMember("children")) continue;
+			//if(matchMode=="partial" && (!schema["equilibrated"].asBool()|| schema.isMember("children"))) continue;
 			Json::Value leafs = utils::getLeafs(schema);
 			//yInfo("LEAFS \n %s",leafs.toStyledString().c_str());
-			bool foundMatch = false;
-			bool selected = false;
+			//bool foundMatch = false;
+			//bool selected = false;
 			for (Json::Value& leaf : leafs) {
 				yDebug(" LTMemory: testing schema %s",leaf["id"].asString().c_str());
 			//int visualContextSize = leaf["context"][0].size();
@@ -272,7 +273,7 @@ if(c1HasVContext>0){
 
 
 
-			if(matchMode=="exact" && visualMatch==100 && tactilMatch==100){
+			if(visualMatch==100 && tactilMatch==100){
 				//schema[leaf["id"].asString()]["matched"]=true;
 				//leaf["matched"]=true;
 			Json::Value jv = utils::markAsMatch(schema,leaf["id"].asString());
@@ -280,13 +281,13 @@ yDebug("MArked => id=%s %s",leaf["id"].asString().c_str(), jv.toStyledString().c
 
 				//if(!selected){
 				//selected = true;
-				matchedSchemas.append(utils::markAsMatch(schema,leaf["id"].asString()));
+				matchedSchemas[0].append(utils::markAsMatch(schema,leaf["id"].asString()));
 				//}
 				//schema["selected"] = true;
 				//break;
-			}else if (matchMode=="partial"){
-				yInfo("Trying schema %s %s\n",schema["id"].asCString(),schema["context"].toStyledString().c_str());
-				yInfo("Matches %f visual and %f tactil, vPer=%f, tPer=%f \n",visualMatch, tactilMatch,vPer,tPer);
+			}else{
+				//yInfo("Trying schema %s %s\n",schema["id"].asCString(),schema["context"].toStyledString().c_str());
+				//yInfo("Matches %f visual and %f tactil, vPer=%f, tPer=%f \n",visualMatch, tactilMatch,vPer,tPer);
 
 				/*if(leaf["context"][0].size()>0 && visualMatch==100 && tactileContextSize==0){ //visual context matches exactly
 					matchedSchemas[0].append(schema);
@@ -298,17 +299,18 @@ yDebug("MArked => id=%s %s",leaf["id"].asString().c_str(), jv.toStyledString().c
 
 break;
 				}else */
+				if(!leaf["equilibrated"].asBool()) continue;
 				if(c1HasTContext && c1HasVContext){
 
 					//if((c2HasVContext && !c2HasTContext && visualMatch==100) || (c2HasVContext && c2HasTContext && visualMatch==100 && tactilMatch!=100)){
 
 									if(c2HasVContext && !c2HasTContext && visualMatch==100){
-										matchedSchemas[0].append(utils::markAsMatch(schema,leaf["id"].asString()));
+										matchedSchemas[1][0].append(utils::markAsMatch(schema,leaf["id"].asString()));
 										//break;
 									//}else if((c2HasTContext && !c2HasVContext && tactilMatch==100) || (c2HasTContext && c2HasVContext && tactilMatch==100 && visualMatch!=100)){
 
 									}else if(c2HasTContext && !c2HasVContext && tactilMatch==100){
-										matchedSchemas[1].append(utils::markAsMatch(schema,leaf["id"].asString()));
+										matchedSchemas[1][1].append(utils::markAsMatch(schema,leaf["id"].asString()));
 																//break;
 									}
 
@@ -321,7 +323,7 @@ break;
 					//yInfo("Matches %f visual and %f tactil \n",visualMatch, tactilMatch);
 										//schema[leaf["id"].asString()]["matched"]=true;
 										//leaf["matched"]=true;
-					matchedSchemas[0].append(utils::markAsMatch(schema,leaf["id"].asString()));
+					matchedSchemas[1][0].append(utils::markAsMatch(schema,leaf["id"].asString()));
 					//break;
 				}else if(c1HasTContext && !c1HasVContext && c2HasTContext && !c2HasVContext && tactilMatch==tPer){//visual context differs in one aspect
 				//}else if(c1HasTContext && !c1HasVContext && ((c2HasTContext && !c2HasVContext && tactilMatch==tPer)||(c2HasTContext && c2HasVContext && tactilMatch==100.0))){//visual context differs in one aspect
@@ -330,7 +332,7 @@ break;
 					//yInfo("Matches %f visual and %f tactil \n",visualMatch, tactilMatch);
 					//schema[leaf["id"].asString()]["matched"]=true;
 					//leaf["matched"]=true;
-					matchedSchemas[1].append(utils::markAsMatch(schema,leaf["id"].asString()));
+					matchedSchemas[1][1].append(utils::markAsMatch(schema,leaf["id"].asString()));
 					//break;
 
 
@@ -381,14 +383,49 @@ break;
 					Json::Value newSchema;
 					jsonReader.parse(input_string.c_str(), newSchema);
 					yDebug(" LTMemory: Got schema: %s",newSchema.toStyledString().c_str());
-					newSchema["id"]=to_string(++totalSchemes);
-					kb["schemes"].append(newSchema);
-					kb["totalSchemes"]=totalSchemes;
+					asignId(newSchema);
+					//newSchema["id"]=to_string(++totalSchemes);
+					//kb["schemes"].append(newSchema);
+					//kb["totalSchemes"]=totalSchemes;
+					 return;
 					yDebug(" LTMemory: Saving new schema: %s",newSchema.toStyledString().c_str());
-
+					Json::Value streamWriterSettings{R"({ "indentation" : "\n" })"};
+					Json::StreamWriterBuilder::setDefaults(&streamWriterSettings);
+					Json::FastWriter fastWriter;
+					//writeFile(kb_path,Json::writeString({}, kb));
+					writeFile(kb_path,kb.toStyledString());
 					//yDebug(" DevER: matched schemas %s",ids.c_str());
 						//	yDebug(" LTMemory: matched schemas %s",ids.c_str());
 		}
 	//}
+
+	void asignId(Json::Value &schema){ return;
+		//schema->id =to_string(++totalSchemes);
+		schema["id"]=to_string(++totalSchemes);
+		if(schema.isMember("children")){
+			for(Json::Value &child:schema["children"])
+			{
+			 asignId(child);
+			}
+
+		}
+	}
+
+	int writeFile(string fileName,string content){//TODO: move to utils
+		 return true;
+		FILE *fp = fopen(fileName.c_str(),"w");
+		    if (fp == NULL)
+		    {
+		        yError(" LTMemory: couldn't open file %s",fileName.c_str());
+		        return false;
+		    }
+		    else
+		    {
+		        fputs(content.c_str(), fp);
+		        yDebug(" LTMemory: wrote to file %s",fileName.c_str());
+		        fclose(fp);
+		    }
+		    return true;
+	}
 
 };

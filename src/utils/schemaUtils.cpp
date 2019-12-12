@@ -135,6 +135,21 @@ Json::Value markAsMatch(Json::Value schema, std::string id){
 		return schema;
 
 }
+Json::Value appendChild(Json::Value schema, Json::Value node){
+	if(!schema.isMember("children")){
+		Json::Value children;
+		Json::Reader reader;
+		reader.parse("[]",children);
+		children.append(node);
+		schema["children"] = children;
+
+	}else{
+		yDebug("Appendin to children %s",schema["children"].toStyledString().c_str());
+		schema["children"] = appendChild(schema["children"][0],node);
+
+	}
+	return schema;
+}
 
 
 }
