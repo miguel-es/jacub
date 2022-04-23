@@ -26,6 +26,7 @@ private:
 	Json::Reader jsonReader;
 	Json::FastWriter jsonWriter;
 	Json::Value emotionalContext;
+	Json::Value expectations;
 	int cycles;
 
 public:
@@ -83,6 +84,7 @@ public:
 		yDebug(" Emotion: cycle %d",++cycles);
 		Bottle input;
 		string input_string;
+		Json::Value attendedContext;
                 yDebug(" Emotion: waiting for attended context...\n");
 		input.clear();
 		attendedContextInputPort.read(input,true);
@@ -99,7 +101,7 @@ public:
 		emotionalContext[1]["contentment"] = 1;
 		yDebug(" Emotion: attending to: %s",emotionalContext.toStyledString().c_str());
 
-		Bottle output = emotionalContextOutputPort.prepare();
+		Bottle output;// = emotionalContextOutputPort.prepare();
 		yDebug(" Emotion: emotional context: %s \n",emotionalContext.toStyledString().c_str());
 		output.addString(jsonWriter.write(emotionalContext));
 		yDebug(" Emotion: Writing out attended context -- %s",output.toString().c_str());
